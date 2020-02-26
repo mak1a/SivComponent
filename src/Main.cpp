@@ -19,7 +19,7 @@ public:
     void Start() override
     {
         cout << ClassName() << " Start()" << endl;
-        cout << "x = " << x << endl;
+//        cout << "x = " << x << endl;
         x = 5;
     }
     
@@ -44,29 +44,38 @@ void Main()
     
     //ゲームオブジェクト生成
     auto object = ComponentEngine::CreateGameObject();
+    object->transform().name = "object";
     
     //コンポーネントを追加
     object->AddComponent(std::make_shared<TestComponent>());
-//    object->AddComponent(std::make_shared<SampleComponent>());
+//  object->AddComponent(std::make_shared<SampleComponent>());
     
     
     auto obj2 = ComponentEngine::CreateGameObject();
-    
+    obj2->transform().name = "obj2";
     obj2->AddComponent(std::make_shared<TestComponent>());
     
     //シーンにオブジェクトを追加
     scene.AddObject(object);
     scene.AddObject(obj2);
     
+    std::cout << "Engine Start" << std::endl;
+    
     //StartとUpdateが呼ばれる
     scene.Update();
     
+    std::cout << "\nAdd Component Event" << std::endl;
     //途中でコンポーネントを追加
     obj2->AddComponent(std::make_shared<SampleComponent>());
     
+    int k = 5;
     while (System::Update())
     {
         scene.Update();
+        if(k-- < 0)
+        {
+            break;
+        }
     }
 }
 

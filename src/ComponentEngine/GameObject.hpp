@@ -13,7 +13,14 @@ namespace ComponentEngine
     {
     private:
         // GameObjectは必ずtransformを持つ
-        Transform transform;
+        Transform _transform;
+        
+    public:
+        
+        Transform& transform()
+        {
+            return _transform;
+        }
         
     private:
 
@@ -35,18 +42,18 @@ namespace ComponentEngine
 
     public:
         GameObject()
-            : transform()
+            : _transform()
         {
         }
 
-        GameObject(const Transform& _transform)
+        GameObject(const Transform& trans)
         {
-            transform = _transform;
+            _transform = trans;
         }
 
         GameObject(std::shared_ptr<GameObject> rval)
         {
-            transform = std::move(rval->transform);
+            _transform = std::move(rval->_transform);
             components = std::move(rval->components);
             parent = rval->parent;
             children = std::move(rval->children);

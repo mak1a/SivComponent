@@ -1,5 +1,6 @@
 
 #include "GameObject.hpp"
+#include "iostream"
 
 namespace ComponentEngine
 {
@@ -7,7 +8,7 @@ namespace ComponentEngine
     {
         for (auto& component : components)
         {
-            component->call_start();
+            component->Update();
         }
     }
 
@@ -15,7 +16,7 @@ namespace ComponentEngine
     {
         for (auto& component : components)
         {
-            component->Start();
+            component->call_start();
         }
         initializedAll = true;
     }
