@@ -9,25 +9,30 @@ using std::endl;
 class TestComponent : public ComponentEngine::AttachableComponent
 {
     int x;
+    virtual std::string ClassName(){return "TestComponent";}
     
 public:
-    
     TestComponent(){
         x = 5;
     }
     
     void Start() override
     {
-        cout << "Test Component Start()" << endl;
+        cout << ClassName() << " Start()" << endl;
     }
     
     void Update() override
     {
         if(x > 0)
         {
-            cout << "Test Update Update()" << x-- << endl;
+            cout << ClassName() << " Update()" << x-- << endl;
         }
     }
+};
+
+class SampleComponent : public TestComponent
+{
+    std::string ClassName() override {return "Sample Component";}
 };
 
 void Main()
@@ -39,6 +44,7 @@ void Main()
     auto object =    std::make_shared<ComponentEngine::GameObject>();
     //コンポーネントを追加
     object->AddComponent(std::make_shared<TestComponent>());
+    object->AddComponent(std::make_shared<SampleComponent>());
     //シーンにオブジェクトを追加
     scene.AddObject(object);
     

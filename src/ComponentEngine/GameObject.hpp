@@ -4,21 +4,32 @@
 #include <memory>
 #include <vector>
 
-#include "AttachableComponent.hpp"
+#include "IComponent.hpp"
 #include "Transform.hpp"
+
 namespace ComponentEngine
 {
-    class GameObject : private boost::noncopyable
+    class GameObject
     {
     private:
         // GameObjectは必ずtransformを持つ
         Transform transform;
 
-        std::vector<std::shared_ptr<AttachableComponent>> components;
+        std::vector<std::shared_ptr<IComponent>> components;
 
         //親子オブジェクト
         std::shared_ptr<GameObject> parent;
         std::vector<std::shared_ptr<GameObject>> children;
+
+    private:
+        // Start更新済みかどうか
+        bool initializedAll = false;
+
+    public:
+        bool IsInitializedAll()
+        {
+            return initializedAll;
+        }
 
     public:
         GameObject()
@@ -39,10 +50,13 @@ namespace ComponentEngine
             children = std::move(rval->children);
         };
 
-        void AddComponent(std::shared_ptr<AttachableComponent> component) {
+        void AddComponent(std::shared_ptr<IComponent> component)
+        {
             components.push_back(component);
         }
-        
+
+        void Start();
+
         void Update();
     };
 }  // namespace ComponentEngine

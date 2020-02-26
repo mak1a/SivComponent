@@ -16,13 +16,7 @@ namespace ComponentEngine
             objects.emplace_back(obj);
             objects.back();
         }
-        
-        void Update()
-        {
-            for(auto& object : objects)
-            {
-                object->Update();
-            }
-        }
+
+        void Update();
     };
 }  // namespace ComponentEngine
