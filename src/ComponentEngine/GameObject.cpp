@@ -7,7 +7,7 @@ namespace ComponentEngine
     {
         for (auto& component : components)
         {
-            component->Update();
+            component->call_start();
         }
     }
 

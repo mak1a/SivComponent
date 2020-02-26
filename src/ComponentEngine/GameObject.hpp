@@ -14,6 +14,8 @@ namespace ComponentEngine
     private:
         // GameObjectは必ずtransformを持つ
         Transform transform;
+        
+    private:
 
         std::vector<std::shared_ptr<IComponent>> components;
 
@@ -53,6 +55,7 @@ namespace ComponentEngine
         void AddComponent(std::shared_ptr<IComponent> component)
         {
             components.push_back(component);
+            initializedAll = false;
         }
 
         void Start();

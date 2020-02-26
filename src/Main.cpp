@@ -13,12 +13,14 @@ class TestComponent : public ComponentEngine::AttachableComponent
     
 public:
     TestComponent(){
-        x = 5;
+        x = 2;
     }
     
     void Start() override
     {
         cout << ClassName() << " Start()" << endl;
+        cout << "x = " << x << endl;
+        x = 5;
     }
     
     void Update() override
@@ -41,12 +43,26 @@ void Main()
     ComponentEngine::Scene scene;
     
     //ゲームオブジェクト生成
-    auto object =    std::make_shared<ComponentEngine::GameObject>();
+    auto object = ComponentEngine::CreateGameObject();
+    
     //コンポーネントを追加
     object->AddComponent(std::make_shared<TestComponent>());
-    object->AddComponent(std::make_shared<SampleComponent>());
+//    object->AddComponent(std::make_shared<SampleComponent>());
+    
+    
+    auto obj2 = ComponentEngine::CreateGameObject();
+    
+    obj2->AddComponent(std::make_shared<TestComponent>());
+    
     //シーンにオブジェクトを追加
     scene.AddObject(object);
+    scene.AddObject(obj2);
+    
+    //StartとUpdateが呼ばれる
+    scene.Update();
+    
+    //途中でコンポーネントを追加
+    obj2->AddComponent(std::make_shared<SampleComponent>());
     
     while (System::Update())
     {

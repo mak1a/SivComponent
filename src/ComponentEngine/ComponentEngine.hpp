@@ -7,4 +7,5 @@
 
 namespace ComponentEngine
 {
+    std::shared_ptr<ComponentEngine::GameObject> CreateGameObject();
 }  // namespace ComponentEngine

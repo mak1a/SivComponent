@@ -3,8 +3,8 @@
 
 #include <boost/noncopyable.hpp>
 #include <memory>
-#include "IComponent.hpp"
 #include "GameObject.hpp"
+#include "IComponent.hpp"
 
 namespace ComponentEngine
 {
@@ -13,23 +13,24 @@ namespace ComponentEngine
     private:
         bool initialized = false;
 
+    public:
+        bool IsInitialized()
+        {
+            return initialized;
+        }
+
         std::weak_ptr<GameObject> gameobject;
 
-            public : protected :
-            // virtual funcs
-            virtual void
-            Start() override
-        {
-        }
+    protected:
+        // virtual funcs
+        virtual void Start() override {}
         virtual void Update() override {}
 
         //これ自体の生成を禁止するためprotected
         AttachableComponent(){};
 
-    public:
-        virtual ~AttachableComponent() = default;
-
-        void start_component()
+    protected:
+        void call_start() override
         {
             if (!initialized)
             {
@@ -38,9 +39,7 @@ namespace ComponentEngine
             }
         }
 
-        void update_component()
-        {
-            Update();
-        }
+    public:
+        virtual ~AttachableComponent() = default;
     };
 }  // namespace ComponentEngine
