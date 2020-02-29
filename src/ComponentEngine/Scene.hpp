@@ -1,22 +1,35 @@
 
 #pragma once
 
-#include <vector>
+#include <list>
 #include "GameObject.hpp"
 namespace ComponentEngine
 {
     class Scene
     {
     private:
-        std::vector<std::shared_ptr<GameObject>> objects;
+        std::list<GameObject*> objects;
 
     public:
-        void AddObject(std::shared_ptr<GameObject> obj)
+        void AddObject(GameObject* obj)
         {
-            objects.emplace_back(obj);
-            objects.back();
+            //無効なポインタなら終了
+            if (obj == nullptr)
+            {
+                return;
+            }
+            objects.push_back(obj);
         }
-
+        
         void Update();
+
+        virtual ~Scene()
+        {
+            //リソース開放
+            for (GameObject* obj : objects)
+            {
+                delete obj;
+            }
+        }
     };
 }  // namespace ComponentEngine

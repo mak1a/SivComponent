@@ -89,7 +89,7 @@
 		8A2071B6240017A300284059 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
 		8A2071B82400321000284059 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		8A2071B92400321000284059 /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
-		8A2071BD2401611400284059 /* IComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
+		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +198,7 @@
 		8A2071BB2400331400284059 /* ComponentEngine */ = {
 			isa = PBXGroup;
 			children = (
+				8A33EC6B240AC415006118AB /* IComponent.hpp */,
 				8A2071B0240009E300284059 /* ComponentEngine.cpp */,
 				8A2071AE240009C400284059 /* ComponentEngine.hpp */,
 				8A2071A52400058100284059 /* AttachableComponent.cpp */,
@@ -208,7 +209,6 @@
 				8A2071B6240017A300284059 /* Transform.hpp */,
 				8A2071B82400321000284059 /* Scene.cpp */,
 				8A2071B92400321000284059 /* Scene.hpp */,
-				8A2071BD2401611400284059 /* IComponent.hpp */,
 			);
 			path = ComponentEngine;
 			sourceTree = "<group>";

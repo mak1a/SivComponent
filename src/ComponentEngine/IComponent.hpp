@@ -13,5 +13,8 @@ namespace ComponentEngine
 
         friend class AttachableComponent;
         friend class GameObject;
+
+    public:
+        virtual ~IComponent() = default;
     };
 }  // namespace ComponentEngine

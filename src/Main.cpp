@@ -9,9 +9,11 @@ using std::endl;
 class TestComponent : public ComponentEngine::AttachableComponent
 {
     int x;
-    virtual std::string ClassName(){return "TestComponent";}
     
 public:
+    
+    virtual std::string ClassName(){return "TestComponent";}
+    
     TestComponent(){
         x = 2;
     }
@@ -19,7 +21,6 @@ public:
     void Start() override
     {
         cout << ClassName() << " Start()" << endl;
-//        cout << "x = " << x << endl;
         x = 5;
     }
     
@@ -32,9 +33,17 @@ public:
     }
 };
 
-class SampleComponent : public TestComponent
+class SampleComponent : public ComponentEngine::AttachableComponent
 {
-    std::string ClassName() override {return "Sample Component";}
+    void Start() override
+    {
+        cout << "Sample" << " Start()" << endl;
+    }
+};
+
+class OverrideComponent : public TestComponent
+{
+    std::string ClassName() override {return "OverrideComponent";}
 };
 
 void Main()
@@ -47,13 +56,12 @@ void Main()
     object->transform().name = "object";
     
     //コンポーネントを追加
-    object->AddComponent(std::make_shared<TestComponent>());
-//  object->AddComponent(std::make_shared<SampleComponent>());
+    object->AddComponent<TestComponent>();
     
     
     auto obj2 = ComponentEngine::CreateGameObject();
     obj2->transform().name = "obj2";
-    obj2->AddComponent(std::make_shared<TestComponent>());
+    obj2->AddComponent<TestComponent>();
     
     //シーンにオブジェクトを追加
     scene.AddObject(object);
@@ -66,11 +74,13 @@ void Main()
     
     std::cout << "\nAdd Component Event" << std::endl;
     //途中でコンポーネントを追加
-    obj2->AddComponent(std::make_shared<SampleComponent>());
+    obj2->AddComponent<SampleComponent>();
+    obj2->AddComponent<OverrideComponent>();
     
     int k = 5;
     while (System::Update())
     {
+        std::cout << "" << std::endl;
         scene.Update();
         if(k-- < 0)
         {

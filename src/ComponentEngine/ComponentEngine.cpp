@@ -3,8 +3,10 @@
 
 namespace ComponentEngine
 {
-    std::shared_ptr<ComponentEngine::GameObject> CreateGameObject()
+    //    std::unique_ptr<ComponentEngine::GameObject>&& CreateGameObject()
+    ComponentEngine::GameObject* CreateGameObject()
     {
-        return std::make_shared<ComponentEngine::GameObject>();
+        return new GameObject();
+        //        return std::make_unique<ComponentEngine::GameObject>();
     }
 }  // namespace ComponentEngine

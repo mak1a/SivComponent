@@ -20,5 +20,4 @@ namespace ComponentEngine
         }
         initializedAll = true;
     }
-
 }  // namespace ComponentEngine

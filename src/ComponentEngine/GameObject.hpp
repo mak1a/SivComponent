@@ -1,34 +1,33 @@
 #pragma once
 
 #include <boost/noncopyable.hpp>
+#include <list>
 #include <memory>
-#include <vector>
 
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
 namespace ComponentEngine
 {
-    class GameObject
+    class GameObject final : private boost::noncopyable
     {
     private:
         // GameObjectは必ずtransformを持つ
         Transform _transform;
-        
+
     public:
-        
+        //プロパティ
         Transform& transform()
         {
             return _transform;
         }
-        
-    private:
 
-        std::vector<std::shared_ptr<IComponent>> components;
+    private:
+        std::list<IComponent*> components;
 
         //親子オブジェクト
-        std::shared_ptr<GameObject> parent;
-        std::vector<std::shared_ptr<GameObject>> children;
+        GameObject* parent;
+        std::list<GameObject*> children;
 
     private:
         // Start更新済みかどうか
@@ -51,22 +50,54 @@ namespace ComponentEngine
             _transform = trans;
         }
 
-        GameObject(std::shared_ptr<GameObject> rval)
-        {
-            _transform = std::move(rval->_transform);
-            components = std::move(rval->components);
-            parent = rval->parent;
-            children = std::move(rval->children);
-        };
+        // GameObject(shared_ptr<GameObject> rval)
+        // {
+        //     _transform = std::move(rval->_transform);
+        //     components = std::move(rval->components);
+        //     parent = rval->parent;
+        //     children = std::move(rval->children);
+        // };
 
-        void AddComponent(std::shared_ptr<IComponent> component)
+        template <class Component, class... Args>
+        void AddComponent(Args&&... args)
         {
-            components.push_back(component);
+            IComponent* c = new Component(std::forward<Args>(args)...);
+            c->Start();
+            components.push_back(c);
             initializedAll = false;
+            // return c;
         }
 
+        template <class T>
+        T* GetComponent()
+        {
+            T* component;
+
+            for (IComponent* c : components)
+            {
+                if ((component = dynamic_cast<T*>(c)))
+                {
+                    return component;
+                }
+            }
+            return nullptr;
+        }
+
+        ~GameObject()
+        {
+            for (IComponent* component : components)
+            {
+                // TODO: OnDestory
+                delete component;
+            }
+        }
+
+    private:
+        //エンジン用関数
         void Start();
 
         void Update();
+
+        friend class Scene;
     };
 }  // namespace ComponentEngine

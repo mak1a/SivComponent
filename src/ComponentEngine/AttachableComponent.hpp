@@ -10,6 +10,17 @@ namespace ComponentEngine
 {
     class AttachableComponent : public IComponent
     {
+        friend class GameObject;
+
+    private:
+        // GameObjectとのやりとり
+        GameObject* gameobject;
+
+        // template <class Component, class... Args>
+        // friend Component* GameObject::AddComponent(Args&&... args);
+        // friend class GameObject;
+
+    protected:
     private:
         bool initialized = false;
 
@@ -18,8 +29,6 @@ namespace ComponentEngine
         {
             return initialized;
         }
-
-        std::weak_ptr<GameObject> gameobject;
 
     protected:
         // virtual funcs

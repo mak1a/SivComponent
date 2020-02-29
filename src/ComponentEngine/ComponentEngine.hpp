@@ -7,5 +7,7 @@
 
 namespace ComponentEngine
 {
-    std::shared_ptr<ComponentEngine::GameObject> CreateGameObject();
+    //    std::unique_ptr<ComponentEngine::GameObject>&& CreateGameObject();
+    ComponentEngine::GameObject* CreateGameObject();
+
 }  // namespace ComponentEngine
