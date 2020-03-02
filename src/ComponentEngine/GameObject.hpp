@@ -50,14 +50,6 @@ namespace ComponentEngine
             _transform = trans;
         }
 
-        // GameObject(shared_ptr<GameObject> rval)
-        // {
-        //     _transform = std::move(rval->_transform);
-        //     components = std::move(rval->components);
-        //     parent = rval->parent;
-        //     children = std::move(rval->children);
-        // };
-
         template <class Component, class... Args>
         void AddComponent(Args&&... args)
         {
