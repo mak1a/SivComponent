@@ -54,11 +54,17 @@ namespace ComponentEngine
         void AddComponent(Args&&... args)
         {
             IComponent* c = new Component(std::forward<Args>(args)...);
-            c->Start();
             components.push_back(c);
             initializedAll = false;
             // return c;
         }
+
+        void AddChild(GameObject* child)
+        {
+            children.push_back(child);
+        }
+
+        void DeleteChild() {}
 
         template <class T>
         T* GetComponent()

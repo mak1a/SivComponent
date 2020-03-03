@@ -65,7 +65,9 @@ void Main()
     
     //シーンにオブジェクトを追加
     scene.AddObject(object);
-    scene.AddObject(obj2);
+//    scene.AddObject(obj2);
+    //子オブジェクトにする
+    object->AddChild(obj2);
     
     std::cout << "Engine Start" << std::endl;
     
@@ -80,8 +82,8 @@ void Main()
     int k = 5;
     while (System::Update())
     {
-        std::cout << "" << std::endl;
         scene.Update();
+        std::cout << "" << std::endl;
         if(k-- < 0)
         {
             break;

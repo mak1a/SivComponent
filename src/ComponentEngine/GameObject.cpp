@@ -6,9 +6,14 @@ namespace ComponentEngine
 {
     void GameObject::Update()
     {
-        for (auto& component : components)
+        for (auto component : components)
         {
             component->Update();
+        }
+
+        for (auto child : children)
+        {
+            child->Update();
         }
     }
 
@@ -19,5 +24,10 @@ namespace ComponentEngine
             component->call_start();
         }
         initializedAll = true;
+
+        for (auto child : children)
+        {
+            child->Start();
+        }
     }
 }  // namespace ComponentEngine

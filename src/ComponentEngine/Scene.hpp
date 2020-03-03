@@ -8,9 +8,15 @@ namespace ComponentEngine
     class Scene
     {
     private:
-        std::list<GameObject*> objects;
+        //        std::list<GameObject*> objects;
+        GameObject* masterObject;
 
     public:
+        Scene()
+        {
+            masterObject = new GameObject();
+        }
+
         void AddObject(GameObject* obj)
         {
             //無効なポインタなら終了
@@ -18,18 +24,14 @@ namespace ComponentEngine
             {
                 return;
             }
-            objects.push_back(obj);
+            masterObject->AddChild(obj);
         }
-        
+
         void Update();
 
         virtual ~Scene()
         {
-            //リソース開放
-            for (GameObject* obj : objects)
-            {
-                delete obj;
-            }
+            delete masterObject;
         }
     };
 }  // namespace ComponentEngine
