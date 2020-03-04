@@ -1,6 +1,7 @@
 
 #pragma once
 
+#define NO_S3D_USING
 #include <Siv3D.hpp>
 #include <string>
 
@@ -9,9 +10,9 @@ namespace ComponentEngine
     struct SivTransform
     {
     public:
-        Vec2 pos;
+        s3d::Vec2 pos;
         double rotate;
-        Vec2 scale;
+        s3d::Vec2 scale;
 
     public:
         std::string name;
@@ -21,7 +22,7 @@ namespace ComponentEngine
         {
         }
 
-        SivTransform(const Vec2& _pos, double _rotate, const Vec2& _scale)
+        SivTransform(const s3d::Vec2& _pos, double _rotate, const s3d::Vec2& _scale)
             : pos(_pos)
             , rotate(_rotate)
             , scale(_scale)
@@ -30,9 +31,9 @@ namespace ComponentEngine
 
     private:
     public:
-        Transformer2D&& PushTransform()
+        s3d::Transformer2D&& PushTransform()
         {
-            return Transformer2D(s3d::Mat3x2::Translate(pos).Rotate(rotate).Scale(scale));
+            return s3d::Transformer2D(s3d::Mat3x2::Translate(pos).Rotate(rotate).Scale(scale));
         }
 
         void PopTransform() {}

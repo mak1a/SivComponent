@@ -15,9 +15,7 @@ namespace ComponentEngine
 
         for (GameObject* child : children)
         {
-            // s3d::Transformer2D
-            auto transforer = child->_transform.PushTransform();
-            // TODO: Transformの処理
+            s3d::Transformer2D transforer = child->_transform.PushTransform();
             child->Update();
         }
     }
