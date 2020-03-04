@@ -38,17 +38,25 @@ public:
     }
 };
 
+class OverrideComponent : public TestComponent
+{
+    std::string ClassName() override {return "OverrideComponent";}
+    
+public:
+    void Call()
+    {
+        cout << "I am Override Comp!!!" << endl;
+    }
+};
+
 class SampleComponent : public ComponentEngine::AttachableComponent
 {
     void Start() override
     {
         cout << "Sample" << " Start()" << endl;
+        auto over = gameObject().GetComponent<OverrideComponent>();
+        over->Call();
     }
-};
-
-class OverrideComponent : public TestComponent
-{
-    std::string ClassName() override {return "OverrideComponent";}
 };
 
 void Main()
@@ -83,7 +91,7 @@ void Main()
     //途中でコンポーネントを追加
     obj2->AddComponent<SampleComponent>();
     obj2->AddComponent<OverrideComponent>();
-    object->DeleteChild(obj2);
+//    object->DeleteChild(obj2);
 
     int k = 5;
     while (System::Update())

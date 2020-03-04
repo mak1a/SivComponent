@@ -5,7 +5,7 @@ namespace ComponentEngine
     class GameObject;
     class IComponent
     {
-        GameObject* hoge;
+        GameObject* gameobject;
 
     private:
         virtual void call_start() = 0;
@@ -22,7 +22,3 @@ namespace ComponentEngine
         virtual ~IComponent() = default;
     };
 }  // namespace ComponentEngine
-
-class Hoge
-{
-};

@@ -57,7 +57,7 @@ namespace ComponentEngine
         void AddComponent(Args&&... args)
         {
             IComponent* c = new Component(std::forward<Args>(args)...);
-//            c->SetGameObject(this);
+            c->gameobject = this;
             components.push_back(c);
             initializedAll = false;
             // return c;

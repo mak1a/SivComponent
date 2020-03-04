@@ -13,14 +13,11 @@ namespace ComponentEngine
         friend class GameObject;
 
     private:
-        // GameObjectとのやりとり
-        GameObject* gameobject;
-
         // template <class Component, class... Args>
         // friend Component* GameObject::AddComponent(Args&&... args);
         // friend class GameObject;
-    private:
 
+    private:
     protected:
         //委譲API
         GameObject& gameObject()
