@@ -3,6 +3,7 @@
 
 #include <list>
 #include "GameObject.hpp"
+#include "AttachableComponent.hpp"
 namespace ComponentEngine
 {
     class Scene

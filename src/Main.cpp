@@ -9,27 +9,32 @@ using std::endl;
 class TestComponent : public ComponentEngine::AttachableComponent
 {
     int x;
-    
+
 public:
-    
+
     virtual std::string ClassName(){return "TestComponent";}
-    
+
     TestComponent(){
         x = 2;
     }
-    
+
     void Start() override
     {
         cout << ClassName() << " Start()" << endl;
         x = 5;
     }
-    
+
     void Update() override
     {
         if(x > 0)
         {
             cout << ClassName() << " Update()" << x-- << endl;
         }
+    }
+
+    virtual ~TestComponent()
+    {
+        cout << "~TestComponent()" << endl;
     }
 };
 
@@ -50,35 +55,36 @@ void Main()
 {
     //シーン生成
     ComponentEngine::Scene scene;
-    
+
     //ゲームオブジェクト生成
     auto object = ComponentEngine::CreateGameObject();
     object->transform().name = "object";
-    
+
     //コンポーネントを追加
     object->AddComponent<TestComponent>();
-    
-    
+
+
     auto obj2 = ComponentEngine::CreateGameObject();
     obj2->transform().name = "obj2";
     obj2->AddComponent<TestComponent>();
-    
+
     //シーンにオブジェクトを追加
     scene.AddObject(object);
 //    scene.AddObject(obj2);
     //子オブジェクトにする
     object->AddChild(obj2);
-    
+
     std::cout << "Engine Start" << std::endl;
-    
+
     //StartとUpdateが呼ばれる
     scene.Update();
-    
+
     std::cout << "\nAdd Component Event" << std::endl;
     //途中でコンポーネントを追加
     obj2->AddComponent<SampleComponent>();
     obj2->AddComponent<OverrideComponent>();
-    
+    object->DeleteChild(obj2);
+
     int k = 5;
     while (System::Update())
     {

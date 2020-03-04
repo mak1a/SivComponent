@@ -2,31 +2,37 @@
 #include "GameObject.hpp"
 #include "iostream"
 
+#include "AttachableComponent.hpp"
+
 namespace ComponentEngine
 {
     void GameObject::Update()
     {
-        for (auto component : components)
+        for (IComponent* component : components)
         {
             component->Update();
         }
 
-        for (auto child : children)
+        for (GameObject* child : children)
         {
+            // s3d::Transformer2D
+            auto transforer = child->_transform.PushTransform();
+            // TODO: Transformの処理
             child->Update();
         }
     }
 
     void GameObject::Start()
     {
-        for (auto& component : components)
+        for (IComponent* component : components)
         {
             component->call_start();
         }
         initializedAll = true;
 
-        for (auto child : children)
+        for (GameObject* child : children)
         {
+            // TODO: Transformの処理
             child->Start();
         }
     }

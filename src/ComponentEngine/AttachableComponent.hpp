@@ -19,8 +19,15 @@ namespace ComponentEngine
         // template <class Component, class... Args>
         // friend Component* GameObject::AddComponent(Args&&... args);
         // friend class GameObject;
+    private:
 
     protected:
+        //委譲API
+        GameObject& gameObject()
+        {
+            return *gameobject;
+        }
+
     private:
         bool initialized = false;
 

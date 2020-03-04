@@ -11,13 +11,16 @@ namespace ComponentEngine
 {
     class GameObject final : private boost::noncopyable
     {
+    public:
+        using TransformType = SivTransform;
+
     private:
         // GameObjectは必ずtransformを持つ
-        Transform _transform;
+        TransformType _transform;
 
     public:
         //プロパティ
-        Transform& transform()
+        TransformType& transform()
         {
             return _transform;
         }
@@ -45,7 +48,7 @@ namespace ComponentEngine
         {
         }
 
-        GameObject(const Transform& trans)
+        GameObject(const TransformType& trans)
         {
             _transform = trans;
         }
@@ -54,6 +57,7 @@ namespace ComponentEngine
         void AddComponent(Args&&... args)
         {
             IComponent* c = new Component(std::forward<Args>(args)...);
+//            c->SetGameObject(this);
             components.push_back(c);
             initializedAll = false;
             // return c;
@@ -64,7 +68,17 @@ namespace ComponentEngine
             children.push_back(child);
         }
 
-        void DeleteChild() {}
+        void DeleteChild(GameObject* child)
+        {
+            auto itr = std::find(children.begin(), children.end(), child);
+            if (itr == children.end())
+            {
+                return;
+            }
+
+            delete *itr;
+            children.erase(itr);
+        }
 
         template <class T>
         T* GetComponent()
