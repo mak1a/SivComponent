@@ -1,9 +1,9 @@
-
 #pragma once
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
 #include <string>
+#include "../Utilities/Utilities.hpp"
 
 namespace ComponentEngine
 {
@@ -11,8 +11,16 @@ namespace ComponentEngine
     {
     public:
         s3d::Vec2 pos;
+        //弧度法
         double rotate;
         s3d::Vec2 scale;
+
+    public:
+        SivTransform& SetRotateByAngle(double angle)
+        {
+            rotate = Utilities::DegToRad(angle);
+            return *this;
+        }
 
     public:
         std::string name;
@@ -31,9 +39,10 @@ namespace ComponentEngine
 
     private:
     public:
-        s3d::Transformer2D&& PushTransform()
+        auto PushTransform() -> decltype(std::make_unique<s3d::Transformer2D>())
         {
-            return s3d::Transformer2D(s3d::Mat3x2::Translate(pos).Rotate(rotate).Scale(scale));
+            return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(pos).rotated(rotate).scaled(scale));
+            // return std::move(trans);
         }
 
         void PopTransform() {}

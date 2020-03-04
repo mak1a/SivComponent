@@ -25,6 +25,11 @@ namespace ComponentEngine
             return *gameobject;
         }
 
+        auto transform() -> decltype(gameobject->transform())
+        {
+            return gameobject->transform();
+        }
+
     private:
         bool initialized = false;
 

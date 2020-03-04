@@ -8,6 +8,9 @@ namespace ComponentEngine
 {
     void GameObject::Update()
     {
+        //変換行列を作成
+        auto trans = _transform.PushTransform();
+        
         for (IComponent* component : components)
         {
             component->Update();
@@ -15,7 +18,6 @@ namespace ComponentEngine
 
         for (GameObject* child : children)
         {
-            s3d::Transformer2D transforer = child->_transform.PushTransform();
             child->Update();
         }
     }

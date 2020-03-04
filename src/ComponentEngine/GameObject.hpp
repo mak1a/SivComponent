@@ -112,4 +112,12 @@ namespace ComponentEngine
 
         friend class Scene;
     };
+
+    template <>
+    inline GameObject::TransformType* GameObject::GetComponent()
+    {
+        return &_transform;
+    }
 }  // namespace ComponentEngine
+
+// https://qiita.com/kgwryk28/items/4a066d6f81ffacbc758f

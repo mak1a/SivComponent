@@ -38,6 +38,7 @@
 		2CE5C85B237FDE6000082EEC /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C6906B12298123200A427D0 /* OpenAL.framework */; };
 		2CEACB67233A61C900C6EE98 /* libgif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEACB65233A61C900C6EE98 /* libgif.a */; };
 		2CEACB68233A61C900C6EE98 /* libutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEACB66233A61C900C6EE98 /* libutil.a */; };
+		8A14767F240FA72800389E76 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A14767D240FA72800389E76 /* Utilities.cpp */; };
 		8A2071A72400058100284059 /* AttachableComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071A52400058100284059 /* AttachableComponent.cpp */; };
 		8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B0240009E300284059 /* ComponentEngine.cpp */; };
 		8A2071B4240016C400284059 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B2240016C400284059 /* GameObject.cpp */; };
@@ -79,6 +80,8 @@
 		2CE5C859237FDE5100082EEC /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2CEACB65233A61C900C6EE98 /* libgif.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgif.a; path = ../../lib/macOS/libgif/libgif.a; sourceTree = "<group>"; };
 		2CEACB66233A61C900C6EE98 /* libutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libutil.a; path = ../../lib/macOS/libgif/libutil.a; sourceTree = "<group>"; };
+		8A14767D240FA72800389E76 /* Utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
+		8A14767E240FA72800389E76 /* Utilities.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utilities.hpp; sourceTree = "<group>"; };
 		8A2071A52400058100284059 /* AttachableComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AttachableComponent.cpp; sourceTree = "<group>"; };
 		8A2071A62400058100284059 /* AttachableComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AttachableComponent.hpp; sourceTree = "<group>"; };
 		8A2071AE240009C400284059 /* ComponentEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentEngine.hpp; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		2C1778981CE0AA7C00BB8AD0 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8A14767C240FA71300389E76 /* Utilities */,
 				8A2071BB2400331400284059 /* ComponentEngine */,
 				2C1778991CE0AA7C00BB8AD0 /* Main.cpp */,
 			);
@@ -194,6 +198,15 @@
 				2C6906B12298123200A427D0 /* OpenAL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8A14767C240FA71300389E76 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8A14767D240FA72800389E76 /* Utilities.cpp */,
+				8A14767E240FA72800389E76 /* Utilities.hpp */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		8A2071BB2400331400284059 /* ComponentEngine */ = {
@@ -289,6 +302,7 @@
 				2C17789A1CE0AA7C00BB8AD0 /* Main.cpp in Sources */,
 				8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */,
 				8A2071A72400058100284059 /* AttachableComponent.cpp in Sources */,
+				8A14767F240FA72800389E76 /* Utilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
