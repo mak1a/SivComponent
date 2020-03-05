@@ -2,10 +2,10 @@
 #include <Siv3D.hpp>  // OpenSiv3D v0.4.2
 
 #include "ComponentEngine/ComponentEngine.hpp"
+#include "NetworkTest.hpp"
 
 using std::cout;
 using std::endl;
-using namespace s3d;
 
 namespace ComponentEngine::siv
 {
@@ -48,11 +48,12 @@ void Main()
     object->AddChild(obj2);
 
     std::cout << "Engine Start" << std::endl;
+    
 
     // StartとUpdateが呼ばれる
     scene.Update();
 
-    std::cout << "\nAdd Component Event" << std::endl;
+//    std::cout << "\nAdd Component Event" << std::endl;
     //    //途中でコンポーネントを追加
     //    obj2->AddComponent<SampleComponent>();
     //    obj2->AddComponent<OverrideComponent>();
@@ -61,15 +62,19 @@ void Main()
     while (true)
     {
         scene.Update();
-        std::cout << "" << std::endl;
+//        std::cout << "" << std::endl;
         if (k-- < 0)
         {
             break;
         }
     }
 
-    while (System::Update())
-    {
-        scene.Update();
-    }
+    PhotonTest();
+    
+//    while (System::Update())
+//    {
+////        scene.Update();
+//    }
+    
+    cout << "int Main() End." << endl;
 }

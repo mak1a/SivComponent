@@ -39,6 +39,8 @@
 		2CEACB67233A61C900C6EE98 /* libgif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEACB65233A61C900C6EE98 /* libgif.a */; };
 		2CEACB68233A61C900C6EE98 /* libutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEACB66233A61C900C6EE98 /* libutil.a */; };
 		8A14767F240FA72800389E76 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A14767D240FA72800389E76 /* Utilities.cpp */; };
+		8A147683240FEBCC00389E76 /* NetworkTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A147681240FEBCC00389E76 /* NetworkTest.cpp */; };
+		8A14769E24113A5000389E76 /* PhotonSiv3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A14769C24113A5000389E76 /* PhotonSiv3D.cpp */; };
 		8A2071A72400058100284059 /* AttachableComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071A52400058100284059 /* AttachableComponent.cpp */; };
 		8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B0240009E300284059 /* ComponentEngine.cpp */; };
 		8A2071B4240016C400284059 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B2240016C400284059 /* GameObject.cpp */; };
@@ -82,6 +84,10 @@
 		2CEACB66233A61C900C6EE98 /* libutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libutil.a; path = ../../lib/macOS/libgif/libutil.a; sourceTree = "<group>"; };
 		8A14767D240FA72800389E76 /* Utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		8A14767E240FA72800389E76 /* Utilities.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utilities.hpp; sourceTree = "<group>"; };
+		8A147681240FEBCC00389E76 /* NetworkTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkTest.cpp; sourceTree = "<group>"; };
+		8A147682240FEBCC00389E76 /* NetworkTest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkTest.hpp; sourceTree = "<group>"; };
+		8A14769C24113A5000389E76 /* PhotonSiv3D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonSiv3D.cpp; sourceTree = "<group>"; };
+		8A14769D24113A5000389E76 /* PhotonSiv3D.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PhotonSiv3D.hpp; sourceTree = "<group>"; };
 		8A2071A52400058100284059 /* AttachableComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AttachableComponent.cpp; sourceTree = "<group>"; };
 		8A2071A62400058100284059 /* AttachableComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AttachableComponent.hpp; sourceTree = "<group>"; };
 		8A2071AE240009C400284059 /* ComponentEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentEngine.hpp; sourceTree = "<group>"; };
@@ -158,9 +164,12 @@
 		2C1778981CE0AA7C00BB8AD0 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8A14769B241139F100389E76 /* PSN */,
 				8A14767C240FA71300389E76 /* Utilities */,
 				8A2071BB2400331400284059 /* ComponentEngine */,
 				2C1778991CE0AA7C00BB8AD0 /* Main.cpp */,
+				8A147681240FEBCC00389E76 /* NetworkTest.cpp */,
+				8A147682240FEBCC00389E76 /* NetworkTest.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -207,6 +216,15 @@
 				8A14767E240FA72800389E76 /* Utilities.hpp */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		8A14769B241139F100389E76 /* PSN */ = {
+			isa = PBXGroup;
+			children = (
+				8A14769C24113A5000389E76 /* PhotonSiv3D.cpp */,
+				8A14769D24113A5000389E76 /* PhotonSiv3D.hpp */,
+			);
+			path = PSN;
 			sourceTree = "<group>";
 		};
 		8A2071BB2400331400284059 /* ComponentEngine */ = {
@@ -296,8 +314,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A14769E24113A5000389E76 /* PhotonSiv3D.cpp in Sources */,
 				8A2071BA2400321000284059 /* Scene.cpp in Sources */,
 				8A2071B7240017A300284059 /* Transform.cpp in Sources */,
+				8A147683240FEBCC00389E76 /* NetworkTest.cpp in Sources */,
 				8A2071B4240016C400284059 /* GameObject.cpp in Sources */,
 				2C17789A1CE0AA7C00BB8AD0 /* Main.cpp in Sources */,
 				8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */,
@@ -428,6 +448,7 @@
 					../../include,
 					../../include/ThirdParty,
 					/usr/local/Cellar/boost/1.72.0/include,
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -447,6 +468,9 @@
 					../../lib/macOS/opencv,
 					../../lib/macOS/zlib,
 					/usr/local/Cellar/boost/1.72.0/lib,
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Common-cpp/lib",
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Photon-cpp/lib",
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/LoadBalancing-cpp/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -454,6 +478,11 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lCommon-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
+					"-lPhoton-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
+					"-lLoadBalancing-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = siv3d.empty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,6 +529,7 @@
 					../../include,
 					../../include/ThirdParty,
 					/usr/local/Cellar/boost/1.72.0/include,
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -519,12 +549,20 @@
 					../../lib/macOS/opencv,
 					../../lib/macOS/zlib,
 					/usr/local/Cellar/boost/1.72.0/lib,
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Common-cpp/lib",
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Photon-cpp/lib",
+					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/LoadBalancing-cpp/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lCommon-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
+					"-lPhoton-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
+					"-lLoadBalancing-cpp_$(CONFIGURATION)_$(PLATFORM_NAME)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = siv3d.empty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
