@@ -8,18 +8,12 @@
 
 namespace ComponentEngine
 {
+    //全てのコンポーネントの基本
     class AttachableComponent : public IComponent
     {
         friend class GameObject;
 
-    private:
-        // template <class Component, class... Args>
-        // friend Component* GameObject::AddComponent(Args&&... args);
-        // friend class GameObject;
-
-    private:
     protected:
-        //委譲API
         GameObject& gameObject()
         {
             return *gameobject;
@@ -41,14 +35,19 @@ namespace ComponentEngine
 
     protected:
         // virtual funcs
-        virtual void Start() override {}
+        virtual void Awake() override {}
+        virtual void Start() {}
         virtual void Update() override {}
+        virtual void LateUpdate() override {}
+        virtual void Draw() const override {}
 
-        //これ自体の生成を禁止するためprotected
+        //これ自体の生成は禁止する
         AttachableComponent(){};
 
     protected:
-        void call_start() override
+        // Startを1回しか呼ばないように制御
+        // この関数はここで固定する
+        virtual void call_start() override final
         {
             if (!initialized)
             {

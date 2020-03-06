@@ -9,18 +9,17 @@
 
 namespace ComponentEngine
 {
+    using Transform = SivTransform2D;
+
     class GameObject final : private boost::noncopyable
     {
-    public:
-        using TransformType = SivTransform;
-
     private:
         // GameObjectは必ずtransformを持つ
-        TransformType _transform;
+        Transform _transform;
 
     public:
         //プロパティ
-        TransformType& transform()
+        Transform& transform()
         {
             return _transform;
         }
@@ -48,19 +47,20 @@ namespace ComponentEngine
         {
         }
 
-        GameObject(const TransformType& trans)
+        GameObject(const Transform& trans)
         {
             _transform = trans;
         }
 
         template <class Component, class... Args>
-        void AddComponent(Args&&... args)
+        Component* AddComponent(Args&&... args)
         {
-            IComponent* c = new Component(std::forward<Args>(args)...);
+            Component* c = new Component(std::forward<Args>(args)...);
             c->gameobject = this;
             components.push_back(c);
+            c->Awake();
             initializedAll = false;
-            // return c;
+            return c;
         }
 
         void AddChild(GameObject* child)
@@ -105,16 +105,19 @@ namespace ComponentEngine
         }
 
     private:
-        //エンジン用関数
-        void Start();
+        void components_start();
 
-        void Update();
+        void components_update();
+
+        void components_lateUpdate();
+
+        void components_draw() const;
 
         friend class Scene;
     };
 
     template <>
-    inline GameObject::TransformType* GameObject::GetComponent()
+    inline Transform* GameObject::GetComponent()
     {
         return &_transform;
     }

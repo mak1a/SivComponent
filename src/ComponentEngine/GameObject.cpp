@@ -6,23 +6,7 @@
 
 namespace ComponentEngine
 {
-    void GameObject::Update()
-    {
-        //変換行列を作成
-        auto trans = _transform.PushTransform();
-        
-        for (IComponent* component : components)
-        {
-            component->Update();
-        }
-
-        for (GameObject* child : children)
-        {
-            child->Update();
-        }
-    }
-
-    void GameObject::Start()
+    void GameObject::components_start()
     {
         for (IComponent* component : components)
         {
@@ -33,7 +17,54 @@ namespace ComponentEngine
         for (GameObject* child : children)
         {
             // TODO: Transformの処理
-            child->Start();
+            child->components_start();
         }
     }
+
+    void GameObject::components_update()
+    {
+        //変換行列を作成
+        auto trans = _transform.PushTransform();
+
+        for (IComponent* component : components)
+        {
+            component->Update();
+        }
+
+        for (GameObject* child : children)
+        {
+            child->components_update();
+        }
+    }
+
+    void GameObject::components_lateUpdate()
+    {
+        for (IComponent* component : components)
+        {
+            component->LateUpdate();
+        }
+
+        for (GameObject* child : children)
+        {
+            child->components_lateUpdate();
+        }
+    }
+
+
+    void GameObject::components_draw() const
+    {
+        //変換行列を作成
+        auto trans = _transform.PushTransform();
+
+        for (IComponent* component : components)
+        {
+            component->Draw();
+        }
+
+        for (GameObject* child : children)
+        {
+            child->components_draw();
+        }
+    }
+
 }  // namespace ComponentEngine

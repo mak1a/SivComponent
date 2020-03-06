@@ -14,8 +14,8 @@
             filePath = "src/Main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "Main()"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "src/Main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
             landmarkName = "Main()"
             landmarkType = "9">
          </BreakpointContent>

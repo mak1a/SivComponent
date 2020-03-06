@@ -3,24 +3,10 @@
 
 #include "ComponentEngine/ComponentEngine.hpp"
 #include "NetworkTest.hpp"
+#include "SivComponent/SivComponent.hpp"
 
 using std::cout;
 using std::endl;
-
-namespace ComponentEngine::siv
-{
-    class Circle : public ComponentEngine::AttachableComponent
-    {
-    protected:
-        void Update() override
-        {
-            s3d::Circle(0, 0, r).draw();
-        }
-
-    public:
-        double r = 50;
-    };
-}  // namespace ComponentEngine::siv
 
 void Main()
 {
@@ -31,16 +17,15 @@ void Main()
     auto object = ComponentEngine::CreateGameObject();
     object->transform().name = "object";
     object->transform().pos = {400, 200};
-    object->transform().SetRotateByAngle(-15);
-    object->transform().scale = {0.6, 0.6};
+    object->transform().SetRotateByAngle(-15);  //回転させておく
 
-    //コンポーネントを追加
-    object->AddComponent<ComponentEngine::siv::Circle>();
+    // Rectコンポーネントを追加
+    auto rect = object->AddComponent<ComponentEngine::Siv::Rect>();
+    rect->Size = {100, 100};
 
     auto obj2 = ComponentEngine::CreateGameObject();
     obj2->transform().name = "obj2";
-    obj2->AddComponent<ComponentEngine::siv::Circle>();
-    obj2->transform().pos = {0, 300};
+    obj2->transform().pos = {0, 300};  // y座標だけずらす
 
     //シーンにオブジェクトを追加
     scene.AddObject(object);
@@ -48,33 +33,26 @@ void Main()
     object->AddChild(obj2);
 
     std::cout << "Engine Start" << std::endl;
-    
 
-    // StartとUpdateが呼ばれる
-    scene.Update();
-
-//    std::cout << "\nAdd Component Event" << std::endl;
-    //    //途中でコンポーネントを追加
-    //    obj2->AddComponent<SampleComponent>();
-    //    obj2->AddComponent<OverrideComponent>();
+    obj2->AddComponent<ComponentEngine::Siv::Text>();
 
     int k = 5;
     while (true)
     {
         scene.Update();
-//        std::cout << "" << std::endl;
+        //        std::cout << "" << std::endl;
         if (k-- < 0)
         {
             break;
         }
     }
 
-    PhotonTest();
-    
-//    while (System::Update())
-//    {
-////        scene.Update();
-//    }
-    
+    //    PhotonTest();
+
+    while (System::Update())
+    {
+        scene.Update();
+    }
+
     cout << "int Main() End." << endl;
 }

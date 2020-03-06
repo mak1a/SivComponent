@@ -7,16 +7,18 @@
 
 namespace ComponentEngine
 {
-    struct SivTransform
+    struct SivTransform2D
     {
     public:
         s3d::Vec2 pos;
-        //弧度法
+        // radian
         double rotate;
         s3d::Vec2 scale;
+        //描画順にのみ影響するz軸
+        int z;
 
     public:
-        SivTransform& SetRotateByAngle(double angle)
+        SivTransform2D& SetRotateByAngle(double angle)
         {
             rotate = Utilities::DegToRad(angle);
             return *this;
@@ -25,12 +27,12 @@ namespace ComponentEngine
     public:
         std::string name;
 
-        SivTransform()
-            : SivTransform({0, 0}, 0.0, {1, 1})
+        SivTransform2D()
+            : SivTransform2D({0, 0}, 0.0, {1, 1})
         {
         }
 
-        SivTransform(const s3d::Vec2& _pos, double _rotate, const s3d::Vec2& _scale)
+        SivTransform2D(const s3d::Vec2& _pos, double _rotate, const s3d::Vec2& _scale)
             : pos(_pos)
             , rotate(_rotate)
             , scale(_scale)
@@ -39,12 +41,12 @@ namespace ComponentEngine
 
     private:
     public:
-        auto PushTransform() -> decltype(std::make_unique<s3d::Transformer2D>())
+        auto PushTransform() const -> decltype(std::make_unique<s3d::Transformer2D>())
         {
             return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(pos).rotated(rotate).scaled(scale));
             // return std::move(trans);
         }
 
-        void PopTransform() {}
+        void PopTransform() const {}
     };
 }  // namespace ComponentEngine
