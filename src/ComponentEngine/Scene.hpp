@@ -9,7 +9,7 @@ namespace ComponentEngine
     class Scene
     {
     private:
-        //        std::list<GameObject*> objects;
+        //std::list<GameObject*> objects;
         GameObject* masterObject;
 
     public:

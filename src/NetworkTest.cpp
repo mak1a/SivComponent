@@ -11,43 +11,49 @@ class SampleListener : public ExitGames::LoadBalancing::Listener
 {
     void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
     {
-        std::cout << "debugReturn" << std::endl;
+        s3d::Print(U"debugReturn");
+        s3d::Print(string.toString());
     };
 
     void connectionErrorReturn(int errorCode) override
     {
-        std::cout << "connectionErrorReturn" << std::endl;
+        s3d::Print(U"connectionErrorReturn");
     };
 
     void clientErrorReturn(int errorCode) override
     {
-        std::cout << "clientErrorReturn" << std::endl;
+        s3d::Print(U"clientErrorReturn");
     };
 
     void warningReturn(int warningCode) override
     {
-        std::cout << "warningReturn" << std::endl;
+        s3d::Print(U"warningReturn");
     };
 
     void serverErrorReturn(int errorCode) override
     {
-        std::cout << "serverErrorReturn" << std::endl;
+        s3d::Print(U"serverErrorReturn");
     };
 
     void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
     {
-        std::cout << "joinRoomEventAction" << std::endl;
+        s3d::Print(U"joinRoomEventAction");
         mState = States::JOINED;
     };
 
     void leaveRoomEventAction(int playerNr, bool isInactive) override
     {
-        std::cout << "leaveRoomEventAction" << std::endl;
+        s3d::Print(U"leaveRoomEventAction");
     };
 
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
     {
-        std::cout << "customEventAction" << std::endl;
+        s3d::Print(U"customEventAction");
+
+        if (eventCode == 10)
+        {
+            s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
+        }
     };
 
     void connectReturn(int errorCode,
@@ -57,23 +63,23 @@ class SampleListener : public ExitGames::LoadBalancing::Listener
     {
         if (errorCode)
         {
-            std::cout << "connect error" << std::endl;
+            s3d::Print(U"connect error");
 
             mState = States::DISCONNECTING;
             return;
         }
-        std::cout << "connected!" << std::endl;
+        s3d::Print(U"connected!");
         mState = States::CONNECTED;
     };
 
     void disconnectReturn() override
     {
-        std::cout << "disconnectReturn" << std::endl;
+        s3d::Print(U"disconnectReturn");
     };
 
     void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
     {
-        std::cout << "leaveRoomReturn" << std::endl;
+        s3d::Print(U"leaveRoomReturn");
     };
 
 public:
@@ -119,7 +125,7 @@ public:
 
     void createRoom(const ExitGames::Common::JString& roomName, nByte maxPlayers)
     {
-        mLoadBalancingClient.opCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
+        mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
     }
 
     void OutputPlayers()
@@ -128,8 +134,15 @@ public:
         auto l = players.getSize();
         for (int k = 0; k < l; ++k)
         {
-            std::wcout << players[k]->getName() << std::endl;
+            s3d::Print(players[k]->getName());
         }
+    }
+
+    void SendEvent()
+    {
+        auto eventhash = new ExitGames::Common::Hashtable();
+        auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
+        mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
     }
 
 private:
@@ -166,11 +179,13 @@ void SampleNetworkLogic::run(void)
             mListener.SetState(SampleListener::States::JOINING);
             break;
 
+        //ルームに入れたら
         case SampleListener::States::JOINED:
 
             if (playerOutput)
             {
                 OutputPlayers();
+                SendEvent();
                 playerOutput = false;
             }
             break;

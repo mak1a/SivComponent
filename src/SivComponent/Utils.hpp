@@ -12,7 +12,7 @@ namespace ComponentEngine::Siv
 
         void Update() override
         {
-            this->transform().pos = Cursor::Pos();
+            this->transform().SetPosition(Cursor::Pos());
         }
     };
 }  // namespace ComponentEngine::Siv

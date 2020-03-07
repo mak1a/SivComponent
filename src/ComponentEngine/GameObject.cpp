@@ -2,6 +2,7 @@
 #include "GameObject.hpp"
 #include "iostream"
 
+#include <Siv3D.hpp>
 #include "AttachableComponent.hpp"
 
 namespace ComponentEngine
@@ -50,11 +51,15 @@ namespace ComponentEngine
         }
     }
 
-
     void GameObject::components_draw() const
     {
         //変換行列を作成
         auto trans = _transform.PushTransform();
+
+        // z情報を設定
+        // s3d::Graphics2D::SetZ();
+        //あっ
+        //デプスステート機能がまだ移植されてなかった…
 
         for (IComponent* component : components)
         {
@@ -66,5 +71,4 @@ namespace ComponentEngine
             child->components_draw();
         }
     }
-
 }  // namespace ComponentEngine

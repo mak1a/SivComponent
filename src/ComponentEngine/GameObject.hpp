@@ -7,12 +7,19 @@
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
+// for デプスステート
+#include <map>
+#include <vector>
+
 namespace ComponentEngine
 {
     using Transform = SivTransform2D;
 
     class GameObject final : private boost::noncopyable
     {
+    public:
+        using DrawCallStack = std::map<int, std::vector<GameObject*>>;
+
     private:
         // GameObjectは必ずtransformを持つ
         Transform _transform;

@@ -7,9 +7,9 @@ namespace ComponentEngine
         masterObject->components_start();
 
         masterObject->components_update();
-        
+
         masterObject->components_lateUpdate();
-        
+
         masterObject->components_draw();
     }
 }  // namespace ComponentEngine

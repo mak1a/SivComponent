@@ -9,10 +9,44 @@ namespace ComponentEngine::Siv
 {
     class Line : public ComponentEngine::AttachableComponent
     {
-    public:
+    private:
         double length;
         double thickness;
-        ColorF color;
+        s3d::ColorF color;
+
+    public:
+        Line& SetLength(double _length)
+        {
+            length = _length;
+            return *this;
+        }
+
+        double GetLength() const noexcept
+        {
+            return length;
+        }
+
+        Line& SetThickness(double _thickness)
+        {
+            thickness = _thickness;
+            return *this;
+        }
+
+        double GetThickness() const noexcept
+        {
+            return thickness;
+        }
+
+        Line& SetColor(const s3d::ColorF& _color)
+        {
+            color = _color;
+            return *this;
+        }
+
+        ColorF GetColor() const noexcept
+        {
+            return color;
+        }
 
     protected:
         void Draw() const override
@@ -36,9 +70,32 @@ namespace ComponentEngine::Siv
 
     class Circle : public ComponentEngine::AttachableComponent
     {
-    public:
+    private:
         s3d::ColorF color;
         double r;
+
+    public:
+        Circle& SetColor(const s3d::ColorF& _color)
+        {
+            color = _color;
+            return *this;
+        }
+
+        s3d::ColorF GetColor() const noexcept
+        {
+            return color;
+        }
+
+        Circle& SetR(double _r)
+        {
+            r = _r;
+            return *this;
+        }
+
+        double GetR() const noexcept
+        {
+            return r;
+        }
 
         Circle()
             : color(s3d::Palette::White)
