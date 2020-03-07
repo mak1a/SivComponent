@@ -54,7 +54,7 @@ namespace ComponentEngine
         {
         }
 
-        GameObject(const Transform& trans)
+        explicit GameObject(const Transform& trans)
         {
             _transform = trans;
         }
