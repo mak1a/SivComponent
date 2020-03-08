@@ -3,7 +3,7 @@
 
 #include "AttachableComponent.hpp"
 #include "GameObject.hpp"
-#include "Scene.hpp"
+#include "SceneManager.hpp"
 
 namespace ComponentEngine
 {

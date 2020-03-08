@@ -2,41 +2,89 @@
 #pragma once
 
 #include <list>
+
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 #include "AttachableComponent.hpp"
 #include "GameObject.hpp"
 namespace ComponentEngine
 {
-using Key = std::string;
-//    template <class Key>
     class SceneManager;
 
-//    template <class Key>
     class Scene
     {
     private:
-        // std::list<GameObject*> objects;
         GameObject* masterObject;
 
+    private:
+        bool isInitialized;
+
+    public:
+        bool IsInitialized() const noexcept
+        {
+            return isInitialized;
+        }
+
     protected:
-//        SceneManager<Key>* sceneManager;
+        SceneManager* manager;
+        friend SceneManager;
+
+    public:
+        virtual void Setup() = 0;
+
+        void AddObject(GameObject* object)
+        {
+            //無効なポインタならエラー
+            if (object == nullptr)
+            {
+#ifdef DEBUG
+                std::cout << "Object Pointer is Null." << std::endl;
+#endif
+                return;
+            }
+            masterObject->AddChild(object);
+        }
+
+        [[nodiscard]] GameObject* CreateAndGetObject()
+        {
+            GameObject* object = new GameObject();
+            masterObject->AddChild(object);
+            return object;
+        }
+
+        [[nodiscard]] GameObject* CreateAndGetObject(const Transform& transform)
+        {
+            GameObject* object = new GameObject(transform);
+            masterObject->AddChild(object);
+            return object;
+        }
 
     public:
         Scene()
+            : isInitialized(false)
         {
             masterObject = new GameObject();
         }
 
     public:
-        virtual void Update() final;
-
-        void AddObject(GameObject* obj)
+        virtual void Update() final
         {
-            //無効なポインタなら終了
-            if (obj == nullptr)
+            if (!isInitialized)
             {
-                return;
+                Setup();
+                isInitialized = true;
             }
-            masterObject->AddChild(obj);
+
+            // Start呼び出し
+            masterObject->components_start();
+
+            masterObject->components_update();
+
+            masterObject->components_lateUpdate();
+
+            masterObject->components_draw();
         }
 
         virtual ~Scene()
@@ -45,52 +93,4 @@ using Key = std::string;
         }
     };
 
-//    template <class Key>
-    class SceneManager
-    {
-        using ScenePtr = std::shared_ptr<Scene>;
-
-        ScenePtr currentScene, nextScene;
-
-        std::unordered_map<Key, std::function<ScenePtr()>> sceneMaker;
-
-    public:
-        //シーンを登録します
-        template <typename SceneName>
-        void RegisterScene(const Key& key)
-        {
-#ifdef DEBUG
-            if (sceneMaker.count(key) != 0)
-            {
-                std::cout << "登録シーンが重複しています" << std::endl;
-            }
-#endif
-            sceneMaker[key] = [&]() { return std::make_shared<SceneName>(this); };
-        }
-
-        void ChangeScene(const Key& key)
-        {
-#ifdef DEBUG
-            if (sceneMaker.count(key) == 0)
-            {
-                std::cout << "シーンが存在しません" << std::endl;
-            }
-#endif
-            nextScene = sceneMaker[key]();
-        }
-
-        void UpdateCurrentScene()
-        {
-            //次のシーンが用意されていれば
-            if (nextScene)
-            {
-                //差し替える
-                currentScene = nextScene;
-                nextScene.reset();
-            }
-
-            //シーンの更新
-            currentScene->Update();
-        }
-    };
 }  // namespace ComponentEngine

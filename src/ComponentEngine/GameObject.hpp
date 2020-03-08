@@ -111,16 +111,14 @@ namespace ComponentEngine
             }
         }
 
-    private:
-        void components_start();
+    public:
+        virtual void components_start() final;
 
-        void components_update();
+        virtual void components_update() final;
 
-        void components_lateUpdate();
+        virtual void components_lateUpdate() final;
 
-        void components_draw() const;
-
-        friend class Scene;
+        virtual void components_draw() const final;
     };
 
     template <>
