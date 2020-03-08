@@ -13,10 +13,13 @@ namespace ComponentEngine
 {
     class SceneManager;
 
-    class Scene
+    class IScene
     {
+    public:
+        using KeyType = std::string;
+
     private:
-        GameObject* masterObject;
+        std::shared_ptr<GameObject> masterObject;
 
     private:
         bool isInitialized;
@@ -27,14 +30,23 @@ namespace ComponentEngine
             return isInitialized;
         }
 
-    protected:
+    private:
         SceneManager* manager;
         friend SceneManager;
 
     public:
+        SceneManager* GetSceneManager()
+        {
+            return manager;
+        }
+
+    protected:
+        // void ChangeScene(const KeyType& sceneName) {}
+
+    public:
         virtual void Setup() = 0;
 
-        void AddObject(GameObject* object)
+        void AddObject(const std::shared_ptr<GameObject>& object)
         {
             //無効なポインタならエラー
             if (object == nullptr)
@@ -45,27 +57,30 @@ namespace ComponentEngine
                 return;
             }
             masterObject->AddChild(object);
+            object->scene = this;
         }
 
-        [[nodiscard]] GameObject* CreateAndGetObject()
+        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject()
         {
-            GameObject* object = new GameObject();
+            auto object = std::make_shared<GameObject>();
             masterObject->AddChild(object);
             return object;
         }
 
-        [[nodiscard]] GameObject* CreateAndGetObject(const Transform& transform)
+        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject(const Transform& transform)
         {
-            GameObject* object = new GameObject(transform);
+           auto object = std::make_shared<GameObject>(transform);
             masterObject->AddChild(object);
             return object;
         }
 
     public:
-        Scene()
+        IScene()
             : isInitialized(false)
         {
-            masterObject = new GameObject();
+            masterObject = std::make_shared<GameObject>();
+            masterObject->transform().SetName("MasterObject");
+            masterObject->scene = this;
         }
 
     public:
@@ -87,9 +102,8 @@ namespace ComponentEngine
             masterObject->components_draw();
         }
 
-        virtual ~Scene()
+        virtual ~IScene()
         {
-            delete masterObject;
         }
     };
 

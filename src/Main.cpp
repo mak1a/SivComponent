@@ -10,10 +10,8 @@ using std::endl;
 
 void Main()
 {
-    //シーン生成
-    TestScene scene;
-
     ComponentEngine::SceneManager manager;
+ 
     manager.RegisterScene<TestScene>("Test");
 
     std::cout << "Engine Start" << std::endl;

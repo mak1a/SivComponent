@@ -15,7 +15,7 @@ namespace ComponentEngine
         }
         initializedAll = true;
 
-        for (GameObject* child : children)
+        for (const auto& child : children)
         {
             // TODO: Transformの処理
             child->components_start();
@@ -32,7 +32,7 @@ namespace ComponentEngine
             component->Update();
         }
 
-        for (GameObject* child : children)
+        for (const auto& child : children)
         {
             child->components_update();
         }
@@ -45,7 +45,7 @@ namespace ComponentEngine
             component->LateUpdate();
         }
 
-        for (GameObject* child : children)
+        for (const auto& child : children)
         {
             child->components_lateUpdate();
         }
@@ -66,7 +66,7 @@ namespace ComponentEngine
             component->Draw();
         }
 
-        for (GameObject* child : children)
+        for (const auto& child : children)
         {
             child->components_draw();
         }

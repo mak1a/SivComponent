@@ -1,12 +1,14 @@
 #pragma once
 
+#include <memory>
+
 namespace ComponentEngine
 {
     class GameObject;
     class IComponent
     {
     protected:
-        GameObject* gameobject;
+        std::weak_ptr<GameObject> gameobject;
 
     protected:
         virtual void Awake() = 0;

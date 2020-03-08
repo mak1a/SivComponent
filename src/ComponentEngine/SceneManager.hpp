@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Scene.hpp"
+#include "IScene.hpp"
 
 namespace ComponentEngine
 {
     class SceneManager
     {
-    public:
-        using KeyType = std::string;
-
     private:
-        using ScenePtr = std::shared_ptr<Scene>;
+        using KeyType = IScene::KeyType;
+
+        using ScenePtr = std::shared_ptr<IScene>;
 
         ScenePtr currentScene, nextScene;
 
@@ -41,6 +40,7 @@ namespace ComponentEngine
 
         void ChangeScene(const KeyType& key)
         {
+            
 #ifdef DEBUG
             if (sceneMaker.count(key) == 0)
             {

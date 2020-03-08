@@ -14,15 +14,25 @@ namespace ComponentEngine
         friend class GameObject;
 
     protected:
-        GameObject& gameObject()
+        std::shared_ptr<GameObject> gameObject()
         {
-            return *gameobject;
+            return gameobject.lock();
+        }
+        
+        auto GetScene() -> decltype(gameobject.lock()->GetScene())
+        {
+            return gameobject.lock()->GetScene();
         }
 
-        auto transform() -> decltype(gameobject->transform())
+        auto transform() -> decltype(gameobject.lock()->transform())
         {
-            return gameobject->transform();
+            return gameobject.lock()->transform();
         }
+
+        //        SceneManager* GetSceneManager()
+        //        {
+        //            return gameobject->
+        //        }
 
     private:
         bool initialized = false;
