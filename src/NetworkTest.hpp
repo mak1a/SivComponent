@@ -1,7 +1,12 @@
 
 #pragma once
 
-#include <stdio.h>
+#include "SivComponent.hpp"
 
 void PhotonTest();
+
+struct PhotonScene : public ComponentEngine::IScene
+{
+    void Setup() override;
+};
 

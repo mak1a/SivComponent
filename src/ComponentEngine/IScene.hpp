@@ -13,7 +13,7 @@ namespace ComponentEngine
 {
     class SceneManager;
 
-    class IScene
+    class IScene : public std::enable_shared_from_this<IScene>
     {
     public:
         using KeyType = std::string;
@@ -30,7 +30,7 @@ namespace ComponentEngine
             return isInitialized;
         }
 
-    private:
+    public:
         SceneManager* manager;
         friend SceneManager;
 
@@ -57,19 +57,21 @@ namespace ComponentEngine
                 return;
             }
             masterObject->AddChild(object);
-            object->scene = this;
+            object->scene = weak_from_this();
         }
 
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject()
         {
             auto object = std::make_shared<GameObject>();
+            object->scene = weak_from_this();
             masterObject->AddChild(object);
             return object;
         }
 
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject(const Transform& transform)
         {
-           auto object = std::make_shared<GameObject>(transform);
+            auto object = std::make_shared<GameObject>(transform);
+            object->scene = weak_from_this();
             masterObject->AddChild(object);
             return object;
         }
@@ -79,8 +81,8 @@ namespace ComponentEngine
             : isInitialized(false)
         {
             masterObject = std::make_shared<GameObject>();
-            masterObject->transform().SetName("MasterObject");
-            masterObject->scene = this;
+            masterObject->SetName("MasterObject");
+            masterObject->scene = weak_from_this();
         }
 
     public:
@@ -102,9 +104,7 @@ namespace ComponentEngine
             masterObject->components_draw();
         }
 
-        virtual ~IScene()
-        {
-        }
+        virtual ~IScene() {}
     };
 
 }  // namespace ComponentEngine

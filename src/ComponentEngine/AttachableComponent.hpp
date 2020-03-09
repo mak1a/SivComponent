@@ -19,10 +19,10 @@ namespace ComponentEngine
             return gameobject.lock();
         }
         
-        auto GetScene() -> decltype(gameobject.lock()->GetScene())
-        {
-            return gameobject.lock()->GetScene();
-        }
+//        auto GetScene() -> decltype(gameobject.lock()->GetScene())
+//        {
+//            return gameobject.lock()->GetScene();
+//        }
 
         auto transform() -> decltype(gameobject.lock()->transform())
         {

@@ -19,7 +19,7 @@ namespace ComponentEngine::Siv
 
     public:
         Text()
-            : color(Palette::White)
+            : color(s3d::Palette::White)
             , text(U"text")
             , font(30)
             , drawAt(false)
@@ -37,7 +37,7 @@ namespace ComponentEngine::Siv
             return text;
         }
 
-        Text& SetColor(const ColorF& _color)
+        Text& SetColor(const s3d::ColorF& _color)
         {
             color = _color;
             return *this;
@@ -48,7 +48,7 @@ namespace ComponentEngine::Siv
             return color;
         }
 
-        Text& SetFont(const Font& _font)
+        Text& SetFont(const s3d::Font& _font)
         {
             font = _font;
             return *this;

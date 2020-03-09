@@ -228,3 +228,6 @@ void PhotonTest()
         }
     }
 }
+
+
+void PhotonScene::Setup() {};

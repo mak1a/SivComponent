@@ -43,7 +43,7 @@ namespace ComponentEngine::Siv
             return *this;
         }
 
-        ColorF GetColor() const noexcept
+        s3d::ColorF GetColor() const noexcept
         {
             return color;
         }
@@ -125,7 +125,7 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            RectF(0, 0, Size).draw(color);
+            s3d::RectF(0, 0, Size).draw(color);
         }
     };
 }  // namespace ComponentEngine::Siv

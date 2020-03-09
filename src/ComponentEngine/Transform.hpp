@@ -16,7 +16,6 @@ namespace ComponentEngine
         s3d::Vec2 scale;
         //描画順にのみ影響するz軸情報
         int z;
-        std::string name;
 
     public:
         SivTransform2D& SetPosition(const s3d::Vec2& _position)
@@ -67,17 +66,6 @@ namespace ComponentEngine
         int GetZ() const noexcept
         {
             return z;
-        }
-
-        SivTransform2D& SetName(const std::string& _name)
-        {
-            name = _name;
-            return *this;
-        }
-
-        std::string GetName() const noexcept
-        {
-            return name;
         }
 
     public:

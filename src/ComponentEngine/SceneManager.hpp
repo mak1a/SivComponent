@@ -26,9 +26,11 @@ namespace ComponentEngine
                 std::cout << "登録シーンが重複しています" << std::endl;
             }
 #endif
+            SceneManager* _this = this;
+
             sceneMaker[key] = [&]() {
                 ScenePtr scene = std::make_shared<SceneName>();
-                scene->manager = this;
+                scene->manager = _this;
                 return scene;
             };
 
@@ -40,11 +42,11 @@ namespace ComponentEngine
 
         void ChangeScene(const KeyType& key)
         {
-            
 #ifdef DEBUG
             if (sceneMaker.count(key) == 0)
             {
                 std::cout << "シーンが存在しません" << std::endl;
+                return;
             }
 #endif
             nextScene = sceneMaker[key]();

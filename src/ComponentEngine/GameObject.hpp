@@ -7,10 +7,6 @@
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
-// for デプスステート
-#include <map>
-#include <vector>
-
 namespace ComponentEngine
 {
     using Transform = SivTransform2D;
@@ -23,15 +19,30 @@ namespace ComponentEngine
         // public:
         //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
 
-    private:
+    public:
         // GameObjectは必ずtransformを持つ
         Transform _transform;
-        IScene* scene;
+        std::weak_ptr<IScene> scene;
+
+    private:
+        std::string name = "unnamed";
 
     public:
-        IScene* GetScene()
+        GameObject& SetName(const std::string& _name)
         {
-            return scene;
+            name = _name;
+            return *this;
+        }
+
+        std::string GetName() const noexcept
+        {
+            return name;
+        }
+
+    public:
+        std::shared_ptr<IScene> GetScene()
+        {
+            return scene.lock();
         }
 
     public:
@@ -74,6 +85,7 @@ namespace ComponentEngine
         {
             Component* c = new Component(std::forward<Args>(args)...);
             c->gameobject = weak_from_this();
+            std::cout << c->gameobject.lock()->GetName() << std::endl;
             components.push_back(c);
             c->Awake();
             initializedAll = false;

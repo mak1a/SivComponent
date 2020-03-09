@@ -10,7 +10,7 @@ class NextScene : public ComponentEngine::AttachableComponent
     {
         if (KeyA.down())
         {
-            GetScene()->GetSceneManager()->ChangeScene("Photon");
+            gameObject()->GetScene()->GetSceneManager()->ChangeScene("Photon");
         }
     }
 };
@@ -19,7 +19,7 @@ void TestScene::Setup()
 {
     //ゲームオブジェクト生成
     auto object = CreateAndGetObject();
-    object->transform().SetName("object");
+    object->SetName("object");
     object->transform().SetPosition({400, 200});
     object->transform().SetRotateByAngle(-15);  //回転させておく
 
@@ -30,7 +30,7 @@ void TestScene::Setup()
     AddObject(object);
 
     auto obj2 = CreateAndGetObject();
-    obj2->transform().SetName("obj2");
+    obj2->SetName("obj2");
     obj2->transform().SetPosition({0, 300});  // y座標だけずらす
     obj2->AddComponent<ComponentEngine::Siv::Text>();
     //子オブジェクトにする
@@ -38,9 +38,12 @@ void TestScene::Setup()
 
     //マウス追従オブジェクト
     auto mouseObj = CreateAndGetObject();
+    mouseObj->SetName("mouseObj");
     mouseObj->AddComponent<ComponentEngine::Siv::Circle>()->SetColor(s3d::Palette::Blue).SetR(30);
     mouseObj->AddComponent<ComponentEngine::Siv::MouseChase>();
     AddObject(mouseObj);
+
+    CreateAndGetObject()->SetName("SceneChanger").AddComponent<NextScene>();
 
     auto next = CreateAndGetObject();
 }

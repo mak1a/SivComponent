@@ -13,10 +13,9 @@ void Main()
     ComponentEngine::SceneManager manager;
  
     manager.RegisterScene<TestScene>("Test");
+    manager.RegisterScene<PhotonScene>("Photon");
 
     std::cout << "Engine Start" << std::endl;
-
-    //    PhotonTest();
 
     while (System::Update())
     {
