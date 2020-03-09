@@ -14,9 +14,9 @@ namespace ComponentEngine
         friend class GameObject;
 
     protected:
-        std::shared_ptr<GameObject> gameObject()
+        std::weak_ptr<GameObject> gameObject()
         {
-            return gameobject.lock();
+            return gameobject;
         }
         
 //        auto GetScene() -> decltype(gameobject.lock()->GetScene())
@@ -24,10 +24,10 @@ namespace ComponentEngine
 //            return gameobject.lock()->GetScene();
 //        }
 
-        auto transform() -> decltype(gameobject.lock()->transform())
-        {
-            return gameobject.lock()->transform();
-        }
+//        auto transform() -> decltype(gameobject.lock()->transform())
+//        {
+//            return gameobject.lock()->transform();
+//        }
 
         //        SceneManager* GetSceneManager()
         //        {

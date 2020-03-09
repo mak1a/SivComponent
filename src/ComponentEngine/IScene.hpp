@@ -104,7 +104,15 @@ namespace ComponentEngine
             masterObject->components_draw();
         }
 
-        virtual ~IScene() {}
+        virtual ~IScene()
+        {
+            std::cout << "scene destory" << std::endl;
+            std::cout << "master:" << masterObject.use_count() << std::endl;
+            for (auto& c : masterObject->children)
+            {
+                std::cout << c->GetName() << ":" << c.use_count() << std::endl;
+            }
+        }
     };
 
 }  // namespace ComponentEngine

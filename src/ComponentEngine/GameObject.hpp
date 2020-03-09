@@ -40,9 +40,9 @@ namespace ComponentEngine
         }
 
     public:
-        std::shared_ptr<IScene> GetScene()
+        std::weak_ptr<IScene> GetScene()
         {
-            return scene.lock();
+            return scene;
         }
 
     public:
@@ -56,7 +56,7 @@ namespace ComponentEngine
         std::list<IComponent*> components;
 
         //親子オブジェクト
-        std::shared_ptr<GameObject> parent;
+        std::weak_ptr<GameObject> parent;
         std::list<std::shared_ptr<GameObject>> children;
 
     private:
@@ -85,7 +85,7 @@ namespace ComponentEngine
         {
             Component* c = new Component(std::forward<Args>(args)...);
             c->gameobject = weak_from_this();
-            std::cout << c->gameobject.lock()->GetName() << std::endl;
+            // std::cout << c->gameobject.lock()->GetName() << std::endl;
             components.push_back(c);
             c->Awake();
             initializedAll = false;
@@ -94,26 +94,31 @@ namespace ComponentEngine
 
         void AddChild(const std::shared_ptr<GameObject>& child)
         {
-            child->SetParent(shared_from_this());
+            child->SetParent(weak_from_this());
         }
 
-        void SetParent(const std::shared_ptr<GameObject>& newParent)
+        void SetParent(const std::weak_ptr<GameObject>& newParent)
         {
-            if (newParent == nullptr)
+            //現在の関係をデバッグ出力
+            std::cout << "this is:" << GetName() << std::endl;
+
+            if (!newParent.lock())
             {
                 return;
             }
             //自分を新しい親の子オブジェクトに設定
-            newParent->children.push_back(shared_from_this());
+            newParent.lock()->children.push_back(shared_from_this());
 
-            if (parent != nullptr)
+            if (parent.lock())
             {
+                std::cout << "parent is:" << parent.lock()->GetName() << std::endl;
                 //今の親と関係を解消
-                parent->RemoveChild(shared_from_this());
+                parent.lock()->RemoveChild(shared_from_this());
             }
 
             //親を新しいオブジェクトに設定
             parent = newParent;
+            std::cout << "new parent is:" << parent.lock()->GetName() << "\n" << std::endl;
         }
 
         auto FindChild(const std::shared_ptr<GameObject>& child) -> decltype(std::find(children.begin(), children.end(), child))
@@ -169,6 +174,8 @@ namespace ComponentEngine
                 // TODO: OnDestory
                 delete component;
             }
+
+            std::cout << "Destory:" << GetName() << std::endl;
         }
 
     public:

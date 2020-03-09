@@ -12,7 +12,7 @@ namespace ComponentEngine::Siv
 
         void Update() override
         {
-            this->transform().SetPosition(s3d::Cursor::Pos());
+            this->gameobject.lock()-> transform().SetPosition(s3d::Cursor::Pos());
         }
     };
 }  // namespace ComponentEngine::Siv

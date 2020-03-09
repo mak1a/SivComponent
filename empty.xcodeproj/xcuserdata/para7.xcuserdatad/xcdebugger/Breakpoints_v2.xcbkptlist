@@ -32,8 +32,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "ChangeScene(key)"
-            landmarkType = "7">
+            landmarkName = "SceneManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -50,6 +50,70 @@
             endingLineNumber = "22"
             landmarkName = "Main()"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BB69B27-5C8F-4AB6-A7B4-A75F3EC330A4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/ComponentEngine/SceneManager.hpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "UpdateCurrentScene()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5C542C73-356F-4154-9D63-E55A91BB2F26"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/ComponentEngine/GameObject.hpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "~GameObject()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5C542C73-356F-4154-9D63-E55A91BB2F26 - 3db95e0ca4acccef"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ComponentEngine::GameObject::~GameObject()"
+                  moduleName = "empty"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/para7/Documents/Source/OpenSiv/siv3d_v0.4.2_macOS/examples/OnlineSiv/src/ComponentEngine/GameObject.hpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "172"
+                  endingLineNumber = "172"
+                  offsetFromSymbolStart = "33">
+               </Location>
+               <Location
+                  uuid = "5C542C73-356F-4154-9D63-E55A91BB2F26 - 3db95e0ca4acccef"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ComponentEngine::GameObject::~GameObject()"
+                  moduleName = "empty"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/para7/Documents/Source/OpenSiv/siv3d_v0.4.2_macOS/examples/OnlineSiv/src/ComponentEngine/GameObject.hpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "172"
+                  endingLineNumber = "172"
+                  offsetFromSymbolStart = "118">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

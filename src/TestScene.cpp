@@ -10,7 +10,11 @@ class NextScene : public ComponentEngine::AttachableComponent
     {
         if (KeyA.down())
         {
-            gameObject()->GetScene()->GetSceneManager()->ChangeScene("Photon");
+            gameObject()
+            .lock()
+            ->GetScene().lock()->
+            GetSceneManager()
+            ->ChangeScene("Photon");
         }
     }
 };
@@ -37,13 +41,11 @@ void TestScene::Setup()
     object->AddChild(obj2);
 
     //マウス追従オブジェクト
-    auto mouseObj = CreateAndGetObject();
+    //共通オブジェクトに設定する
+    auto mouseObj = GetSceneManager()->CreateAndGetCommonObject("MouseCircle");
     mouseObj->SetName("mouseObj");
     mouseObj->AddComponent<ComponentEngine::Siv::Circle>()->SetColor(s3d::Palette::Blue).SetR(30);
     mouseObj->AddComponent<ComponentEngine::Siv::MouseChase>();
-    AddObject(mouseObj);
 
     CreateAndGetObject()->SetName("SceneChanger").AddComponent<NextScene>();
-
-    auto next = CreateAndGetObject();
 }

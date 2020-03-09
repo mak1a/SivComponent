@@ -6,6 +6,31 @@ namespace ComponentEngine
 {
     class SceneManager
     {
+    public:
+        using MapKey = std::string;
+        using MapValue = std::shared_ptr<GameObject>;
+        using ObjectMap = std::unordered_map<MapKey, MapValue>;
+        //シーン間共通オブジェクト
+    private:
+        //
+        ObjectMap commonMap;
+        //共通オブジェクトはここにくっつけていく
+        std::shared_ptr<GameObject> commonParent;
+
+    public:
+        std::shared_ptr<GameObject> GetCommonObject(const MapKey& name)
+        {
+            return commonMap.at(name);
+        }
+
+        std::shared_ptr<GameObject> CreateAndGetCommonObject(const MapKey& keyname)
+        {
+            MapValue object = std::make_shared<GameObject>();
+            commonParent->AddChild(object);
+            commonMap[keyname] = object;
+            return object;
+        }
+
     private:
         using KeyType = IScene::KeyType;
 
@@ -13,9 +38,20 @@ namespace ComponentEngine
 
         ScenePtr currentScene, nextScene;
 
-        std::unordered_map<KeyType, std::function<ScenePtr()>> sceneMaker;
+        // SceneManager* manager, std::shared_ptr<GameObject>& parent
+
+        using FuncType = std::function<ScenePtr()>;
+
+        std::unordered_map<KeyType, FuncType> sceneMaker;
 
     public:
+        SceneManager()
+        {
+            // commonMap = std::make_shared<ObjectMap>();
+            commonParent = std::make_shared<GameObject>();
+            commonParent->SetName("commonParent");
+        }
+
         //シーンを登録します
         template <typename SceneName>
         void RegisterScene(const KeyType& key)
@@ -26,17 +62,23 @@ namespace ComponentEngine
                 std::cout << "登録シーンが重複しています" << std::endl;
             }
 #endif
+
             SceneManager* _this = this;
 
-            sceneMaker[key] = [&]() {
+            FuncType func = [&]() -> ScenePtr {
                 ScenePtr scene = std::make_shared<SceneName>();
+                //ポインタの注入
                 scene->manager = _this;
+                //                scene->masterObject->children.push_back(commonParent);
+                //                commonParent->parent = scene->masterObject;
                 return scene;
             };
 
-            if (currentScene == nullptr)
+            sceneMaker[key] = func;
+
+            if (currentScene == nullptr && nextScene == nullptr)
             {
-                currentScene = sceneMaker[key]();
+                nextScene = sceneMaker[key]();
             }
         }
 
@@ -58,8 +100,11 @@ namespace ComponentEngine
             if (nextScene)
             {
                 //差し替える
-                currentScene = nextScene;
+                currentScene.swap(nextScene);
                 nextScene.reset();
+
+                //共通オブジェクトの設定
+                currentScene->masterObject->AddChild(commonParent);
             }
 
             //シーンの更新
