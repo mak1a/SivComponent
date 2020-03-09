@@ -30,7 +30,7 @@ namespace ComponentEngine
             return isInitialized;
         }
 
-    public:
+    private:
         SceneManager* manager;
         friend SceneManager;
 

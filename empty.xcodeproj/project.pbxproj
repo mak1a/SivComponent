@@ -47,6 +47,9 @@
 		8A1476AB2411736B00389E76 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476A92411736B00389E76 /* Utils.cpp */; };
 		8A1476B1241403DE00389E76 /* TestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476AF241403DE00389E76 /* TestScene.cpp */; };
 		8A1476B42414FD8000389E76 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B22414FD8000389E76 /* SceneManager.cpp */; };
+		8A1476B82416CA1300389E76 /* NetworkSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B62416CA1300389E76 /* NetworkSystem.cpp */; };
+		8A1476BB2416F25500389E76 /* PhotonInitScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B92416F25500389E76 /* PhotonInitScene.cpp */; };
+		8A1476BE2416F3D600389E76 /* PhotonComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */; };
 		8A2071A72400058100284059 /* AttachableComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071A52400058100284059 /* AttachableComponent.cpp */; };
 		8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B0240009E300284059 /* ComponentEngine.cpp */; };
 		8A2071B4240016C400284059 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B2240016C400284059 /* GameObject.cpp */; };
@@ -106,6 +109,12 @@
 		8A1476B0241403DE00389E76 /* TestScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestScene.hpp; sourceTree = "<group>"; };
 		8A1476B22414FD8000389E76 /* SceneManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
 		8A1476B32414FD8000389E76 /* SceneManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneManager.hpp; sourceTree = "<group>"; };
+		8A1476B62416CA1300389E76 /* NetworkSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkSystem.cpp; sourceTree = "<group>"; };
+		8A1476B72416CA1300389E76 /* NetworkSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkSystem.hpp; sourceTree = "<group>"; };
+		8A1476B92416F25500389E76 /* PhotonInitScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonInitScene.cpp; sourceTree = "<group>"; };
+		8A1476BA2416F25500389E76 /* PhotonInitScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PhotonInitScene.hpp; sourceTree = "<group>"; };
+		8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonComponent.cpp; sourceTree = "<group>"; };
+		8A1476BD2416F3D600389E76 /* PhotonComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PhotonComponent.hpp; sourceTree = "<group>"; };
 		8A2071A52400058100284059 /* AttachableComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AttachableComponent.cpp; sourceTree = "<group>"; };
 		8A2071A62400058100284059 /* AttachableComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AttachableComponent.hpp; sourceTree = "<group>"; };
 		8A2071AE240009C400284059 /* ComponentEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentEngine.hpp; sourceTree = "<group>"; };
@@ -181,6 +190,7 @@
 		2C1778981CE0AA7C00BB8AD0 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8A1476B52416C9E000389E76 /* PhotonComponent */,
 				8A14769F24113B7B00389E76 /* SivComponent */,
 				8A14769B241139F100389E76 /* PSN */,
 				8A14767C240FA71300389E76 /* Utilities */,
@@ -260,6 +270,19 @@
 				8A1476AA2411736B00389E76 /* Utils.hpp */,
 			);
 			path = SivComponent;
+			sourceTree = "<group>";
+		};
+		8A1476B52416C9E000389E76 /* PhotonComponent */ = {
+			isa = PBXGroup;
+			children = (
+				8A1476B92416F25500389E76 /* PhotonInitScene.cpp */,
+				8A1476BA2416F25500389E76 /* PhotonInitScene.hpp */,
+				8A1476B62416CA1300389E76 /* NetworkSystem.cpp */,
+				8A1476B72416CA1300389E76 /* NetworkSystem.hpp */,
+				8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */,
+				8A1476BD2416F3D600389E76 /* PhotonComponent.hpp */,
+			);
+			path = PhotonComponent;
 			sourceTree = "<group>";
 		};
 		8A2071BB2400331400284059 /* ComponentEngine */ = {
@@ -351,8 +374,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A14769E24113A5000389E76 /* PhotonSiv3D.cpp in Sources */,
+				8A1476BE2416F3D600389E76 /* PhotonComponent.cpp in Sources */,
+				8A1476B82416CA1300389E76 /* NetworkSystem.cpp in Sources */,
 				8A2071BA2400321000284059 /* IScene.cpp in Sources */,
 				8A2071B7240017A300284059 /* Transform.cpp in Sources */,
+				8A1476BB2416F25500389E76 /* PhotonInitScene.cpp in Sources */,
 				8A147683240FEBCC00389E76 /* NetworkTest.cpp in Sources */,
 				8A1476A224113B9B00389E76 /* Text.cpp in Sources */,
 				8A2071B4240016C400284059 /* GameObject.cpp in Sources */,

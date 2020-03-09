@@ -63,12 +63,12 @@ namespace ComponentEngine
             }
 #endif
 
-            SceneManager* _this = this;
+            // auto _this = this;
 
             FuncType func = [&]() -> ScenePtr {
                 ScenePtr scene = std::make_shared<SceneName>();
                 //ポインタの注入
-                scene->manager = _this;
+                // scene->manager = _this;
                 //                scene->masterObject->children.push_back(commonParent);
                 //                commonParent->parent = scene->masterObject;
                 return scene;
@@ -92,6 +92,7 @@ namespace ComponentEngine
             }
 #endif
             nextScene = sceneMaker[key]();
+            nextScene->manager = this;
         }
 
         void UpdateCurrentScene()
@@ -102,6 +103,7 @@ namespace ComponentEngine
                 //差し替える
                 currentScene.swap(nextScene);
                 nextScene.reset();
+                currentScene->manager = this;
 
                 //共通オブジェクトの設定
                 currentScene->masterObject->AddChild(commonParent);

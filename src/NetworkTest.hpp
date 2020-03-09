@@ -1,12 +1,11 @@
 
-#pragma once
+// #pragma once
 
-#include "SivComponent.hpp"
+// #include "SivComponent.hpp"
 
-void PhotonTest();
+// void PhotonTest();
 
-struct PhotonScene : public ComponentEngine::IScene
-{
-    void Setup() override;
-};
-
+// struct PhotonScene : public ComponentEngine::IScene
+// {
+//     void Setup() override;
+// };

@@ -1,23 +1,43 @@
-
+#define NO_S3D_USING
 #include <Siv3D.hpp>  // OpenSiv3D v0.4.2
 
-#include "NetworkTest.hpp"
+#include "PhotonComponent/PhotonComponent.hpp"
 
 #include "TestScene.hpp"
 
 using std::cout;
 using std::endl;
 
+class MatchSystem : public ComponentEngine::AttachableComponent
+{
+    void Start () override
+    {
+        auto system = gameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem");
+        system->GetComponent<PhotonComponent::NetworkSystem>()->connect();
+    }
+};
+
+class Matching : public ComponentEngine::IScene
+{
+    void Setup()
+    {
+        CreateAndGetObject()->AddComponent<MatchSystem>();
+    }
+};
+
 void Main()
 {
     ComponentEngine::SceneManager manager;
- 
-    manager.RegisterScene<TestScene>("Test");
-    manager.RegisterScene<PhotonScene>("Photon");
+
+    manager.RegisterScene<PhotonComponent::PhotonInitScene>("PhotonInitOnceLoad");
+    manager.RegisterScene<TestScene>("Title");
+    
+    manager.RegisterScene<Matching>("Matching");
+    
 
     std::cout << "Engine Start" << std::endl;
 
-    while (System::Update())
+    while (s3d::System::Update())
     {
         manager.UpdateCurrentScene();
     }
