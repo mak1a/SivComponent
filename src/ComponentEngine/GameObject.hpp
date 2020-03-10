@@ -131,7 +131,7 @@ namespace ComponentEngine
 
         auto FindChildItr(const std::string& name) const
         {
-            return std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
+            return std::find_if(children.begin(), children.end(),[&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
         }
 
     public:
