@@ -14,20 +14,20 @@ namespace ComponentEngine
         friend class GameObject;
 
     protected:
-        std::weak_ptr<GameObject> gameObject()
+        std::weak_ptr<GameObject> GetGameObject()
         {
             return gameobject;
         }
-        
-//        auto GetScene() -> decltype(gameobject.lock()->GetScene())
-//        {
-//            return gameobject.lock()->GetScene();
-//        }
 
-//        auto transform() -> decltype(gameobject.lock()->transform())
-//        {
-//            return gameobject.lock()->transform();
-//        }
+        //        auto GetScene() -> decltype(gameobject.lock()->GetScene())
+        //        {
+        //            return gameobject.lock()->GetScene();
+        //        }
+
+        //        auto transform() -> decltype(gameobject.lock()->transform())
+        //        {
+        //            return gameobject.lock()->transform();
+        //        }
 
         //        SceneManager* GetSceneManager()
         //        {

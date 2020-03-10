@@ -12,8 +12,8 @@ class MatchSystem : public ComponentEngine::AttachableComponent
 {
     void Start () override
     {
-        auto system = gameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem");
-        system->GetComponent<PhotonComponent::NetworkSystem>()->connect();
+        auto system = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem");
+        system->GetComponent<PhotonComponent::NetworkSystem>()->Connect();
     }
 };
 

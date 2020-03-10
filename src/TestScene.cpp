@@ -10,7 +10,7 @@ class NextScene : public ComponentEngine::AttachableComponent
     {
         if (KeyA.down())
         {
-            gameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Matching");
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Matching");
         }
     }
 };

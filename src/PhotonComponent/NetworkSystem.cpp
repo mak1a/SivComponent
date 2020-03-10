@@ -3,6 +3,11 @@
 
 namespace PhotonComponent
 {
+    std::string NetworkObjectName()
+    {
+        return "PhotonSystem";
+    }
+
     NetworkSystem::NetworkSystem()
         : mLoadBalancingClient(mListener, appID, appVersion)
     {
@@ -10,10 +15,10 @@ namespace PhotonComponent
 
     NetworkSystem::~NetworkSystem()
     {
-        disconnect();
+        Disconnect();
     }
 
-    void NetworkSystem::connect(void)
+    void NetworkSystem::Connect(void)
     {
         mLoadBalancingClient.setAutoJoinLobby(true);
         // connect() is asynchronous - the actual result arrives in the Listener::connectReturn() or the Listener::connectionErrorReturn() callback
@@ -53,7 +58,7 @@ namespace PhotonComponent
         }
     }
 
-    void NetworkSystem::disconnect(void)
+    void NetworkSystem::Disconnect(void)
     {
         mLoadBalancingClient.disconnect();  // disconnect() is asynchronous - the actual result arrives in the Listener::disconnectReturn() callback
     }
@@ -63,7 +68,7 @@ namespace PhotonComponent
     {
         void Update() override
         {
-            gameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         }
     };
 }  // namespace PhotonComponent

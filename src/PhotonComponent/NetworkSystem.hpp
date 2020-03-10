@@ -1,125 +1,24 @@
 
 #pragma once
 
-#define NO_S3D_USING
 #include <iostream>
-#include "ComponentEngine.hpp"
+#include <list>
+#include <memory>
 
 #include "LoadBalancing-cpp/inc/Client.h"
+// #include "ComponentEngine.hpp"
+#include "../ComponentEngine/SceneManager.hpp"
+
+#include "IObservable.hpp"
+#include "Listener.hpp"
 
 namespace PhotonComponent
 {
     static const ExitGames::Common::JString PLAYER_NAME = L"user";
 
-    class PhotonListener : public ExitGames::LoadBalancing::Listener
-    {
-        void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
-        {
-            s3d::Print(U"debugReturn");
-            s3d::Print(string.toString());
-        };
+    std::string NetworkObjectName();
 
-        void connectionErrorReturn(int errorCode) override
-        {
-            s3d::Print(U"connectionErrorReturn");
-        };
-
-        void clientErrorReturn(int errorCode) override
-        {
-            s3d::Print(U"clientErrorReturn");
-        };
-
-        void warningReturn(int warningCode) override
-        {
-            s3d::Print(U"warningReturn");
-        };
-
-        void serverErrorReturn(int errorCode) override
-        {
-            s3d::Print(U"serverErrorReturn");
-        };
-
-        void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
-        {
-            s3d::Print(U"joinRoomEventAction");
-            mState = States::JOINED;
-        };
-
-        void leaveRoomEventAction(int playerNr, bool isInactive) override
-        {
-            s3d::Print(U"leaveRoomEventAction");
-        };
-
-        void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
-        {
-            s3d::Print(U"customEventAction");
-
-            if (eventCode == 10)
-            {
-                s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
-            }
-        };
-
-        void connectReturn(int errorCode,
-                           const ExitGames::Common::JString& errorString,
-                           const ExitGames::Common::JString& region,
-                           const ExitGames::Common::JString& cluster) override
-        {
-            if (errorCode)
-            {
-                s3d::Print(U"connect error");
-
-                mState = States::DISCONNECTING;
-                return;
-            }
-            s3d::Print(U"connected!");
-            mState = States::CONNECTED;
-        };
-
-        void disconnectReturn() override
-        {
-            s3d::Print(U"disconnectReturn");
-        };
-
-        void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
-        {
-            s3d::Print(U"leaveRoomReturn");
-        };
-
-    public:
-        enum class States
-        {
-            INITIALIZED = 0,
-            CONNECTING,
-            CONNECTED,
-            JOINING,
-            JOINED,
-            SENT_DATA,
-            RECEIVED_DATA,
-            LEAVING,
-            LEFT,
-            DISCONNECTING,
-            DISCONNECTED
-        } mState;
-
-    public:
-        States GetState()
-        {
-            return mState;
-        }
-
-        void SetState(States state)
-        {
-            mState = state;
-        }
-
-        PhotonListener()
-            : mState(States::INITIALIZED)
-        {
-        }
-    };
-
-    class NetworkSystem : public ComponentEngine::AttachableComponent
+    class NetworkSystem : public ComponentEngine::AttachableComponent, public IPhotonObservable
     {
     public:
         const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
@@ -127,8 +26,8 @@ namespace PhotonComponent
 
     public:
         NetworkSystem();
-        void connect(void);
-        void disconnect(void);
+        void Connect(void);
+        void Disconnect(void);
         void Update() override;
 
         void createRoom(const ExitGames::Common::JString& roomName, nByte maxPlayers)
@@ -148,9 +47,27 @@ namespace PhotonComponent
 
         void SendEvent()
         {
-            auto eventhash = new ExitGames::Common::Hashtable();
+            //            auto eventhash = new ExitGames::Common::Hashtable();
             auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
             mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
+        }
+
+    private:
+        // 今後のshared_ptrへの差し替えを考慮
+        std::list<AttachableComponentPhotonCallbacks*> observers;
+
+    public:
+        void Subscribe(PhotonComponent::AttachableComponentPhotonCallbacks* component) override
+        {
+            //多重登録へのチェックは面倒なのでなし！
+            //ポインタで比較するか、購読側に登録済みか管理する機能をつければよい
+            //そもそもコンストラクタでしか実行されない予定なので現状は不要なチェック
+            observers.push_back(component);
+        }
+
+        void Dispose(PhotonComponent::AttachableComponentPhotonCallbacks* component) override
+        {
+            observers.remove(component);
         }
 
     private:

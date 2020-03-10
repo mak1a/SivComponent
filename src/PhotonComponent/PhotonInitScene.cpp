@@ -8,17 +8,16 @@ namespace PhotonComponent
     {
         void Update() override
         {
-            gameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         }
     };
 
     void PhotonInitScene::Setup()
     {
-        auto photon = GetSceneManager()->CreateAndGetCommonObject("PhotonSystem");
+        auto photon = GetSceneManager()->CreateAndGetCommonObject(NetworkObjectName());
         photon->AddComponent<NetworkSystem>();
 
         CreateAndGetObject()->AddComponent<SceneChanger>();
     };
-
 
 }  // namespace PhotonComponent
