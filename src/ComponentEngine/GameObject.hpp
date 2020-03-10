@@ -129,9 +129,9 @@ namespace ComponentEngine
             return std::find(children.begin(), children.end(), child);
         }
 
-        auto FindChildItr(const std::string& name) const
+        auto FindChildItr(const std::string& name) const -> decltype(std::find(children.begin(), children.end(), children.front()))
         {
-            return std::find_if(children.begin(), children.end(),[&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
+            return std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
         }
 
     public:
