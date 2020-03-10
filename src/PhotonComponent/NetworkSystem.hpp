@@ -82,6 +82,7 @@ namespace PhotonComponent
         void Connect(void);
         void Disconnect(void);
         void Update() override;
+        void OnDestroy() override;
 
         void createRoom(const ExitGames::Common::JString& roomName, nByte maxPlayers)
         {

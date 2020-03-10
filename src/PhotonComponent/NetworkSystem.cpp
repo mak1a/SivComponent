@@ -62,6 +62,11 @@ namespace PhotonComponent
         }
     }
 
+    void NetworkSystem::OnDestroy()
+    {
+        Disconnect();
+    }
+
     void NetworkSystem::Disconnect(void)
     {
         mLoadBalancingClient.disconnect();  // disconnect() is asynchronous - the actual result arrives in the Listener::disconnectReturn() callback
