@@ -1,7 +1,4 @@
-
-#include "ComponentEngine.hpp"
-
+#include "IScene.hpp"
 namespace ComponentEngine
 {
-
 }  // namespace ComponentEngine
