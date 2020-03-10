@@ -3,27 +3,12 @@
 
 #include "PhotonComponent/PhotonComponent.hpp"
 
+#include "PhotonComponent/PhotonInitScene.hpp"
 #include "TestScene.hpp"
+#include "Matching.hpp"
 
 using std::cout;
 using std::endl;
-
-class MatchSystem : public ComponentEngine::AttachableComponent
-{
-    void Start () override
-    {
-        auto system = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem");
-        system->GetComponent<PhotonComponent::NetworkSystem>()->Connect();
-    }
-};
-
-class Matching : public ComponentEngine::IScene
-{
-    void Setup()
-    {
-        CreateAndGetObject()->AddComponent<MatchSystem>();
-    }
-};
 
 void Main()
 {
@@ -31,7 +16,6 @@ void Main()
 
     manager.RegisterScene<PhotonComponent::PhotonInitScene>("PhotonInitOnceLoad");
     manager.RegisterScene<TestScene>("Title");
-    
     manager.RegisterScene<Matching>("Matching");
     
 
@@ -41,6 +25,8 @@ void Main()
     {
         manager.UpdateCurrentScene();
     }
+    
+    manager.End();
 
     cout << "int Main() End." << endl;
 }

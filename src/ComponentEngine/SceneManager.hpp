@@ -7,6 +7,9 @@ namespace ComponentEngine
     class SceneManager
     {
     public:
+        std::string CommonParentObjectName() const;
+
+    public:
         using MapKey = std::string;
         using MapValue = std::shared_ptr<GameObject>;
         using ObjectMap = std::unordered_map<MapKey, MapValue>;
@@ -49,7 +52,7 @@ namespace ComponentEngine
         {
             // commonMap = std::make_shared<ObjectMap>();
             commonParent = std::make_shared<GameObject>();
-            commonParent->SetName("commonParent");
+            commonParent->SetName(CommonParentObjectName());
         }
 
         //シーンを登録します
@@ -101,6 +104,10 @@ namespace ComponentEngine
             if (nextScene)
             {
                 //差し替える
+                if (currentScene)
+                {
+                    currentScene->DestoryAllObjects();
+                }
                 currentScene.swap(nextScene);
                 nextScene.reset();
                 currentScene->manager = this;
@@ -111,6 +118,14 @@ namespace ComponentEngine
 
             //シーンの更新
             currentScene->Update();
+        }
+
+        ~SceneManager() {}
+
+        void End()
+        {
+            currentScene->DestoryAllObjects();
+            currentScene.reset();
         }
     };
 }  // namespace ComponentEngine

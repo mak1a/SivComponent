@@ -17,6 +17,7 @@ namespace ComponentEngine
         virtual void Update() = 0;
         virtual void LateUpdate() = 0;
         virtual void Draw() const = 0;
+        virtual void OnDestroy() = 0;
 
         // friend class AttachableComponent;
         friend class GameObject;

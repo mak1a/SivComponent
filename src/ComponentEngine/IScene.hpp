@@ -104,6 +104,11 @@ namespace ComponentEngine
             masterObject->components_draw();
         }
 
+        void DestoryAllObjects()
+        {
+            masterObject->DestroyAll();
+        }
+
         virtual ~IScene()
         {
             std::cout << "scene destory" << std::endl;

@@ -46,8 +46,8 @@
             filePath = "src/Main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
             landmarkName = "Main()"
             landmarkType = "9">
          </BreakpointContent>
@@ -80,7 +80,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "172"
             endingLineNumber = "172"
-            landmarkName = "~GameObject()"
+            landmarkName = "DeleteChild(child)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -129,6 +129,22 @@
             startingLineNumber = "28"
             endingLineNumber = "28"
             landmarkName = "CreateAndGetCommonObject(keyname)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE05E279-6990-4620-BF9B-7CC97316038B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/ComponentEngine/GameObject.hpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "DestroyAll()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

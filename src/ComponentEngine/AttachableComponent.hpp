@@ -50,6 +50,7 @@ namespace ComponentEngine
         virtual void Update() override {}
         virtual void LateUpdate() override {}
         virtual void Draw() const override {}
+        virtual void OnDestroy() override{};
 
         //これ自体の生成は禁止する
         AttachableComponent(){};

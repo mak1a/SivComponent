@@ -4,13 +4,13 @@
 
 namespace PhotonComponent
 {
-    AttachableComponentPhotonCallbacks::AttachableComponentPhotonCallbacks()
+    void AttachableComponentPhotonCallbacks::Awake()
     {
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Subscribe(this);
     }
 
-    AttachableComponentPhotonCallbacks::~AttachableComponentPhotonCallbacks()
+    void AttachableComponentPhotonCallbacks::OnDestroy()
     {
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Dispose(this);

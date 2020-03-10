@@ -9,8 +9,12 @@ namespace PhotonComponent
     }
 
     NetworkSystem::NetworkSystem()
-        : mLoadBalancingClient(mListener, appID, appVersion)
+        : mLoadBalancingClient(*this, appID, appVersion)
     {
+        SetState(States::INITIALIZED);
+
+        mLogger.setDebugOutputLevel(ExitGames::Common::DebugLevel::ALL);
+        mLogger.setListener(*this);
     }
 
     NetworkSystem::~NetworkSystem()
@@ -32,18 +36,18 @@ namespace PhotonComponent
         mLoadBalancingClient.service();  // needs to be called regularly!
 
         static bool playerOutput = true;
-        switch (mListener.GetState())
+        switch (GetState())
         {
             //サーバー接続できたら
-            case PhotonListener::States::CONNECTED:
+            case States::CONNECTED:
 
                 //ルーム接続を行う
                 createRoom(L"testroom", 4);
-                mListener.SetState(PhotonListener::States::JOINING);
+                SetState(States::JOINING);
                 break;
 
             //ルームに入れたら
-            case PhotonListener::States::JOINED:
+            case States::JOINED:
 
                 if (playerOutput)
                 {

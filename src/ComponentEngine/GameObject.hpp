@@ -100,7 +100,7 @@ namespace ComponentEngine
         void SetParent(const std::weak_ptr<GameObject>& newParent)
         {
             //現在の関係をデバッグ出力
-            std::cout << "this is:" << GetName() << std::endl;
+            // std::cout << "this is:" << GetName() << std::endl;
 
             if (!newParent.lock())
             {
@@ -111,28 +111,63 @@ namespace ComponentEngine
 
             if (parent.lock())
             {
-                std::cout << "parent is:" << parent.lock()->GetName() << std::endl;
+                // DEBUG
+                // std::cout << "parent is:" << parent.lock()->GetName() << std::endl;
                 //今の親と関係を解消
                 parent.lock()->RemoveChild(shared_from_this());
             }
 
             //親を新しいオブジェクトに設定
             parent = newParent;
-            std::cout << "new parent is:" << parent.lock()->GetName() << "\n" << std::endl;
+            // DEBUG
+            // std::cout << "new parent is:" << parent.lock()->GetName() << "\n" << std::endl;
         }
 
-        auto FindChild(const std::shared_ptr<GameObject>& child) -> decltype(std::find(children.begin(), children.end(), child))
+    private:
+        auto FindChildItr(const std::shared_ptr<GameObject>& child) const -> decltype(std::find(children.begin(), children.end(), child))
         {
             return std::find(children.begin(), children.end(), child);
         }
 
+        auto FindChildItr(const std::string& name) const
+        {
+            return std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
+        }
+
+    public:
+        std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const
+        {
+            auto itr = FindChildItr(child);
+
+            if (itr == children.end())
+            {
+                return std::shared_ptr<GameObject>();
+            }
+
+            return *itr;
+        }
+
+        std::shared_ptr<GameObject> FindChild(const std::string& name) const
+        {
+            auto itr = std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
+
+            if (itr == children.end())
+            {
+                return std::shared_ptr<GameObject>();
+            }
+
+            return *itr;
+        }
+
         void DeleteChild(const std::shared_ptr<GameObject>& child)
         {
-            auto itr = FindChild(child);
+            auto itr = FindChildItr(child);
             if (itr == children.end())
             {
                 return;
             }
+
+            child->DestroyAllChildren();
 
             children.erase(itr);
         }
@@ -140,7 +175,7 @@ namespace ComponentEngine
     private:
         bool RemoveChild(const std::shared_ptr<GameObject>& child)
         {
-            auto itr = FindChild(child);
+            auto itr = FindChildItr(child);
 
             if (itr == children.end())
             {
@@ -167,15 +202,54 @@ namespace ComponentEngine
             return nullptr;
         }
 
-        ~GameObject()
+        //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
+        //すべての子オブジェクトを破壊する
+        void DestroyAll()
+        {
+            if (GetName() == "MasterObject")
+            {
+                auto itr = FindChildItr("CommonParent");
+                if (itr != children.end())
+                {
+                    children.erase(itr);
+                }
+            }
+
+            //まずはすべてのコンポーネントのOnDestoryを呼び出す
+            DestroyAllChildrenComponents();
+            //次にすべての子オブジェクトを削除
+            DestroyAllChildren();
+        }
+
+    private:
+        void DestroyAllChildren()
+        {
+            for (const auto& child : children)
+            {
+                child->DestroyAllChildren();
+            }
+
+            children.clear();
+        }
+
+        void DestroyAllChildrenComponents()
         {
             for (IComponent* component : components)
             {
-                // TODO: OnDestory
-                delete component;
+                component->OnDestroy();
             }
+            for (const auto& child : children)
+            {
+                child->DestroyAllChildrenComponents();
+            }
+        }
 
-            std::cout << "Destory:" << GetName() << std::endl;
+    public:
+        ~GameObject()
+        {
+            //            DestoryAllObjects();
+            // DEBUG
+            // std::cout << "Destory:" << GetName() << std::endl;
         }
 
     public:
