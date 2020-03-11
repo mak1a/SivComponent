@@ -26,7 +26,7 @@ namespace ComponentEngine::Siv
         {
         }
 
-        Text& SetTest(const String& _text)
+        Text& SetText(const String& _text)
         {
             text = _text;
             return *this;

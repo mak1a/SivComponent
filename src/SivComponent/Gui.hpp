@@ -16,6 +16,15 @@ namespace ComponentEngine::Siv
         bool drawAt = true;
 
     public:
+        void Awake() override
+        {
+            width = 500;
+            maxLength = 100;
+            isEnabled = true;
+            drawAt = true;
+        }
+
+    public:
         TextBox& SetTextstate(const s3d::TextEditState& _textstate)
         {
             textstate = _textstate;
@@ -49,13 +58,13 @@ namespace ComponentEngine::Siv
             return isEnabled;
         }
 
-        TextBox& SetIsDrawAt(bool _drawAt)
+        TextBox& SetDrawAt(bool _drawAt)
         {
             drawAt = _drawAt;
             return *this;
         }
 
-        bool GetIsDrawAt() const noexcept
+        bool GetDrawAt() const noexcept
         {
             return drawAt;
         }
@@ -88,21 +97,111 @@ namespace ComponentEngine::Siv
         }
 
     private:
-        void Draw() const
+        void Draw() const override
         {
             if (drawAt)
             {
-                s3d::SimpleGUI::TextBoxAt(textstate, {0, 0}, width, maxLength, isEnabled);
+                s3d::SimpleGUI::TextBoxAt(textstate, s3d::Vec2(0, 0), width, maxLength, isEnabled);
             }
             else
             {
-                s3d::SimpleGUI::TextBox(textstate, {0, 0}, width, maxLength, isEnabled);
+                s3d::SimpleGUI::TextBox(textstate, s3d::Vec2(0, 0), width, maxLength, isEnabled);
             }
         }
     };
 
+    //実装をクソ雑にやってるので、デリゲートに登録するオブジェクトと生存期間合わせないと例外吐いて死亡
     class Button : public ComponentEngine::AttachableComponent
     {
-        // AttachableComponent*
+        std::function<void()> delegate;
+        unsigned width;
+        bool isActive;
+        s3d::String text;
+        bool drawAt;
+
+        void Draw() const override
+        // void Update() override
+        {
+            bool pushed;
+
+            if (drawAt)
+            {
+                pushed = s3d::SimpleGUI::ButtonAt(text, s3d::Vec2(0, 0), width, isActive);
+            }
+            else
+            {
+                pushed = s3d::SimpleGUI::Button(text, s3d::Vec2(0, 0), width, isActive);
+            }
+
+            if (pushed)
+            {
+                delegate();
+            }
+        }
+
+        void Awake() override
+        {
+            width = 300;
+            isActive = true;
+            text = U"Button";
+            drawAt = true;
+            delegate = []() {};
+        }
+
+    public:
+        Button& SetDelegate(const std::function<void()>& _delegate)
+        {
+            delegate = _delegate;
+            return *this;
+        }
+
+        std::function<void()> GetDelegate() const noexcept
+        {
+            return delegate;
+        }
+
+        Button& SetWidth(unsigned _width)
+        {
+            width = _width;
+            return *this;
+        }
+
+        unsigned GetWidth() const noexcept
+        {
+            return width;
+        }
+
+        Button& SetIsActive(bool _isActive)
+        {
+            isActive = _isActive;
+            return *this;
+        }
+
+        bool GetIsActive() const noexcept
+        {
+            return isActive;
+        }
+
+        Button& SetText(const s3d::String& _text)
+        {
+            text = _text;
+            return *this;
+        }
+
+        s3d::String GetText() const noexcept
+        {
+            return text;
+        }
+
+        Button& SetDrawAt(bool _drawAt)
+        {
+            drawAt = _drawAt;
+            return *this;
+        }
+
+        bool GetDrawAt() const noexcept
+        {
+            return drawAt;
+        }
     };
 }  // namespace ComponentEngine::Siv

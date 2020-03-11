@@ -6,7 +6,7 @@
 
 class MatchSystem : public PhotonComponent::AttachableComponentPhotonCallbacks
 {
-    PhotonComponent::NetworkSystem* system;
+    std::shared_ptr<PhotonComponent::NetworkSystem> system;
 
     void Start() override
     {

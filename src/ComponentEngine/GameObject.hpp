@@ -45,6 +45,25 @@ namespace ComponentEngine
             return scene;
         }
 
+    private:
+        bool active;
+
+    public:
+        GameObject& SetActive(bool _active)
+        {
+            active = _active;
+            for (const auto& c : children)
+            {
+                c->SetActive(_active);
+            }
+            return *this;
+        }
+
+        bool GetActive() const noexcept
+        {
+            return active;
+        }
+
     public:
         //プロパティ
         Transform& transform()
@@ -53,7 +72,7 @@ namespace ComponentEngine
         }
 
     private:
-        std::list<IComponent*> components;
+        std::list<std::shared_ptr<IComponent>> components;
 
         //親子オブジェクト
         std::weak_ptr<GameObject> parent;
@@ -77,17 +96,19 @@ namespace ComponentEngine
 
         explicit GameObject(const Transform& trans)
         {
+            active = true;
             _transform = trans;
         }
 
         template <class Component, class... Args>
-        Component* AddComponent(Args&&... args)
+        std::shared_ptr<Component> AddComponent(Args&&... args)
         {
-            Component* c = new Component(std::forward<Args>(args)...);
+            auto c = std::make_shared<Component>(std::forward<Args>(args)...);
             c->gameobject = weak_from_this();
             // std::cout << c->gameobject.lock()->GetName() << std::endl;
             components.push_back(c);
-            c->Awake();
+
+            c->call_awake();
             initializedAll = false;
             return c;
         }
@@ -173,6 +194,7 @@ namespace ComponentEngine
         }
 
     private:
+        //子オブジェクトを削除せずに外します
         bool RemoveChild(const std::shared_ptr<GameObject>& child)
         {
             auto itr = FindChildItr(child);
@@ -188,18 +210,32 @@ namespace ComponentEngine
 
     public:
         template <class T>
-        T* GetComponent()
+        std::shared_ptr<T> GetComponent() const
         {
-            T* component;
+            std::shared_ptr<T> component;
 
-            for (IComponent* c : components)
+            for (const auto& c : components)
             {
-                if ((component = dynamic_cast<T*>(c)))
+                if ((component = std::dynamic_pointer_cast<T>(c)))
                 {
                     return component;
                 }
             }
             return nullptr;
+        }
+
+        template <class T>
+        std::weak_ptr<T> GetComponentWeak() const
+        {
+            std::weak_ptr<T> component;
+            for (const auto& c : components)
+            {
+                if ((component = std::dynamic_pointer_cast<T>(c)))
+                {
+                    return component;
+                }
+            }
+            return std::weak_ptr<T>();
         }
 
         //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
@@ -234,7 +270,7 @@ namespace ComponentEngine
 
         void DestroyAllChildrenComponents()
         {
-            for (IComponent* component : components)
+            for (const auto& component : components)
             {
                 component->OnDestroy();
             }
@@ -261,12 +297,4 @@ namespace ComponentEngine
 
         virtual void components_draw() const final;
     };
-
-    template <>
-    inline Transform* GameObject::GetComponent()
-    {
-        return &_transform;
-    }
 }  // namespace ComponentEngine
-
-// https://qiita.com/kgwryk28/items/4a066d6f81ffacbc758f

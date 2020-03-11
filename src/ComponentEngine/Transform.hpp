@@ -85,7 +85,7 @@ namespace ComponentEngine
     public:
         auto PushTransform() const -> decltype(std::make_unique<s3d::Transformer2D>())
         {
-            return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale));
+            return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale), true);
             // return std::move(trans);
         }
 

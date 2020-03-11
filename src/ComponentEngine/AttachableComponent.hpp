@@ -45,7 +45,7 @@ namespace ComponentEngine
 
     protected:
         // virtual funcs
-        virtual void Awake() override {}
+        virtual void Awake() {}
         virtual void Start() {}
         virtual void Update() override {}
         virtual void LateUpdate() override {}
@@ -56,6 +56,11 @@ namespace ComponentEngine
         AttachableComponent(){};
 
     protected:
+        virtual void call_awake() override final
+        {
+            Awake();
+        }
+
         // Startを1回しか呼ばないように制御
         // この関数はここで固定する
         virtual void call_start() override final

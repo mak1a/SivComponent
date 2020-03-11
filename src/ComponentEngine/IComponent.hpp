@@ -11,7 +11,8 @@ namespace ComponentEngine
         std::weak_ptr<GameObject> gameobject;
 
     protected:
-        virtual void Awake() = 0;
+        virtual void call_awake() = 0;
+        // virtual void Awake() = 0;
         virtual void call_start() = 0;
         // virtual void Start() = 0;
         virtual void Update() = 0;
