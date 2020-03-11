@@ -13,7 +13,7 @@ namespace ComponentEngine
     {
         friend class GameObject;
 
-    protected:
+    public:
         std::weak_ptr<GameObject> GetGameObject()
         {
             return gameobject;

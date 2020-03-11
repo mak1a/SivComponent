@@ -3,9 +3,10 @@
 
 #include "PhotonComponent/PhotonComponent.hpp"
 
+#include "Matching.hpp"
 #include "PhotonComponent/PhotonInitScene.hpp"
 #include "TestScene.hpp"
-#include "Matching.hpp"
+#include "Title.hpp"
 
 using std::cout;
 using std::endl;
@@ -15,18 +16,13 @@ void Main()
     ComponentEngine::SceneManager manager;
 
     manager.RegisterScene<PhotonComponent::PhotonInitScene>("PhotonInitOnceLoad");
-    manager.RegisterScene<TestScene>("Title");
+    manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");
-    
-
-    std::cout << "Engine Start" << std::endl;
 
     while (s3d::System::Update())
     {
         manager.UpdateCurrentScene();
     }
-    
-    manager.End();
 
-    cout << "int Main() End." << endl;
+    manager.End();
 }
