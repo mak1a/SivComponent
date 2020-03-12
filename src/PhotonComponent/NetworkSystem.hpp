@@ -6,19 +6,31 @@
 #include <memory>
 
 #include "../ComponentEngine/SceneManager.hpp"
-#include "LoadBalancing-cpp/inc/Client.h"
+//#include "LoadBalancing-cpp/inc/Client.h"
 
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "IObservable.hpp"
 
 namespace PhotonComponent
 {
-    static const ExitGames::Common::JString PLAYER_NAME = L"user";
-
     std::string NetworkObjectName();
 
     class NetworkSystem : public ComponentEngine::AttachableComponent, public IPhotonObservable, public ExitGames::LoadBalancing::Listener
     {
+        ExitGames::Common::JString playerName;
+
+    public:
+        NetworkSystem& SetPlayerName(const ExitGames::Common::JString& _playerName)
+        {
+            playerName = _playerName;
+            return *this;
+        }
+
+        ExitGames::Common::JString GetPlayerName() const noexcept
+        {
+            return playerName;
+        }
+
     public:
         enum class States
         {
@@ -84,19 +96,10 @@ namespace PhotonComponent
         void Update() override;
         void OnDestroy() override;
 
+    public:
         void createRoom(const ExitGames::Common::JString& roomName, nByte maxPlayers)
         {
             mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
-        }
-
-        void OutputPlayers()
-        {
-            auto players = mLoadBalancingClient.getCurrentlyJoinedRoom().getPlayers();
-            auto l = players.getSize();
-            for (int k = 0; k < l; ++k)
-            {
-                s3d::Print(players[k]->getName());
-            }
         }
 
         void SendEvent()
@@ -104,6 +107,21 @@ namespace PhotonComponent
             //            auto eventhash = new ExitGames::Common::Hashtable();
             auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
             mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
+        }
+
+    private:
+        ExitGames::Common::JVector<ExitGames::LoadBalancing::Player*> playerList;
+
+        void update_playerlist()
+        {
+            playerList = mLoadBalancingClient.getCurrentlyJoinedRoom().getPlayers();
+        }
+
+    public:
+        //        ExitGames::Common::JVector<ExitGames::LoadBalancing::Player*>&
+        ExitGames::Common::JVector<ExitGames::LoadBalancing::Player*>& GetPlayerList()
+        {
+            return playerList;
         }
 
     private:
@@ -130,77 +148,8 @@ namespace PhotonComponent
     public:
         ~NetworkSystem();
 
-    private:  // ExitGames::LoadBalancing::Listener
-              // void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
-              // {
-              //     s3d::Print(U"debugReturn");
-              //     s3d::Print(string.toString());
-              // };
-              // void connectionErrorReturn(int errorCode) override
-              // {
-              //     s3d::Print(U"connectionErrorReturn");
-              // };
-        // void clientErrorReturn(int errorCode) override
-        // {
-        //     s3d::Print(U"clientErrorReturn");
-        // };
-
-        // void warningReturn(int warningCode) override
-        // {
-        //     s3d::Print(U"warningReturn");
-        // };
-
-        // void serverErrorReturn(int errorCode) override
-        // {
-        //     s3d::Print(U"serverErrorReturn");
-        // };
-
-        // void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
-        // {
-        //     s3d::Print(U"joinRoomEventAction");
-        //     SetState(States::JOINED);
-        // };
-
-        // void leaveRoomEventAction(int playerNr, bool isInactive) override
-        // {
-        //     s3d::Print(U"leaveRoomEventAction");
-        // };
-
-        // void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
-        // {
-        //     s3d::Print(U"customEventAction");
-
-        //     if (eventCode == 10)
-        //     {
-        //         s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
-        //     }
-        // };
-
-        // void connectReturn(int errorCode,
-        //                    const ExitGames::Common::JString& errorString,
-        //                    const ExitGames::Common::JString& region,
-        //                    const ExitGames::Common::JString& cluster) override
-        // {
-        //     if (errorCode)
-        //     {
-        //         s3d::Print(U"connect error");
-
-        //         SetState(States::DISCONNECTING);
-        //         return;
-        //     }
-        //     s3d::Print(U"connected!");
-        //     SetState(States::CONNECTED);
-        // };
-
-        // void disconnectReturn() override
-        // {
-        //     s3d::Print(U"disconnectReturn");
-        // };
-
-        // void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
-        // {
-        //     s3d::Print(U"leaveRoomReturn");
-        // };
+    private:
+        // ExitGames::LoadBalancing::Listener
 
         // receive and print out debug out here
         virtual void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
@@ -246,6 +195,9 @@ namespace PhotonComponent
                                          const ExitGames::Common::JVector<int>& playernrs,
                                          const ExitGames::LoadBalancing::Player& player) override
         {
+            //プレイヤーリストを更新
+            update_playerlist();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinRoomEventAction(playerNr, playernrs, player);
@@ -253,6 +205,9 @@ namespace PhotonComponent
         }
         virtual void leaveRoomEventAction(int playerNr, bool isInactive) override
         {
+            //プレイヤーリストを更新
+            update_playerlist();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->leaveRoomEventAction(playerNr, isInactive);
@@ -284,6 +239,8 @@ namespace PhotonComponent
             {
                 observer->disconnectReturn();
             }
+
+            update_playerlist();
         }
         virtual void createRoomReturn(int localPlayerNr,
                                       const ExitGames::Common::Hashtable& roomProperties,

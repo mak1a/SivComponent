@@ -8,6 +8,8 @@
 #include "TestScene.hpp"
 #include "Title.hpp"
 
+#include <unicode/unistr.h>
+
 using std::cout;
 using std::endl;
 

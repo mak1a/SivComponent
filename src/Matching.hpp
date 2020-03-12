@@ -18,7 +18,8 @@ class MatchSystem : public PhotonComponent::AttachableComponentPhotonCallbacks
     void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
     {
         s3d::Print(U"joinRoomEventAction");
-        system->OutputPlayers();
+        s3d::Print(U"PlayerNr:", playerNr);
+//        system->OutputPlayers();
         system->SendEvent();
     };
 

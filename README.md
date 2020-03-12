@@ -38,10 +38,18 @@ SceneManager -> Scene -> GameObject -> Component　のような保持関係に�
 # ライブラリ
 一切同梱していません。ビルドする場合はパス等を自力で通す必要があります
 
-boost 1.72.0
+boost 1.72.0  
 
-Photon Realtime SDK v4.1.15.2
+
+Photon Realtime SDK v4.1.15.2  
 <https://www.photonengine.com/ja/sdks>
 
-OpenSiv3D v0.4.2
+OpenSiv3D v0.4.2  
+Copyright (c) 2008-2019 Ryo Suzuki  
+Copyright (c) 2016-2019 OpenSiv3D Project  
 <https://github.com/Siv3D/OpenSiv3D>
+
+
+
+ICU  
+Copyright © 1991-2020 Unicode, Inc.  
