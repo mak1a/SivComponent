@@ -98,7 +98,6 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
     void OnDestory2() override
     {
         s3d::ClearPrint();
-        system->Disconnect();
     }
 };
 
@@ -151,9 +150,9 @@ public:
     void StartGame()
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
-        manager->ChangeScene("Game");
 
-        system->GetClient().opRaiseEvent(true, CustomEvent::GameStart, 0);
+        system->GetClient().opRaiseEvent(true, 0, CustomEvent::GameStart);
+        manager->ChangeScene("Game");
     }
 
     virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override

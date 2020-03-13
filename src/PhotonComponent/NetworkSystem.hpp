@@ -103,12 +103,12 @@ namespace ComponentEngine::Photon
             mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
         }
 
-        // void SendEvent()
-        // {
-        //     //            auto eventhash = new ExitGames::Common::Hashtable();
-        //     auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
-        //     mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
-        // }
+        void SendEvent()
+        {
+            //            auto eventhash = new ExitGames::Common::Hashtable();
+            auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
+            mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
+        }
 
     public:
         using PlayerList = std::vector<ExitGames::LoadBalancing::Player*>;
