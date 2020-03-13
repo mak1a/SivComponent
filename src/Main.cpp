@@ -5,7 +5,6 @@
 
 #include "Matching.hpp"
 #include "PhotonComponent/PhotonInitScene.hpp"
-#include "TestScene.hpp"
 #include "Title.hpp"
 
 #include <unicode/unistr.h>
@@ -13,13 +12,22 @@
 using std::cout;
 using std::endl;
 
+class Game : public ComponentEngine::IScene
+{
+    void Setup() override
+    {
+        s3d::Print(U"Game");
+    }
+};
+
 void Main()
 {
     ComponentEngine::SceneManager manager;
 
-    manager.RegisterScene<PhotonComponent::PhotonInitScene>("PhotonInitOnceLoad");
+    manager.RegisterScene<ComponentEngine::Photon::PhotonInitScene>("PhotonInitOnceLoad");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");
+    manager.RegisterScene<Game>("Game");
 
     while (s3d::System::Update())
     {

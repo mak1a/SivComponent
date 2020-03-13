@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define NO_USING_S3D
+#define NO_S3D_USING
 #include <Siv3D.hpp>
 #include "ComponentEngine.hpp"
 

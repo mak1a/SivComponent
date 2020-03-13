@@ -24,6 +24,11 @@ namespace ComponentEngine
         friend class GameObject;
 
     public:
+        // active flag
+        virtual void SetActive(bool) = 0;
+        virtual bool GetActive() const = 0;
+
+    public:
         virtual ~IComponent() = default;
     };
 }  // namespace ComponentEngine

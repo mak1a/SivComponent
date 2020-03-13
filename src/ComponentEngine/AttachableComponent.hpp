@@ -1,6 +1,7 @@
 
 #pragma once
 
+#define NO_S3D_USING
 #include <boost/noncopyable.hpp>
 #include <memory>
 #include "GameObject.hpp"
@@ -12,6 +13,19 @@ namespace ComponentEngine
     class AttachableComponent : public IComponent
     {
         friend class GameObject;
+
+    private:
+        bool active;
+
+    public:
+        void SetActive(bool _active) override
+        {
+            active = _active;
+        }
+        bool GetActive() const override
+        {
+            return active;
+        }
 
     public:
         std::weak_ptr<GameObject> GetGameObject()
@@ -53,7 +67,10 @@ namespace ComponentEngine
         virtual void OnDestroy() override{};
 
         //これ自体の生成は禁止する
-        AttachableComponent(){};
+        AttachableComponent()
+        {
+            active = true;
+        };
 
     protected:
         virtual void call_awake() override final

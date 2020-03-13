@@ -1,7 +1,7 @@
 #define NO_S3D_USING
 #include "PhotonInitScene.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     //シーン変更するだけのクラス
     class SceneChanger : public ComponentEngine::AttachableComponent

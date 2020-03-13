@@ -2,7 +2,7 @@
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "NetworkSystem.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     void AttachableComponentPhotonCallbacks::Awake()
     {
@@ -16,5 +16,7 @@ namespace PhotonComponent
         //コールバック対象から外れる
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Dispose(this);
+        OnDestory2();
     }
-}  // namespace PhotonComponent
+
+}  // namespace ComponentEngine::Photon

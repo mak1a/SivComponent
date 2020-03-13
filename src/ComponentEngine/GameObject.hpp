@@ -1,5 +1,6 @@
 #pragma once
 
+#define NO_S3D_USING
 #include <boost/noncopyable.hpp>
 #include <list>
 #include <memory>
@@ -116,6 +117,14 @@ namespace ComponentEngine
         void AddChild(const std::shared_ptr<GameObject>& child)
         {
             child->SetParent(weak_from_this());
+        }
+
+        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild()
+        {
+            auto object = std::make_shared<GameObject>();
+            object->scene = this->scene;
+            this->AddChild(object);
+            return object;
         }
 
         void SetParent(const std::weak_ptr<GameObject>& newParent)
@@ -296,5 +305,5 @@ namespace ComponentEngine
         virtual void components_lateUpdate() final;
 
         virtual void components_draw() const final;
-    };
+    };  // namespace ComponentEngine
 }  // namespace ComponentEngine

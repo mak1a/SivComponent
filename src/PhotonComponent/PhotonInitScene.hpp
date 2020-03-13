@@ -8,7 +8,7 @@
 #include "LoadBalancing-cpp/inc/Client.h"
 #include "NetworkSystem.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     class PhotonInitScene : public ComponentEngine::IScene
     {

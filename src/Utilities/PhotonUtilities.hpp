@@ -13,10 +13,7 @@ namespace Utilities
     // {
     //     class String;
     // }
-
-    double DegToRad(double deg);
-
-    double RadToDeg(double rad);
+    int GetPlayerNumber(const ExitGames::Common::JString& name);
     //    int GetPlayerNumber(const s3d::String& name);
 
 }  // namespace Utilities

@@ -9,11 +9,19 @@ namespace ComponentEngine
 {
     void GameObject::components_start()
     {
+        //全部初期化後は呼び出しが無駄なので処理カット用
+        initializedAll = true;
+
         for (auto& component : components)
         {
+            if (!component->GetActive())
+            {
+                initializedAll = false;
+                continue;
+            }
+
             component->call_start();
         }
-        initializedAll = true;
 
         for (const auto& child : children)
         {
@@ -33,6 +41,10 @@ namespace ComponentEngine
 
         for (auto& component : components)
         {
+            if (!component->GetActive())
+            {
+                continue;
+            }
             component->Update();
         }
 
@@ -50,6 +62,10 @@ namespace ComponentEngine
     {
         for (auto& component : components)
         {
+            if (!component->GetActive())
+            {
+                continue;
+            }
             component->LateUpdate();
         }
 
@@ -75,6 +91,10 @@ namespace ComponentEngine
 
         for (const auto& component : components)
         {
+            if (!component->GetActive())
+            {
+                continue;
+            }
             component->Draw();
         }
 

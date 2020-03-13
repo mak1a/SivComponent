@@ -1,7 +1,7 @@
 
 #define NO_S3D_USING
 #include "Title.hpp"
-#include <unicode/schriter.h>
+// #include <unicode/schriter.h>
 #include "PhotonComponent/NetworkSystem.hpp"
 #include "Utilities/TextConvert.hpp"
 
@@ -20,7 +20,7 @@ public:
 private:
     // s3d::Array<NamePair> nametable;
 
-    int n;
+    static int n;
 
 public:
     NameGenerator()
@@ -40,7 +40,10 @@ public:
 
     void Generate()
     {
-        n = s3d::Random(0, 1000);
+        if (n == -1)
+        {
+            n = s3d::Random(0, 1000);
+        }
         tbox.lock()->SetText(GetNameSiv());
     }
 };
@@ -52,8 +55,8 @@ struct ChangeSceneBt : public ComponentEngine::AttachableComponent
     void ChangeToMatching()
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
-        manager->GetCommonObject(PhotonComponent::NetworkObjectName())
-            ->GetComponent<PhotonComponent::NetworkSystem>()
+        manager->GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
+            ->GetComponent<ComponentEngine::Photon::NetworkSystem>()
             ->SetPlayerName(generator->GetNamePhoton());
         manager->ChangeScene("Matching");
     }
@@ -87,3 +90,5 @@ void TitleScene::Setup()
     title->transform().SetPosition({0, 100});
     title->AddComponent<Siv::Text>()->SetText(U"オンラインCoopゲーム(仮題 α版)").SetFont(s3d::Font(50)).SetColor(s3d::Palette::Black);
 }
+
+int NameGenerator::n = -1;

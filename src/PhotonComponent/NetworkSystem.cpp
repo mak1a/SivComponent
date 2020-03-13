@@ -1,7 +1,7 @@
 #define NO_S3D_USING
 #include "NetworkSystem.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     std::string NetworkObjectName()
     {
@@ -9,10 +9,9 @@ namespace PhotonComponent
     }
 
     NetworkSystem::NetworkSystem()
-        : mLoadBalancingClient(*this, appID, appVersion)
+        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::TCP)
     {
         SetPlayerName(L"null player");
-        SetState(States::INITIALIZED);
 
         mLogger.setDebugOutputLevel(ExitGames::Common::DebugLevel::ALL);
         mLogger.setListener(*this);
@@ -54,4 +53,4 @@ namespace PhotonComponent
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         }
     };
-}  // namespace PhotonComponent
+}  // namespace ComponentEngine::Photon

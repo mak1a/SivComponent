@@ -1,18 +1,15 @@
 
+#define NO_S3D_USING
 #include "Utilities.hpp"
 
 #include <cmath>
 
 namespace Utilities
 {
-    double DegToRad(double deg)
+    int GetPlayerNumber(const ExitGames::Common::JString& name)
     {
-        return deg * M_PI / 180.0;
-    }
-
-    double RadToDeg(double rad)
-    {
-        return rad * 180.0 / M_PI;
+        auto sub = name.substring(6);
+        return sub.toInt();
     }
     // int GetPlayerNumber(const s3d::String& name) {}
 }  // namespace Utilities
