@@ -85,6 +85,19 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
         s3d::Print(U"connected!");
     };
 
+    void joinOrCreateRoomReturn(int localPlayerNr,
+                                const ExitGames::Common::Hashtable& roomProperties,
+                                const ExitGames::Common::Hashtable& playerProperties,
+                                int errorCode,
+                                const ExitGames::Common::JString& errorString) override
+    {
+        if (errorCode)
+        {
+            system->Disconnect();
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+        }
+    }
+
     // void disconnectReturn() override
     // {
     //     s3d::Print(U"disconnectReturn");
@@ -152,6 +165,7 @@ public:
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
 
         system->GetClient().opRaiseEvent(true, 0, CustomEvent::GameStart);
+        system->GetClient().getCurrentlyJoinedRoom().setIsOpen(false);
         manager->ChangeScene("Game");
     }
 

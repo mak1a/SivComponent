@@ -6,19 +6,13 @@
 #include "Matching.hpp"
 #include "PhotonComponent/PhotonInitScene.hpp"
 #include "Title.hpp"
+#include "main/Game/Game.hpp"
 
-#include <unicode/unistr.h>
+//#include <unicode/unistr.h>
 
 using std::cout;
 using std::endl;
 
-class Game : public ComponentEngine::IScene
-{
-    void Setup() override
-    {
-        s3d::Print(U"Game");
-    }
-};
 
 void Main()
 {
