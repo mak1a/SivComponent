@@ -23,9 +23,12 @@ private:
     static int n;
 
 public:
-    NameGenerator()
+    void Start() override
     {
-        // Generate();
+        if (n == -1)
+        {
+            Generate();
+        }
     }
 
     s3d::String GetNameSiv()
@@ -40,10 +43,7 @@ public:
 
     void Generate()
     {
-        if (n == -1)
-        {
-            n = s3d::Random(0, 1000);
-        }
+        n = s3d::Random(0, 1000);
         tbox.lock()->SetText(GetNameSiv());
     }
 };

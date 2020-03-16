@@ -8,8 +8,14 @@
 
 namespace ComponentEngine::Photon
 {
+    class NetworkSystem;
+
     class AttachableComponentPhotonCallbacks : public ComponentEngine::AttachableComponent
     {
+    protected:
+        NetworkSystem* networkSystem;
+        friend NetworkSystem;
+
     public:
         void Awake() override;
         virtual void OnDestroy() override final;

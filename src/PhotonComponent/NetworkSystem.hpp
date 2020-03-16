@@ -103,12 +103,13 @@ namespace ComponentEngine::Photon
             mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
         }
 
-        void SendEvent()
-        {
-            //            auto eventhash = new ExitGames::Common::Hashtable();
-            auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
-            mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
-        }
+        // template <typename Data>
+        // void SendEvent(const& Data data)
+        // {
+        //     //            auto eventhash = new ExitGames::Common::Hashtable();
+        //     auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
+        //     mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
+        // }
 
     public:
         using PlayerList = std::vector<ExitGames::LoadBalancing::Player*>;
@@ -149,6 +150,7 @@ namespace ComponentEngine::Photon
             //ポインタで比較するか、購読側に登録済みか管理する機能をつければよい
             //そもそもコンストラクタでしか実行されない予定なので現状は不要なチェック
             observers.push_back(component);
+            component->networkSystem = this;
         }
 
         void Dispose(ComponentEngine::Photon::AttachableComponentPhotonCallbacks* component) override
@@ -370,6 +372,8 @@ namespace ComponentEngine::Photon
 #ifdef DEBUG
             std::cout << "leaveRoomReturn" << std::endl;
 #endif
+            playerList.clear();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->leaveRoomReturn(errorCode, errorString);
@@ -478,6 +482,22 @@ namespace ComponentEngine::Photon
             }
 
             return playerList[0]->getNumber() == mLoadBalancingClient.getLocalPlayer().getNumber();
+        }
+
+        ///ルーム内でのプレイヤー番号の若さ(0から始まる)
+        int GetPlayerNumberInRoom()
+        {
+            const auto pl = playerList.size();
+            const auto myNumber = mLoadBalancingClient.getLocalPlayer().getNumber();
+            for (int i = 0; i < pl; ++i)
+            {
+                if (playerList[i]->getNumber() == myNumber)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
     private:

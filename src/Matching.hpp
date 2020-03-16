@@ -137,7 +137,7 @@ class GameBt : public Photon::AttachableComponentPhotonCallbacks
     std::shared_ptr<Photon::NetworkSystem> system;
     std::shared_ptr<Siv::Button> bt;
 
-    void Start()
+    void Start() override
     {
         system =
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
