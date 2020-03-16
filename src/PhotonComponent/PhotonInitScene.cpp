@@ -14,7 +14,7 @@ namespace ComponentEngine::Photon
 
     void PhotonInitScene::Setup()
     {
-        auto photon = GetSceneManager()->CreateAndGetCommonObject(NetworkObjectName());
+        auto photon = GetSceneManager()->GetCommon().CreateAndGetCommonObject(NetworkObjectName());
         photon->AddComponent<NetworkSystem>();
 
         CreateAndGetObject()->AddComponent<SceneChanger>();

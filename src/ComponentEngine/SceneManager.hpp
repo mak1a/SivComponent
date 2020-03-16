@@ -1,39 +1,12 @@
 #pragma once
 
 #include "IScene.hpp"
+#include "SceneCommon.hpp"
 
 namespace ComponentEngine
 {
     class SceneManager
     {
-    public:
-        std::string CommonParentObjectName() const;
-
-    public:
-        using MapKey = std::string;
-        using MapValue = std::shared_ptr<GameObject>;
-        using ObjectMap = std::unordered_map<MapKey, MapValue>;
-        //シーン間共通オブジェクト
-    private:
-        //
-        ObjectMap commonMap;
-        //共通オブジェクトはここにくっつけていく
-        std::shared_ptr<GameObject> commonParent;
-
-    public:
-        std::shared_ptr<GameObject> GetCommonObject(const MapKey& name)
-        {
-            return commonMap.at(name);
-        }
-
-        std::shared_ptr<GameObject> CreateAndGetCommonObject(const MapKey& keyname)
-        {
-            MapValue object = std::make_shared<GameObject>();
-            commonParent->AddChild(object);
-            commonMap[keyname] = object;
-            return object;
-        }
-
     private:
         using KeyType = IScene::KeyType;
 
@@ -41,7 +14,7 @@ namespace ComponentEngine
 
         ScenePtr currentScene, nextScene;
 
-        // SceneManager* manager, std::shared_ptr<GameObject>& parent
+        SceneCommon common;
 
         using FuncType = std::function<ScenePtr()>;
 
@@ -51,8 +24,6 @@ namespace ComponentEngine
         SceneManager()
         {
             // commonMap = std::make_shared<ObjectMap>();
-            commonParent = std::make_shared<GameObject>();
-            commonParent->SetName(CommonParentObjectName());
         }
 
         //シーンを登録します
@@ -113,11 +84,16 @@ namespace ComponentEngine
                 currentScene->manager = this;
 
                 //共通オブジェクトの設定
-                currentScene->masterObject->AddChild(commonParent);
+                currentScene->masterObject->AddChild(common.commonParent);
             }
 
             //シーンの更新
             currentScene->Update();
+        }
+
+        SceneCommon& GetCommon()
+        {
+            return common;
         }
 
         ~SceneManager() {}

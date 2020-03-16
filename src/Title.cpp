@@ -55,7 +55,7 @@ struct ChangeSceneBt : public ComponentEngine::AttachableComponent
     void ChangeToMatching()
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
-        manager->GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
+        manager->GetCommon().GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
             ->GetComponent<ComponentEngine::Photon::NetworkSystem>()
             ->SetPlayerName(generator->GetNamePhoton());
         manager->ChangeScene("Matching");

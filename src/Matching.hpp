@@ -21,7 +21,7 @@ class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPho
         text = GetGameObject().lock()->GetComponent<Siv::Text>();
 
         system =
-            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
     }
 
     void UpdateDisplay()
@@ -54,7 +54,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
 
     void Start() override
     {
-        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem");
+        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
         system = object->GetComponent<ComponentEngine::Photon::NetworkSystem>();
         system->Connect();
     }
@@ -127,7 +127,7 @@ public:
     void ReturnTitle()
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
-        auto system = manager->GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
+        auto system = manager->GetCommon().GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
         system->Disconnect();
         manager->ChangeScene("Title");
     }
@@ -140,7 +140,7 @@ class GameBt : public Photon::AttachableComponentPhotonCallbacks
     void Start() override
     {
         system =
-            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
 
         //ボタンコンポーネント追加
         bt = GetGameObject().lock()->AddComponent<Siv::Button>();
