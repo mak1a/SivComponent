@@ -33,60 +33,6 @@ namespace ComponentEngine::Photon
         }
 
     public:
-        // enum class States
-        // {
-        //     INITIALIZED = 0,
-        //     CONNECTING,
-        //     CONNECTED,
-        //     JOINING,
-        //     JOINED,
-        //     SENT_DATA,
-        //     RECEIVED_DATA,
-        //     LEAVING,
-        //     LEFT,
-        //     DISCONNECTING,
-        //     DISCONNECTED
-        // };
-
-    private:
-        // States state;
-
-    public:
-        // States GetState()
-        // {
-        //     return state;
-        // }
-
-        // std::string GetStateString()
-        // {
-        //     static std::unordered_map<States, std::string> dic;
-
-        //     static bool once = [&]() {
-        //         dic[States::INITIALIZED] = "INITIALIZED";
-        //         dic[States::CONNECTING] = "CONNECTING";
-        //         dic[States::CONNECTED] = "CONNECTED";
-        //         dic[States::JOINING] = "JOINING";
-        //         dic[States::JOINED] = "JOINED";
-        //         dic[States::SENT_DATA] = "SENT_DATA";
-        //         dic[States::RECEIVED_DATA] = "RECEIVED_DATA";
-        //         dic[States::LEAVING] = "LEAVING";
-        //         dic[States::LEFT] = "LEFT";
-        //         dic[States::DISCONNECTING] = "DISCONNECTING";
-        //         dic[States::DISCONNECTED] = "DISCONNECTED";
-        //         return true;
-        //     }();
-
-        //     return dic[GetState()];
-        // }
-
-    private:
-        // void SetState(States nextState)
-        // {
-        //     std::cout << "state = " << GetStateString() << std::endl;
-        //     state = nextState;
-        // }
-
-    public:
         const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
         const ExitGames::Common::JString appVersion = L"1.0";
 
@@ -102,14 +48,6 @@ namespace ComponentEngine::Photon
         {
             mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
         }
-
-        // template <typename Data>
-        // void SendEvent(const& Data data)
-        // {
-        //     //            auto eventhash = new ExitGames::Common::Hashtable();
-        //     auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
-        //     mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
-        // }
 
     public:
         using PlayerList = std::vector<ExitGames::LoadBalancing::Player*>;
