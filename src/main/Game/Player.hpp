@@ -16,12 +16,14 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
     bool isMine;
-    s3d::Vec2 currentPos, targetPos;
+    s3d::Vec2 targetPos;
     double ease;
 
     // void Start2() override;
 
     Utilities::IntervalCall syncpos;
+
+    double spd;
 
 public:
     int playerNr;
@@ -44,6 +46,7 @@ public:
         : syncpos((int32_t)(1000 / 10), [&]() { SyncPos(); })
     {
         isMine = false;
+        spd = 3.0;
     }
 
 private:

@@ -9,7 +9,7 @@ using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
 void Player::Start2()
 {
-    currentPos = targetPos = GetGameObject().lock()->transform().GetPosition();
+    targetPos = GetGameObject().lock()->transform().GetPosition();
     ease = 0;
 }
 
@@ -23,23 +23,36 @@ void Player::Update()
 
     syncpos.Run();
 
-    s3d::Point axis;
+    s3d::Vec2 axis;
     axis.x = (s3d::KeyD.pressed() - s3d::KeyA.pressed());
     axis.y = (s3d::KeyS.pressed() - s3d::KeyW.pressed());
+    if (axis.length() > 1)
+    {
+        axis.normalize();
+    }
 
     auto& trans = GetGameObject().lock()->transform();
     auto pos = trans.GetPosition();
-    pos += axis * 3;
+    pos += axis * spd;
     trans.SetPosition(pos);
 }
 
 void Player::SyncPosWithEasing()
 {
-    ease += s3d::Scene::DeltaTime() * 10;
+    ease += s3d::Scene::DeltaTime() * 8.0;
 
-    double t = std::min(ease, 1.0);
+    auto pos = GetGameObject().lock()->transform().GetPosition();
+    auto diff = targetPos - pos;
 
-    GetGameObject().lock()->transform().SetPosition(currentPos.lerp(targetPos, t));
+    //移動速度を調整
+    if (diff.length() > spd)
+    {
+        diff.normalize();
+        diff *= spd;
+    }
+
+    //移動
+    GetGameObject().lock()->transform().SetPosition(pos + diff);
 }
 
 void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -60,7 +73,7 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
 
-    currentPos = GetGameObject().lock()->transform().GetPosition();
+    //到着先を終点に設定
     targetPos = {x, y};
     ease = 0;
     // GetGameObject().lock()->transform().SetPosition({x, y});
@@ -167,11 +180,6 @@ void PlayerMaster::Update()
 
     if (Matching::GameStartTime - networkSystem->GetClient().getServerTime() < 0)
     {
-        s3d::Print(U"Start!");
-        for (const auto& x : players)
-        {
-            s3d::Print(x->playerNr);
-        }
         initsync.Stop();
     }
 
