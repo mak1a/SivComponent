@@ -10,6 +10,7 @@ namespace ComponentEngine
 
     class SceneCommon
     {
+    public:  //共通オブジェクト機構
         std::string CommonParentObjectName() const
         {
             return std::string("CommonParent");
@@ -35,7 +36,6 @@ namespace ComponentEngine
             commonParent->SetName(CommonParentObjectName());
         }
 
-    public:
         std::shared_ptr<GameObject> GetCommonObject(const MapKey& name)
         {
             return commonMap.at(name);
@@ -47,6 +47,47 @@ namespace ComponentEngine
             commonParent->AddChild(object);
             commonMap[keyname] = object;
             return object;
+        }
+
+    private:  // Instantiate機構
+        using instantiate_key = std::string;
+        using Functype = std::function<std::shared_ptr<GameObject>()>;
+        std::unordered_map<instantiate_key, Functype> prefabs;
+
+    public:
+        bool AddObjectCreator(const instantiate_key& str, const Functype& func)
+        {
+            if (prefabs.count(str) > 0)
+            {
+                return false;
+            }
+
+            prefabs.emplace(str, func);
+            return true;
+        }
+
+        [[nodiscard]]
+        ///オブジェクトを生成する関数を取得
+        Functype&
+        GetInstantiate(const instantiate_key& key)
+        {
+            return prefabs.at(key);
+        }
+
+        [[nodiscard]]
+        ///オブジェクトを生成
+        std::shared_ptr<GameObject>
+        Instantiate(const instantiate_key& key) const
+        {
+            return prefabs.at(key)();
+        }
+
+        ///親を指定してオブジェクトを生成
+        std::shared_ptr<GameObject> Instantiate(const instantiate_key& key, std::shared_ptr<GameObject>& parent)
+        {
+            auto obj = prefabs.at(key)();
+            parent->AddChild(obj);
+            return obj;
         }
     };
 }  // namespace ComponentEngine
