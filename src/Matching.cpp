@@ -15,7 +15,7 @@ class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPho
 
     std::shared_ptr<Siv::Text> text;
 
-    void Start() override
+    void Start2() override
     {
         text = GetGameObject().lock()->GetComponent<Siv::Text>();
 
@@ -57,7 +57,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
 {
     std::shared_ptr<ComponentEngine::Photon::NetworkSystem> system;
 
-    void Start() override
+    void Start2() override
     {
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
         system = object->GetComponent<ComponentEngine::Photon::NetworkSystem>();
@@ -142,7 +142,7 @@ class GameBt : public Photon::AttachableComponentPhotonCallbacks
     std::shared_ptr<Photon::NetworkSystem> system;
     std::shared_ptr<Siv::Button> bt;
 
-    void Start() override
+    void Start2() override
     {
         system = GetGameObject()
                      .lock()

@@ -66,18 +66,14 @@ namespace ComponentEngine
             return true;
         }
 
-        [[nodiscard]]
         ///オブジェクトを生成する関数を取得
-        Functype&
-        GetInstantiate(const instantiate_key& key)
+        [[nodiscard]] Functype& GetInstantiate(const instantiate_key& key)
         {
             return prefabs.at(key);
         }
 
-        [[nodiscard]]
         ///オブジェクトを生成
-        std::shared_ptr<GameObject>
-        Instantiate(const instantiate_key& key) const
+        [[nodiscard]] std::shared_ptr<GameObject> Instantiate(const instantiate_key& key) const
         {
             return prefabs.at(key)();
         }
@@ -86,7 +82,7 @@ namespace ComponentEngine
         std::shared_ptr<GameObject> Instantiate(const instantiate_key& key, std::shared_ptr<GameObject>& parent)
         {
             auto obj = prefabs.at(key)();
-            parent->AddChild(obj);
+            obj->SetParent(parent);
             return obj;
         }
     };

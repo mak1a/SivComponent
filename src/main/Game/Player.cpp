@@ -1,22 +1,30 @@
 
 #include "Player.hpp"
 #include "../../CustomEventList.hpp"
+#include "../../SivComponent/SivComponent.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
-void Player::Start()
+void Player::SendInstantiateMessage()
 {
     // 自己位置の送信
     dictype dic;
 
-    dic.put(DataName::Player::playerNr, networkSystem->GetClient().getLocalPlayer().getNumber());
-    dic.put(DataName::Player::posX, 100 + networkSystem->GetPlayerNumberInRoom() * 100);
-    dic.put(DataName::Player::posY, 300);
+    auto pos = GetGameObject().lock()->transform().GetPosition();
+    dic.put(DataName::Player::posX, pos.x);
+    dic.put(DataName::Player::posY, pos.y);
 
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerInit);
+
+    if (isMine)
+    {
+        GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(s3d::Palette::Orange);
+    }
 }
 
-void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(200, 200), s3d::Vec2(400, 200), s3d::Vec2(200, 400), s3d::Vec2(400, 400)};
+
+void PlayerCreator::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
     if (eventCode != CustomEvent::PlayerInit)
     {
@@ -26,7 +34,12 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
     ExitGames::Common::Dictionary<nByte, double> dic =
         ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, double> >(eventContent).getDataCopy();
 
-    s3d::Print(U"receive value");
     double x = *dic.getValue(DataName::Player::posX);
-    s3d::Print(x);
+    double y = *dic.getValue(DataName::Player::posY);
+    auto obj = GetGameObject().lock();
+    auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player", obj);
+
+    otherplayer->transform().SetPosition({x, y});
+
+    otherplayer->GetComponent<Player>()->playerNr = playerNr;
 }

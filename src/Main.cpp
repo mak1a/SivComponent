@@ -7,12 +7,12 @@
 #include "PhotonComponent/PhotonInitScene.hpp"
 #include "Title.hpp"
 #include "main/Game/Game.hpp"
+#include "main/InstantiateEntry.hpp"
 
 //#include <unicode/unistr.h>
 
 using std::cout;
 using std::endl;
-
 
 void Main()
 {
@@ -22,6 +22,8 @@ void Main()
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");
     manager.RegisterScene<Game>("Game");
+
+    InstantiateEntry_Game(manager.GetCommon());
 
     while (s3d::System::Update())
     {

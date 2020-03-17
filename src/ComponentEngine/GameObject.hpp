@@ -40,9 +40,14 @@ namespace ComponentEngine
             return name;
         }
 
-    public:
         std::weak_ptr<IScene> GetScene()
         {
+            // sceneの参照を持ってなかったら親から回収する
+            if (scene.expired())
+            {
+                scene = parent.lock()->GetScene();
+            }
+
             return scene;
         }
 
@@ -79,6 +84,17 @@ namespace ComponentEngine
         std::weak_ptr<GameObject> parent;
         std::list<std::shared_ptr<GameObject>> children;
 
+    public:
+        [[nodiscard]] std::weak_ptr<GameObject>& GetParent()
+        {
+            return parent;
+        }
+
+        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren()
+        {
+            return children;
+        }
+
     private:
         // Start更新済みかどうか
         bool initializedAll = false;
@@ -95,10 +111,16 @@ namespace ComponentEngine
         {
         }
 
+        //実際に動くコンストラクタ
         explicit GameObject(const Transform& trans)
         {
             active = true;
             _transform = trans;
+        }
+
+        static std::shared_ptr<GameObject> Create()
+        {
+            return std::make_shared<GameObject>();
         }
 
         template <class Component, class... Args>
@@ -149,8 +171,6 @@ namespace ComponentEngine
 
             //親を新しいオブジェクトに設定
             parent = newParent;
-            // DEBUG
-            // std::cout << "new parent is:" << parent.lock()->GetName() << "\n" << std::endl;
         }
 
     private:

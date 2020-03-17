@@ -17,7 +17,8 @@ namespace ComponentEngine::Photon
         friend NetworkSystem;
 
     public:
-        void Awake() override;
+        void Start() override final;
+        virtual void Start2(){};
         virtual void OnDestroy() override final;
         virtual void OnDestory2(){};
         // ~AttachableComponentPhotonCallbacks();

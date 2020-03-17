@@ -15,9 +15,19 @@ class Game : public ComponentEngine::IScene
     {
         auto players = CreateAndGetObject();
         players->SetName("Players");
+        players->AddComponent<PlayerCreator>();
+
         //自分を作る
-        auto mainplayer = CreateAndGetObject();
-        mainplayer->AddComponent<Player>();
-        players->AddChild(mainplayer);
+        auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
+        auto system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
+
+        mainplayerobj->transform().SetPosition(Player::playerInitpos[system->GetPlayerNumberInRoom()]);
+
+        auto player = mainplayerobj->GetComponent<Player>();
+        player->SetMine(true);
+        player->playerNr = system->GetClient().getLocalPlayer().getNumber();
+        player->SendInstantiateMessage();
+
+        players->AddChild(mainplayerobj);
     }
 };
