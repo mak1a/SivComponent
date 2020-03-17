@@ -41,7 +41,7 @@ namespace ComponentEngine
 
         for (auto& component : components)
         {
-            if (!component->GetActive())
+            if (!component->GetActive() || !component->_initialized())
             {
                 continue;
             }
@@ -62,7 +62,7 @@ namespace ComponentEngine
     {
         for (auto& component : components)
         {
-            if (!component->GetActive())
+            if (!component->GetActive() || !component->_initialized())
             {
                 continue;
             }
@@ -91,7 +91,7 @@ namespace ComponentEngine
 
         for (const auto& component : components)
         {
-            if (!component->GetActive())
+            if (!component->GetActive() || !component->_initialized())
             {
                 continue;
             }

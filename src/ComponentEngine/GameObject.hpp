@@ -217,7 +217,7 @@ namespace ComponentEngine
                 return;
             }
 
-            child->DestroyAllChildren();
+            child->DestroyAllChildrenComponents();
 
             children.erase(itr);
         }
@@ -291,7 +291,7 @@ namespace ComponentEngine
         {
             for (const auto& child : children)
             {
-                child->DestroyAllChildren();
+                child->DestroyAllChildrenComponents();
             }
 
             children.clear();

@@ -14,6 +14,7 @@ namespace ComponentEngine
         virtual void call_awake() = 0;
         // virtual void Awake() = 0;
         virtual void call_start() = 0;
+        virtual bool _initialized() = 0;
         // virtual void Start() = 0;
         virtual void Update() = 0;
         virtual void LateUpdate() = 0;

@@ -21,6 +21,15 @@ namespace ComponentEngine
     private:
         std::shared_ptr<GameObject> masterObject;
 
+        std::list<std::weak_ptr<GameObject>> destroyList;
+
+    public:
+        //オブジェクト消去を予約
+        void Destroy(std::weak_ptr<GameObject> object)
+        {
+            destroyList.push_back(object);
+        }
+
     private:
         bool isInitialized;
 
@@ -102,6 +111,18 @@ namespace ComponentEngine
             masterObject->components_lateUpdate();
 
             masterObject->components_draw();
+
+            //消去処理
+            for (auto& obj : destroyList)
+            {
+                auto o = obj.lock();
+                if (!o)
+                {
+                    continue;
+                }
+
+                o->parent.lock()->DeleteChild(o);
+            }
         }
 
         void DestoryAllObjects()

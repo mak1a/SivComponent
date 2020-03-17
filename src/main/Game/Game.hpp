@@ -15,7 +15,6 @@ class Game : public ComponentEngine::IScene
     {
         auto players = CreateAndGetObject();
         players->SetName("Players");
-        players->AddComponent<PlayerCreator>();
 
         //自分を作る
         auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
@@ -26,7 +25,9 @@ class Game : public ComponentEngine::IScene
         auto player = mainplayerobj->GetComponent<Player>();
         player->SetMine(true);
         player->playerNr = system->GetClient().getLocalPlayer().getNumber();
-//        player->SendInstantiateMessage();
+
+        players->AddComponent<PlayerMaster>()->players.push_back(player);
+        //    player->SendInstantiateMessage();
 
         players->AddChild(mainplayerobj);
     }

@@ -24,8 +24,34 @@ namespace Utilities
             lastcall = std::chrono::duration_cast<ClockType>(std::chrono::system_clock::now().time_since_epoch()).count();
         }
 
+        IntervalCall()
+            : IntervalCall(-1, []() {})
+        {
+        }
+
+        bool IsStop()
+        {
+            return interval < 0;
+        }
+
+        void Stop()
+        {
+            interval = -1;
+        }
+
+        void ResetInterval(int32_t intervalMs)
+        {
+            interval = intervalMs;
+            lastcall = std::chrono::duration_cast<ClockType>(std::chrono::system_clock::now().time_since_epoch()).count();
+        }
+
         void Run()
         {
+            if (IsStop())
+            {
+                return;
+            }
+
             auto c = std::chrono::duration_cast<ClockType>(std::chrono::system_clock::now().time_since_epoch()).count();
 
             auto deltatime = c - lastcall;

@@ -12,6 +12,8 @@
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "IObservable.hpp"
 
+// #define PhotonDEBUG
+
 namespace ComponentEngine::Photon
 {
     std::string NetworkObjectName();
@@ -115,7 +117,7 @@ namespace ComponentEngine::Photon
         // receive and print out debug out here
         virtual void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "debugReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -127,7 +129,7 @@ namespace ComponentEngine::Photon
         // implement your error-handling here
         virtual void connectionErrorReturn(int errorCode) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "connectionErrorReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -137,7 +139,7 @@ namespace ComponentEngine::Photon
         }
         virtual void clientErrorReturn(int errorCode) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "clientErrorReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -147,7 +149,7 @@ namespace ComponentEngine::Photon
         }
         virtual void warningReturn(int warningCode) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "warningReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -157,7 +159,7 @@ namespace ComponentEngine::Photon
         }
         virtual void serverErrorReturn(int errorCode) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "serverErrorReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -171,7 +173,7 @@ namespace ComponentEngine::Photon
                                          const ExitGames::Common::JVector<int>& playernrs,
                                          const ExitGames::LoadBalancing::Player& player) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinRoomEventAction" << std::endl;
 #endif
             //プレイヤーリストを更新
@@ -184,7 +186,7 @@ namespace ComponentEngine::Photon
         }
         virtual void leaveRoomEventAction(int playerNr, bool isInactive) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "leaveRoomEventAction" << std::endl;
 #endif
             //プレイヤーリストを更新
@@ -198,7 +200,7 @@ namespace ComponentEngine::Photon
 
         virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "customEventAction" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -213,7 +215,7 @@ namespace ComponentEngine::Photon
                                    const ExitGames::Common::JString& region,
                                    const ExitGames::Common::JString& cluster) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "connectReturn" << std::endl;
 #endif
 
@@ -225,7 +227,7 @@ namespace ComponentEngine::Photon
 
         virtual void disconnectReturn(void) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "disconnectReturn" << std::endl;
 #endif
             update_playerlist();
@@ -241,7 +243,7 @@ namespace ComponentEngine::Photon
                                       int errorCode,
                                       const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "createRoomReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -255,7 +257,7 @@ namespace ComponentEngine::Photon
                                             int errorCode,
                                             const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinOrCreateRoomReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -269,7 +271,7 @@ namespace ComponentEngine::Photon
                                                   int errorCode,
                                                   const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinRandomOrCreateRoomReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -283,7 +285,7 @@ namespace ComponentEngine::Photon
                                     int errorCode,
                                     const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinRoomReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -297,7 +299,7 @@ namespace ComponentEngine::Photon
                                           int errorCode,
                                           const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinRandomRoomReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -307,7 +309,7 @@ namespace ComponentEngine::Photon
         }
         virtual void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "leaveRoomReturn" << std::endl;
 #endif
             playerList.clear();
@@ -319,7 +321,7 @@ namespace ComponentEngine::Photon
         }
         virtual void joinLobbyReturn(void) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "joinLobbyReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -329,7 +331,7 @@ namespace ComponentEngine::Photon
         }
         virtual void leaveLobbyReturn(void) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "leaveLobbyReturn" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
@@ -339,7 +341,7 @@ namespace ComponentEngine::Photon
         }
         virtual void onFindFriendsResponse(void) override
         {
-#ifdef DEBUG
+#ifdef PhotonDEBUG
             std::cout << "onFindFriendsResponse" << std::endl;
 #endif
             for (AttachableComponentPhotonCallbacks* observer : observers)

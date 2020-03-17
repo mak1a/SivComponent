@@ -7,4 +7,7 @@
 class Matching : public ComponentEngine::IScene
 {
     void Setup();
+
+public:
+    static int GameStartTime;
 };

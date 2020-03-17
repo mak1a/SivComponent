@@ -89,6 +89,11 @@ namespace ComponentEngine
             }
         }
 
+        virtual bool _initialized() override final
+        {
+            return initialized;
+        }
+
     public:
         virtual ~AttachableComponent() = default;
     };

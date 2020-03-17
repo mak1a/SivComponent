@@ -9,6 +9,8 @@
 
 using namespace ComponentEngine;
 
+int Matching::GameStartTime = 0;
+
 class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPhotonCallbacks
 {
     std::shared_ptr<ComponentEngine::Photon::NetworkSystem> system;
@@ -18,20 +20,11 @@ class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPho
     void Start2() override
     {
         text = GetGameObject().lock()->GetComponent<Siv::Text>();
-
-        system = GetGameObject()
-                     .lock()
-                     ->GetScene()
-                     .lock()
-                     ->GetSceneManager()
-                     ->GetCommon()
-                     .GetCommonObject("PhotonSystem")
-                     ->GetComponent<ComponentEngine::Photon::NetworkSystem>();
     }
 
     void UpdateDisplay()
     {
-        auto plist = system->GetPlayerList();
+        auto plist = networkSystem->GetPlayerList();
 
         s3d::String str;
         for (ExitGames::LoadBalancing::Player* player : plist)
@@ -60,8 +53,10 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
     void Start2() override
     {
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
-        system = object->GetComponent<ComponentEngine::Photon::NetworkSystem>();
-        system->Connect();
+
+        networkSystem->Connect();
+
+        networkSystem->GetClient().fetchServerTimestamp();
     }
 
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
@@ -86,7 +81,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
             return;
         }
-        system->createRoom(L"testroom", 4);
+        networkSystem->createRoom(L"testroom", 4);
         s3d::Print(U"connected!");
     };
 
@@ -98,7 +93,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
     {
         if (errorCode)
         {
-            system->Disconnect();
+            networkSystem->Disconnect();
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         }
     }
@@ -175,17 +170,21 @@ public:
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
 
-        system->GetClient().opRaiseEvent(true, 0, CustomEvent::GameStart);
+        system->GetClient().opRaiseEvent(true, (int)networkSystem->GetClient().getServerTime() + 5000, CustomEvent::GameStart);
+        Matching::GameStartTime = networkSystem->GetClient().getServerTime() + 5000;
+
         system->GetClient().getCurrentlyJoinedRoom().setIsOpen(false);
         manager->ChangeScene("Game");
     }
 
     virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
     {
-        if (eventCode == CustomEvent::GameStart)
+        if (eventCode != CustomEvent::GameStart)
         {
-            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Game");
+            return;
         }
+        Matching::GameStartTime = ExitGames::Common::ValueObject<int>(eventContent).getDataCopy();
+        GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Game");
     }
 };
 

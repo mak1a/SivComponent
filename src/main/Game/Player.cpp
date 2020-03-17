@@ -2,22 +2,22 @@
 #include "Player.hpp"
 #include <Siv3D.hpp>
 #include "../../CustomEventList.hpp"
+#include "../../Matching.hpp"
 #include "../../SivComponent/SivComponent.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
 void Player::Start2()
 {
-    if (isMine)
-    {
-        SendInstantiateMessage();
-    }
+    currentPos = targetPos = GetGameObject().lock()->transform().GetPosition();
+    ease = 0;
 }
 
 void Player::Update()
 {
     if (!isMine)
     {
+        SyncPosWithEasing();
         return;
     }
 
@@ -31,6 +31,15 @@ void Player::Update()
     auto pos = trans.GetPosition();
     pos += axis * 3;
     trans.SetPosition(pos);
+}
+
+void Player::SyncPosWithEasing()
+{
+    ease += s3d::Scene::DeltaTime() * 10;
+
+    double t = std::min(ease, 1.0);
+
+    GetGameObject().lock()->transform().SetPosition(currentPos.lerp(targetPos, t));
 }
 
 void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -51,7 +60,10 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
 
-    GetGameObject().lock()->transform().SetPosition({x, y});
+    currentPos = GetGameObject().lock()->transform().GetPosition();
+    targetPos = {x, y};
+    ease = 0;
+    // GetGameObject().lock()->transform().SetPosition({x, y});
 }
 
 void Player::SendInstantiateMessage()
@@ -85,11 +97,23 @@ void Player::SyncPos()
 
 s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(200, 200), s3d::Vec2(400, 200), s3d::Vec2(200, 400), s3d::Vec2(400, 400)};
 
-void PlayerCreator::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+//----------------------------------
+
+//プレイヤーを生成
+void PlayerMaster::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
     if (eventCode != CustomEvent::PlayerInit)
     {
         return;
+    }
+
+    //初期化済みなら弾く
+    for (const auto& n : players)
+    {
+        if (n->playerNr == playerNr)
+        {
+            return;
+        }
     }
 
     ExitGames::Common::Dictionary<nByte, double> dic =
@@ -100,7 +124,56 @@ void PlayerCreator::customEventAction(int playerNr, nByte eventCode, const ExitG
     auto obj = GetGameObject().lock();
     auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player", obj);
 
+    s3d::Print(s3d::Vec2(x, y));
     otherplayer->transform().SetPosition({x, y});
+    s3d::Print(otherplayer->transform().GetPosition());
 
-    otherplayer->GetComponent<Player>()->playerNr = playerNr;
+    auto player = otherplayer->GetComponent<Player>();
+    player->playerNr = playerNr;
+    players.push_back(player);
+}
+
+//部屋から退場したら消す
+void PlayerMaster::leaveRoomEventAction(int playerNr, bool isInactive)
+{
+    auto end = players.end();
+    for (auto player = players.begin(); player != end; ++player)
+    {
+        if ((*player)->playerNr == playerNr)
+        {
+            GetGameObject().lock()->GetScene().lock()->Destroy((*player)->GetGameObject().lock());
+
+            players.erase(player);
+
+            return;
+        }
+    }
+}
+
+void PlayerMaster::Start2()
+{
+    players.reserve(4);
+
+    //送り続ける
+    initsync = Utilities::IntervalCall(50, [&]() { players[0]->SendInstantiateMessage(); });
+}
+
+void PlayerMaster::Update()
+{
+    if (initsync.IsStop())
+    {
+        return;
+    }
+
+    if (Matching::GameStartTime - networkSystem->GetClient().getServerTime() < 0)
+    {
+        s3d::Print(U"Start!");
+        for (const auto& x : players)
+        {
+            s3d::Print(x->playerNr);
+        }
+        initsync.Stop();
+    }
+
+    initsync.Run();
 }
