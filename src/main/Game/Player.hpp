@@ -11,6 +11,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
 {
     void Start2() override;
     void Update() override;
+    void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
     bool isMine;
     // void Start2() override;
@@ -33,13 +34,8 @@ public:
     void SendInstantiateMessage();
     void SyncPos();
 
-    void PrintCall()
-    {
-        s3d::Print(U"call");
-    }
-
     Player()
-        : syncpos((int32_t)1000, [&]() { PrintCall(); })
+        : syncpos((int32_t)1000, [&]() { SyncPos(); })
     {
         isMine = false;
     }
