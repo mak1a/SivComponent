@@ -2,14 +2,20 @@
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
+#include "../../Utilities/IntervalCall.hpp"
 #include "PhotonComponent.hpp"
 
 using namespace ComponentEngine;
 
 class Player : public Photon::AttachableComponentPhotonCallbacks
 {
+    void Start2() override;
+    void Update() override;
+
     bool isMine;
     // void Start2() override;
+
+    Utilities::IntervalCall syncpos;
 
 public:
     int playerNr;
@@ -25,8 +31,15 @@ public:
     }
 
     void SendInstantiateMessage();
+    void SyncPos();
+
+    void PrintCall()
+    {
+        s3d::Print(U"call");
+    }
 
     Player()
+        : syncpos((int32_t)1000, [&]() { PrintCall(); })
     {
         isMine = false;
     }

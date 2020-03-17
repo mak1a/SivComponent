@@ -26,7 +26,7 @@ class Game : public ComponentEngine::IScene
         auto player = mainplayerobj->GetComponent<Player>();
         player->SetMine(true);
         player->playerNr = system->GetClient().getLocalPlayer().getNumber();
-        player->SendInstantiateMessage();
+//        player->SendInstantiateMessage();
 
         players->AddChild(mainplayerobj);
     }
