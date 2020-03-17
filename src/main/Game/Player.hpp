@@ -43,7 +43,7 @@ public:
 
     Player()
         //秒間10同期
-        : syncpos((int32_t)(1000 / 10), [&]() { SyncPos(); })
+        : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
     {
         isMine = false;
         spd = 3.0;

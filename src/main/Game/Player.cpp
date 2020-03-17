@@ -45,10 +45,10 @@ void Player::SyncPosWithEasing()
     auto diff = targetPos - pos;
 
     //移動速度を調整
-    if (diff.length() > spd)
+    if (diff.length() > spd * 1.03)
     {
         diff.normalize();
-        diff *= spd;
+        diff *= spd * 1.03;
     }
 
     //移動
@@ -88,7 +88,7 @@ void Player::SendInstantiateMessage()
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
 
-    networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerInit);
+    networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerInit);
 
     if (isMine)
     {
