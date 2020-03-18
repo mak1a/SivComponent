@@ -81,7 +81,9 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
             return;
         }
-        networkSystem->createRoom(L"testroom", 4);
+        // networkSystem->createRoom(L"testroom", 4);
+
+        networkSystem->GetClient().opJoinRandomOrCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions(), ExitGames::Common::Hashtable(), 4);
         s3d::Print(U"connected!");
     };
 

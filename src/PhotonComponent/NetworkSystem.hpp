@@ -60,6 +60,12 @@ namespace ComponentEngine::Photon
 
         void update_playerlist()
         {
+            if (!mLoadBalancingClient.getIsInRoom())
+            {
+                playerList.clear();
+                return;
+            }
+
             auto p = mLoadBalancingClient.getCurrentlyJoinedRoom().getPlayers();
             auto len = p.getSize();
             playerList.resize(len);
