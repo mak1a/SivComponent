@@ -13,6 +13,8 @@ class Game : public ComponentEngine::IScene
 
     void Setup() override
     {
+        s3d::Scene::SetBackground(s3d::Palette::Lightgrey);
+
         auto players = CreateAndGetObject();
         players->SetName("Players");
 

@@ -9,21 +9,24 @@ namespace ComponentEngine::Siv
 {
     class Line : public ComponentEngine::AttachableComponent
     {
+        using Shape = s3d::Line;
+
     private:
-        double length;
+        Shape shape;
+
         double thickness;
         s3d::ColorF color;
 
     public:
-        Line& SetLength(double _length)
+        Line& SetShape(const Shape& _shape)
         {
-            length = _length;
+            shape = _shape;
             return *this;
         }
 
-        double GetLength() const noexcept
+        Shape GetShape() const noexcept
         {
-            return length;
+            return shape;
         }
 
         Line& SetThickness(double _thickness)
@@ -51,30 +54,73 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            s3d::Line(0, 0, length, 0).draw(thickness, color);
+            shape.draw(thickness, color);
         }
     };
 
     class Triangle : public ComponentEngine::AttachableComponent
     {
-    public:
-        s3d::Triangle triangle;
+        using Shape = s3d::Triangle;
+
+    private:
+        s3d::Triangle shape;
         s3d::ColorF color;
+
+    public:
+        Triangle& SetShape(const Shape& _shape)
+        {
+            shape = _shape;
+            return *this;
+        }
+
+        Shape GetShape() const noexcept
+        {
+            return shape;
+        }
+
+        Triangle& SetColor(const s3d::ColorF& _color)
+        {
+            color = _color;
+            return *this;
+        }
+
+        s3d::ColorF GetColor() const noexcept
+        {
+            return color;
+        }
+
+        Triangle()
+            : shape(100)
+        {
+        }
 
     protected:
         void Draw() const override
         {
-            triangle.draw(color);
+            shape.draw(color);
         }
     };
 
     class Circle : public ComponentEngine::AttachableComponent
     {
+        using Shape = s3d::Triangle;
+
     private:
+        Shape shape;
         s3d::ColorF color;
-        double r;
 
     public:
+        Circle& SetShape(const Shape& _shape)
+        {
+            shape = _shape;
+            return *this;
+        }
+
+        Shape GetShape() const noexcept
+        {
+            return shape;
+        }
+
         Circle& SetColor(const s3d::ColorF& _color)
         {
             color = _color;
@@ -86,46 +132,61 @@ namespace ComponentEngine::Siv
             return color;
         }
 
-        Circle& SetR(double _r)
-        {
-            r = _r;
-            return *this;
-        }
-
-        double GetR() const noexcept
-        {
-            return r;
-        }
-
         Circle()
             : color(s3d::Palette::White)
-            , r(50)
+            , shape(0, 0, 100)
         {
         }
 
     protected:
         void Draw() const override
         {
-            s3d::Circle(0, 0, r).draw(color);
+            shape.draw(color);
         }
     };
 
     class Rect : public ComponentEngine::AttachableComponent
     {
-    public:
-        s3d::Vec2 Size;
+        using Shape = s3d::RectF;
+        using ThisType = Rect;
+
+    private:
+        Shape shape;
         s3d::ColorF color;
 
+    public:
+        ThisType& SetShape(const Shape& _shape)
+        {
+            shape = _shape;
+            return *this;
+        }
+
+        Shape GetShape() const noexcept
+        {
+            return shape;
+        }
+
+        ThisType& SetColor(const s3d::ColorF& _color)
+        {
+            color = _color;
+            return *this;
+        }
+
+        s3d::ColorF GetColor() const noexcept
+        {
+            return color;
+        }
+
         Rect()
-            : Size(100, 100)
-            , color(s3d::Palette::White)
+            : color(s3d::Palette::White)
+            , shape(0, 0, 100, 100)
         {
         }
 
     protected:
         void Draw() const override
         {
-            s3d::RectF(0, 0, Size).draw(color);
+            shape.draw(color);
         }
     };
 }  // namespace ComponentEngine::Siv

@@ -58,7 +58,7 @@ namespace ComponentEngine
         void AddObject(const std::shared_ptr<GameObject>& object)
         {
             //無効なポインタならエラー
-            if (object == nullptr)
+            if (!object)
             {
 #ifdef DEBUG
                 std::cout << "Object Pointer is Null." << std::endl;

@@ -7,6 +7,14 @@ namespace ComponentEngine
 {
     class SceneManager
     {
+        static SceneManager* manager;
+
+    public:
+        static SceneManager& GetSceneManager()
+        {
+            return *manager;
+        }
+
     private:
         using KeyType = IScene::KeyType;
 
@@ -23,7 +31,15 @@ namespace ComponentEngine
     public:
         SceneManager()
         {
+            assert(manager == nullptr);
+
+            manager = this;
             // commonMap = std::make_shared<ObjectMap>();
+        }
+
+        IScene& GetCurrentScene()
+        {
+            return *currentScene;
         }
 
         //シーンを登録します
@@ -96,7 +112,10 @@ namespace ComponentEngine
             return common;
         }
 
-        ~SceneManager() {}
+        ~SceneManager()
+        {
+            manager = nullptr;
+        }
 
         void End()
         {

@@ -10,7 +10,8 @@ using dictype = ExitGames::Common::Dictionary<nByte, double>;
 void Player::Start2()
 {
     targetPos = GetGameObject().lock()->transform().GetPosition();
-    ease = 0;
+
+    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(isMine ? s3d::Palette::Limegreen : s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2));
 }
 
 void Player::Update()
@@ -33,22 +34,22 @@ void Player::Update()
 
     auto& trans = GetGameObject().lock()->transform();
     auto pos = trans.GetPosition();
-    pos += axis * spd;
+    pos += axis * spd * s3d::Scene::DeltaTime();
     trans.SetPosition(pos);
 }
 
 void Player::SyncPosWithEasing()
 {
-    ease += s3d::Scene::DeltaTime() * 8.0;
-
     auto pos = GetGameObject().lock()->transform().GetPosition();
     auto diff = targetPos - pos;
 
+    //ラグを考慮して少し早く
+    const auto maxspd = spd * s3d::Scene::DeltaTime() * 1.01;
     //移動速度を調整
-    if (diff.length() > spd * 1.03)
+    if (diff.length() > maxspd)
     {
         diff.normalize();
-        diff *= spd * 1.03;
+        diff *= maxspd;
     }
 
     //移動
@@ -75,7 +76,6 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
 
     //到着先を終点に設定
     targetPos = {x, y};
-    ease = 0;
     // GetGameObject().lock()->transform().SetPosition({x, y});
 }
 
@@ -89,11 +89,6 @@ void Player::SendInstantiateMessage()
     dic.put(DataName::Player::posY, pos.y);
 
     networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerInit);
-
-    if (isMine)
-    {
-        GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(s3d::Palette::Orange);
-    }
 }
 
 void Player::SyncPos()

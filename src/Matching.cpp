@@ -81,8 +81,6 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
             return;
         }
-        // networkSystem->createRoom(L"testroom", 4);
-
         networkSystem->GetClient().opJoinRandomOrCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions(), ExitGames::Common::Hashtable(), 4);
         s3d::Print(U"connected!");
     };
@@ -196,7 +194,7 @@ void Matching::Setup()
     auto list = CreateAndGetObject();
     list->transform().SetPosition({100, 100});
     list->AddComponent<PlayerListDisplay>();
-    list->AddComponent<Siv::Text>()->SetText(U"マッチング中…");
+    list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください");
 
     auto bt = CreateAndGetObject();
     bt->AddComponent<TitleBt>();

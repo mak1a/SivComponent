@@ -2,4 +2,5 @@
 
 namespace ComponentEngine
 {
+    SceneManager* SceneManager::manager = nullptr;
 }  // namespace ComponentEngine

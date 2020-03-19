@@ -5,7 +5,9 @@
 #define NO_S3D_USING
 #include <Siv3D.hpp>
 #include "../../Utilities/IntervalCall.hpp"
+#include "Colliders.hpp"
 #include "PhotonComponent.hpp"
+#include "SivComponent.hpp"
 
 using namespace ComponentEngine;
 
@@ -17,7 +19,6 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
 
     bool isMine;
     s3d::Vec2 targetPos;
-    double ease;
 
     // void Start2() override;
 
@@ -46,7 +47,7 @@ public:
         : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
     {
         isMine = false;
-        spd = 3.0;
+        spd = 130.0;
     }
 
 private:
