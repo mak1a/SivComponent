@@ -116,15 +116,16 @@ namespace ComponentEngine
             }
 
             // Start呼び出し
-            masterObject->components_start();
+            masterObject->components_start(s3d::Mat3x2::Identity());
 
+            //衝突判定コール
             colsys.CollisionCall();
 
-            masterObject->components_update();
+            masterObject->components_update(s3d::Mat3x2::Identity());
 
-            masterObject->components_lateUpdate();
+            masterObject->components_lateUpdate(s3d::Mat3x2::Identity());
 
-            masterObject->components_draw();
+            masterObject->components_draw(s3d::Mat3x2::Identity());
 
             //消去処理
             for (auto& obj : destroyList)

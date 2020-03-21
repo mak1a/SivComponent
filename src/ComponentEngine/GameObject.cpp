@@ -7,22 +7,29 @@
 
 namespace ComponentEngine
 {
-    void GameObject::components_start()
+    void GameObject::components_start(const s3d::Mat3x2& _matrix)
     {
-        //全部初期化後は呼び出しが無駄なので処理カット用
-        initializedAll = true;
+        _transform.update_matrix(_matrix);
 
-        for (auto& component : components)
+        if (!initializedAll)
         {
-            if (!component->GetActive())
-            {
-                initializedAll = false;
-                continue;
-            }
+            //全部初期化後は呼び出しが無駄なので処理カット用
+            initializedAll = true;
 
-            component->call_start();
+            for (auto& component : components)
+            {
+                if (!component->GetActive())
+                {
+                    //ひとつでも初期化できていなかったら次もチェックを行う
+                    initializedAll = false;
+                    continue;
+                }
+
+                component->call_start();
+            }
         }
 
+        //子オブジェクトも初期化済みだったら飛ばすようにしたい
         for (const auto& child : children)
         {
             if (!child->GetActive())
@@ -30,14 +37,13 @@ namespace ComponentEngine
                 continue;
             }
             // TODO: Transformの処理
-            child->components_start();
+            child->components_start(_transform.matrix);
         }
     }
 
-    void GameObject::components_update()
+    void GameObject::components_update(const s3d::Mat3x2& _matrix)
     {
-        // 変換行列を作成
-        auto trans = _transform.PushTransform();
+        _transform.update_matrix(_matrix);
 
         for (auto& component : components)
         {
@@ -54,12 +60,14 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_update();
+            child->components_update(_transform.matrix);
         }
     }
 
-    void GameObject::components_lateUpdate()
+    void GameObject::components_lateUpdate(const s3d::Mat3x2& _matrix)
     {
+        _transform.update_matrix(_matrix);
+
         for (auto& component : components)
         {
             if (!component->GetActive() || !component->_initialized())
@@ -75,14 +83,13 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_lateUpdate();
+            child->components_lateUpdate(_transform.matrix);
         }
     }
 
-    void GameObject::components_draw() const
+    void GameObject::components_draw(const s3d::Mat3x2& _matrix) const
     {
-        //変換行列を作成
-        auto trans = _transform.PushTransform();
+        _transform.update_matrix(_matrix);
 
         // z情報を設定
         // s3d::Graphics2D::SetZ();
@@ -104,7 +111,7 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_draw();
+            child->components_draw(_transform.matrix);
         }
     }
 

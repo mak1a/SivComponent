@@ -6,4 +6,6 @@
 #include "Text.hpp"
 #include "Utils.hpp"
 
-#include "Colliders.hpp"
+#include "Collision/CollisionObject.hpp"
+#include "Collision/Colliders.hpp"
+

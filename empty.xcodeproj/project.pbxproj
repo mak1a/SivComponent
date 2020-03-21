@@ -64,6 +64,7 @@
 		8A2071B7240017A300284059 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B5240017A300284059 /* Transform.cpp */; };
 		8A2071BA2400321000284059 /* IScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B82400321000284059 /* IScene.cpp */; };
 		8A2628392423B9350011FCF2 /* CollisionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628362423B9350011FCF2 /* CollisionObject.cpp */; };
+		8A26283C242663780011FCF2 /* test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26283A242663780011FCF2 /* test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -159,6 +160,8 @@
 		8A2628352423B9350011FCF2 /* ICollider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ICollider.hpp; sourceTree = "<group>"; };
 		8A2628362423B9350011FCF2 /* CollisionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionObject.cpp; sourceTree = "<group>"; };
 		8A2628372423B9350011FCF2 /* CollisionObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollisionObject.hpp; sourceTree = "<group>"; };
+		8A26283A242663780011FCF2 /* test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test.cpp; sourceTree = "<group>"; };
+		8A26283B242663780011FCF2 /* test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = test.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -237,6 +240,8 @@
 				8A1476CC2418D9A700389E76 /* Title.cpp */,
 				8A1476CD2418D9A700389E76 /* Title.hpp */,
 				8A1476D9241BF22000389E76 /* CustomEventList.hpp */,
+				8A26283A242663780011FCF2 /* test.cpp */,
+				8A26283B242663780011FCF2 /* test.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -469,6 +474,7 @@
 				8A1476B82416CA1300389E76 /* NetworkSystem.cpp in Sources */,
 				8A1476E6241FE7F600389E76 /* SceneCommon.cpp in Sources */,
 				8A1476D12418DAD400389E76 /* Gui.cpp in Sources */,
+				8A26283C242663780011FCF2 /* test.cpp in Sources */,
 				8A2071BA2400321000284059 /* IScene.cpp in Sources */,
 				8A1476DF241C92FC00389E76 /* Game.cpp in Sources */,
 				8A2071B7240017A300284059 /* Transform.cpp in Sources */,

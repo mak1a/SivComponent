@@ -1,6 +1,7 @@
 #pragma once
 
 #define NO_S3D_USING
+#include <Siv3D.hpp>
 #include <boost/noncopyable.hpp>
 #include <list>
 #include <memory>
@@ -371,13 +372,13 @@ namespace ComponentEngine
         }
 
     public:
-        void components_start();
+        void components_start(const s3d::Mat3x2&);
 
-        void components_update();
+        void components_update(const s3d::Mat3x2&);
 
-        void components_lateUpdate();
+        void components_lateUpdate(const s3d::Mat3x2&);
 
-        void components_draw() const;
+        void components_draw(const s3d::Mat3x2&) const;
 
         void components_call_collisionstay(std::shared_ptr<GameObject>& object);
     };  // namespace ComponentEngine
