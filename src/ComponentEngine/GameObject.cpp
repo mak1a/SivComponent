@@ -107,4 +107,12 @@ namespace ComponentEngine
             child->components_draw();
         }
     }
+
+    void GameObject::components_call_collisionstay(std::shared_ptr<GameObject>& object)
+    {
+        for (auto& c : components)
+        {
+            c->OnStayCollision(object);
+        }
+    }
 }  // namespace ComponentEngine

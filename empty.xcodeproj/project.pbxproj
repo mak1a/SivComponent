@@ -63,7 +63,7 @@
 		8A2071B4240016C400284059 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B2240016C400284059 /* GameObject.cpp */; };
 		8A2071B7240017A300284059 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B5240017A300284059 /* Transform.cpp */; };
 		8A2071BA2400321000284059 /* IScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2071B82400321000284059 /* IScene.cpp */; };
-		8A2628192421E1A50011FCF2 /* Hitbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628172421E1A50011FCF2 /* Hitbox.cpp */; };
+		8A2628392423B9350011FCF2 /* CollisionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628362423B9350011FCF2 /* CollisionObject.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -152,12 +152,13 @@
 		8A2071B6240017A300284059 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
 		8A2071B82400321000284059 /* IScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IScene.cpp; sourceTree = "<group>"; };
 		8A2071B92400321000284059 /* IScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IScene.hpp; sourceTree = "<group>"; };
-		8A2628172421E1A50011FCF2 /* Hitbox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Hitbox.cpp; sourceTree = "<group>"; };
-		8A2628182421E1A50011FCF2 /* Hitbox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Hitbox.hpp; sourceTree = "<group>"; };
-		8A26281B24227D300011FCF2 /* ICollider.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ICollider.hpp; sourceTree = "<group>"; };
 		8A26282C2423363E0011FCF2 /* Colliders.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Colliders.hpp; sourceTree = "<group>"; };
 		8A26282F242354590011FCF2 /* CollisionLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CollisionLayer.hpp; sourceTree = "<group>"; };
 		8A262831242355340011FCF2 /* ObjectTag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjectTag.hpp; sourceTree = "<group>"; };
+		8A2628342423B9350011FCF2 /* CollisionSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollisionSystem.hpp; sourceTree = "<group>"; };
+		8A2628352423B9350011FCF2 /* ColliderBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColliderBase.hpp; sourceTree = "<group>"; };
+		8A2628362423B9350011FCF2 /* CollisionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionObject.cpp; sourceTree = "<group>"; };
+		8A2628372423B9350011FCF2 /* CollisionObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollisionObject.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -300,7 +301,7 @@
 		8A14769F24113B7B00389E76 /* SivComponent */ = {
 			isa = PBXGroup;
 			children = (
-				8A26282C2423363E0011FCF2 /* Colliders.hpp */,
+				8A2628322423B64C0011FCF2 /* Collision */,
 				8A1476A024113B9B00389E76 /* Text.cpp */,
 				8A1476A124113B9B00389E76 /* Text.hpp */,
 				8A1476A324113BAC00389E76 /* SivComponent.cpp */,
@@ -355,7 +356,6 @@
 		8A2071BB2400331400284059 /* ComponentEngine */ = {
 			isa = PBXGroup;
 			children = (
-				8A26281B24227D300011FCF2 /* ICollider.hpp */,
 				8A33EC6B240AC415006118AB /* IComponent.hpp */,
 				8A2071B0240009E300284059 /* ComponentEngine.cpp */,
 				8A2071AE240009C400284059 /* ComponentEngine.hpp */,
@@ -371,8 +371,6 @@
 				8A1476B32414FD8000389E76 /* SceneManager.hpp */,
 				8A1476E4241FE7F600389E76 /* SceneCommon.cpp */,
 				8A1476E5241FE7F600389E76 /* SceneCommon.hpp */,
-				8A2628172421E1A50011FCF2 /* Hitbox.cpp */,
-				8A2628182421E1A50011FCF2 /* Hitbox.hpp */,
 			);
 			path = ComponentEngine;
 			sourceTree = "<group>";
@@ -384,6 +382,18 @@
 				8A26282F242354590011FCF2 /* CollisionLayer.hpp */,
 			);
 			path = UserDefinition;
+			sourceTree = "<group>";
+		};
+		8A2628322423B64C0011FCF2 /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				8A2628352423B9350011FCF2 /* ColliderBase.hpp */,
+				8A2628362423B9350011FCF2 /* CollisionObject.cpp */,
+				8A2628372423B9350011FCF2 /* CollisionObject.hpp */,
+				8A2628342423B9350011FCF2 /* CollisionSystem.hpp */,
+				8A26282C2423363E0011FCF2 /* Colliders.hpp */,
+			);
+			path = Collision;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -469,7 +479,6 @@
 				8A1476CE2418D9A700389E76 /* Title.cpp in Sources */,
 				2C17789A1CE0AA7C00BB8AD0 /* Main.cpp in Sources */,
 				8A1476C12416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp in Sources */,
-				8A2628192421E1A50011FCF2 /* Hitbox.cpp in Sources */,
 				8A1476A8241164C400389E76 /* SimpleShape.cpp in Sources */,
 				8A2071B1240009E300284059 /* ComponentEngine.cpp in Sources */,
 				8A1476D7241A9AC400389E76 /* PhotonUtilities.cpp in Sources */,
@@ -478,6 +487,7 @@
 				8A1476A524113BAC00389E76 /* SivComponent.cpp in Sources */,
 				8A1476EB24209A1D00389E76 /* InstantiateEntry.cpp in Sources */,
 				8A1476D42419F02F00389E76 /* TextConvert.cpp in Sources */,
+				8A2628392423B9350011FCF2 /* CollisionObject.cpp in Sources */,
 				8A1476E82420924800389E76 /* Matching.cpp in Sources */,
 				8A14767F240FA72800389E76 /* Utilities.cpp in Sources */,
 				8A1476B42414FD8000389E76 /* SceneManager.cpp in Sources */,

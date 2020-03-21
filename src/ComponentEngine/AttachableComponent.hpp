@@ -4,11 +4,13 @@
 #define NO_S3D_USING
 #include <boost/noncopyable.hpp>
 #include <memory>
-#include "GameObject.hpp"
+// #include "GameObject.hpp"
 #include "IComponent.hpp"
 
 namespace ComponentEngine
 {
+    class GameObject;
+
     //全てのコンポーネントの基本
     class AttachableComponent : public IComponent
     {
@@ -64,7 +66,8 @@ namespace ComponentEngine
         virtual void Update() override {}
         virtual void LateUpdate() override {}
         virtual void Draw() const override {}
-        virtual void OnDestroy() override{};
+        virtual void OnDestroy() override {}
+        virtual void OnStayCollision(std::shared_ptr<GameObject>&) override {}
 
         //これ自体の生成は禁止する
         AttachableComponent()

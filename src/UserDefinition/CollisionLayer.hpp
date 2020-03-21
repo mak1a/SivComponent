@@ -12,4 +12,5 @@ namespace ComponentEngine::UserDef
         Field,
         COLLISIONLAYER_SIZE,
     };
+constexpr    size_t COLLISIONLAYER_SIZE = static_cast<size_t>(CollisionLayer::COLLISIONLAYER_SIZE);
 }  // namespace ComponentEngine::UserDef

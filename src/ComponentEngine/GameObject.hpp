@@ -8,6 +8,8 @@
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
+#include "../SivComponent/Collision/CollisionSystem.hpp"
+
 namespace ComponentEngine
 {
     using Transform = SivTransform2D;
@@ -19,6 +21,8 @@ namespace ComponentEngine
         friend class IScene;
         // public:
         //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
+        
+        ComponentEngine::Collision::CollisionSystem colsys;
 
     public:
         // GameObjectは必ずtransformを持つ
@@ -78,6 +82,8 @@ namespace ComponentEngine
         }
 
     private:
+        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
+        //メモリリークのリスクの方が大きい気もする。
         std::list<std::shared_ptr<IComponent>> components;
 
         //親子オブジェクト
@@ -118,6 +124,7 @@ namespace ComponentEngine
             _transform = trans;
         }
 
+        // make_shared書くの面倒なのでね
         static std::shared_ptr<GameObject> Create()
         {
             return std::make_shared<GameObject>();
@@ -134,6 +141,82 @@ namespace ComponentEngine
             c->call_awake();
             initializedAll = false;
             return c;
+        }
+
+        ///削除成功したらtrue
+        template <class Component>
+        bool DeleteComponent()
+        {
+            auto end = components.end();
+
+            for (auto c = components.begin(); c != end; ++c)
+            {
+                if (std::dynamic_pointer_cast<Component>(c))
+                {
+                    components.erase(c);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        template <class T>
+        std::shared_ptr<T> GetComponent() const
+        {
+            std::shared_ptr<T> component;
+
+            for (const auto& c : components)
+            {
+                if ((component = std::dynamic_pointer_cast<T>(c)))
+                {
+                    return component;
+                }
+            }
+            return nullptr;
+        }
+
+        template <class T>
+        std::shared_ptr<std::vector<std::shared_ptr<T>>> GetComponents() const
+        {
+            std::shared_ptr<std::vector<std::shared_ptr<T>>> _components;
+
+            for (const auto& c : components)
+            {
+                if (std::dynamic_pointer_cast<T>(c))
+                {
+                    _components->push_back(c);
+                }
+            }
+            return _components;
+        }
+
+        template <class T>
+        std::weak_ptr<T> GetComponentWeak() const
+        {
+            std::weak_ptr<T> component;
+            for (const auto& c : components)
+            {
+                if ((component = std::dynamic_pointer_cast<T>(c)))
+                {
+                    return component;
+                }
+            }
+            return std::weak_ptr<T>();
+        }
+
+        template <class T>
+        std::shared_ptr<std::vector<std::weak_ptr<T>>> GetComponentsWeak() const
+        {
+            std::shared_ptr<std::vector<std::weak_ptr<T>>> _components;
+
+            for (const auto& c : components)
+            {
+                if (std::dynamic_pointer_cast<T>(c))
+                {
+                    _components->push_back(c);
+                }
+            }
+            return _components;
         }
 
         void AddChild(const std::shared_ptr<GameObject>& child)
@@ -238,35 +321,6 @@ namespace ComponentEngine
         }
 
     public:
-        template <class T>
-        std::shared_ptr<T> GetComponent() const
-        {
-            std::shared_ptr<T> component;
-
-            for (const auto& c : components)
-            {
-                if ((component = std::dynamic_pointer_cast<T>(c)))
-                {
-                    return component;
-                }
-            }
-            return nullptr;
-        }
-
-        template <class T>
-        std::weak_ptr<T> GetComponentWeak() const
-        {
-            std::weak_ptr<T> component;
-            for (const auto& c : components)
-            {
-                if ((component = std::dynamic_pointer_cast<T>(c)))
-                {
-                    return component;
-                }
-            }
-            return std::weak_ptr<T>();
-        }
-
         //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
         //すべての子オブジェクトを破壊する
         void DestroyAll()
@@ -318,12 +372,14 @@ namespace ComponentEngine
         }
 
     public:
-        virtual void components_start() final;
+        void components_start();
 
-        virtual void components_update() final;
+        void components_update();
 
-        virtual void components_lateUpdate() final;
+        void components_lateUpdate();
 
-        virtual void components_draw() const final;
+        void components_draw() const;
+
+        void components_call_collisionstay(std::shared_ptr<GameObject>& object);
     };  // namespace ComponentEngine
 }  // namespace ComponentEngine
