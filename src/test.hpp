@@ -48,6 +48,10 @@ class TestScene : public ComponentEngine::IScene
         mouse->AddComponent<Siv::Circle>()->SetShape({0, 0, 15}).SetColor(s3d::Palette::Lightcoral);
         mouse->AddComponent<Collision::CircleCollider>()->SetShape({0, 0, 15});
         mouse->AddComponent<StayPrint>();
+
+        auto moveobj = CreateAndGetObject();
+        moveobj->transform().SetScale(2).SetRotateByAngle(30);
+        moveobj->AddChild(rec);
     }
 };
 
