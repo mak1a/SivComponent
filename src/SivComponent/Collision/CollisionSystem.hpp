@@ -3,17 +3,17 @@
 #define NO_S3D_USING
 #include <Siv3D.hpp>
 
+#include <boost/noncopyable.hpp>
 #include <list>
 
+#include "../../ComponentEngine/GameObject.hpp"
 #include "../../UserDefinition/CollisionLayer.hpp"
-#include "ColliderBase.hpp"
 #include "CollisionObject.hpp"
+#include "ICollider.hpp"
 
 namespace ComponentEngine::Collision
 {
-    //    class CollisionObject;
-
-    class CollisionSystem
+    class CollisionSystem : boost::noncopyable
     {
     private:
         using Layers = std::list<CollisionObject*>;
@@ -23,6 +23,12 @@ namespace ComponentEngine::Collision
         std::array<Layers, UserDef::COLLISIONLAYER_SIZE> colliders;
 
     public:
+        
+        CollisionSystem()
+        {
+            
+        }
+        
         void Register(CollisionObject* collider)
         {
             int layer = collider->GetLayer();
@@ -51,8 +57,9 @@ namespace ComponentEngine::Collision
         void CollisionCall()
         {
             std::vector<std::pair<Layer, Layer>> table;
+            // PlayerとEnemyの仮判定
             table.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Player, (Layer)UserDef::CollisionLayer::Enemy));
-
+            collisionTable = table;
             for (const auto& pair : collisionTable)
             {
                 auto& colsa = colliders[pair.first];
@@ -62,8 +69,16 @@ namespace ComponentEngine::Collision
                 {
                     for (CollisionObject* b : colsb)
                     {
-                        if (a->intersects(b))
+                        // GameObject同士の判定
+                        if (b->intersects(a))
                         {
+                            //それぞれのGameObjectのAPIコール
+                            auto obja = a->GetGameObject().lock();
+                            auto objb = b->GetGameObject().lock();
+
+                            obja->components_call_collisionstay(objb);
+
+                            objb->components_call_collisionstay(obja);
                         }
                     }
                 }

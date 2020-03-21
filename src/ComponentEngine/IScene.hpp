@@ -7,23 +7,35 @@
 #include <iostream>
 #endif
 
+#include <boost/noncopyable.hpp>
+
 #include "AttachableComponent.hpp"
 #include "GameObject.hpp"
+
+#include "../SivComponent/Collision/CollisionSystem.hpp"
+
 namespace ComponentEngine
 {
     class SceneManager;
 
-    class IScene : public std::enable_shared_from_this<IScene>
+    class IScene : public std::enable_shared_from_this<IScene>, boost::noncopyable
     {
     public:
         using KeyType = std::string;
 
     private:
+        ComponentEngine::Collision::CollisionSystem colsys;
+
         std::shared_ptr<GameObject> masterObject;
 
         std::list<std::weak_ptr<GameObject>> destroyList;
 
     public:
+        ComponentEngine::Collision::CollisionSystem& GetCollisionSystem()
+        {
+            return colsys;
+        }
+
         //オブジェクト消去を予約
         void Destroy(std::weak_ptr<GameObject> object)
         {
@@ -105,6 +117,8 @@ namespace ComponentEngine
 
             // Start呼び出し
             masterObject->components_start();
+
+            colsys.CollisionCall();
 
             masterObject->components_update();
 

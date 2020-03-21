@@ -8,7 +8,7 @@
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
-#include "../SivComponent/Collision/CollisionSystem.hpp"
+// #include "../SivComponent/Collision/CollisionSystem.hpp"
 
 namespace ComponentEngine
 {
@@ -19,10 +19,9 @@ namespace ComponentEngine
     class GameObject final : public std::enable_shared_from_this<GameObject>, private boost::noncopyable
     {
         friend class IScene;
+        friend class CollisionSystem;
         // public:
         //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
-        
-        ComponentEngine::Collision::CollisionSystem colsys;
 
     public:
         // GameObjectは必ずtransformを持つ

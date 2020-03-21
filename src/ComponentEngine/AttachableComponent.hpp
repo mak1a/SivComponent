@@ -2,7 +2,6 @@
 #pragma once
 
 #define NO_S3D_USING
-#include <boost/noncopyable.hpp>
 #include <memory>
 // #include "GameObject.hpp"
 #include "IComponent.hpp"

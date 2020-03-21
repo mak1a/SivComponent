@@ -156,7 +156,7 @@
 		8A26282F242354590011FCF2 /* CollisionLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CollisionLayer.hpp; sourceTree = "<group>"; };
 		8A262831242355340011FCF2 /* ObjectTag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjectTag.hpp; sourceTree = "<group>"; };
 		8A2628342423B9350011FCF2 /* CollisionSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollisionSystem.hpp; sourceTree = "<group>"; };
-		8A2628352423B9350011FCF2 /* ColliderBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColliderBase.hpp; sourceTree = "<group>"; };
+		8A2628352423B9350011FCF2 /* ICollider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ICollider.hpp; sourceTree = "<group>"; };
 		8A2628362423B9350011FCF2 /* CollisionObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionObject.cpp; sourceTree = "<group>"; };
 		8A2628372423B9350011FCF2 /* CollisionObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollisionObject.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
@@ -387,7 +387,7 @@
 		8A2628322423B64C0011FCF2 /* Collision */ = {
 			isa = PBXGroup;
 			children = (
-				8A2628352423B9350011FCF2 /* ColliderBase.hpp */,
+				8A2628352423B9350011FCF2 /* ICollider.hpp */,
 				8A2628362423B9350011FCF2 /* CollisionObject.cpp */,
 				8A2628372423B9350011FCF2 /* CollisionObject.hpp */,
 				8A2628342423B9350011FCF2 /* CollisionSystem.hpp */,
