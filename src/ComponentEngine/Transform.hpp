@@ -16,6 +16,7 @@ namespace ComponentEngine
         double rotate;
         double scale;
 
+        //現在までのオブジェクト関係から計算されたマトリックス(自分の数値も含む)
         mutable s3d::Mat3x2 matrix;
 
         //描画順にのみ影響するz軸情報
@@ -116,6 +117,11 @@ namespace ComponentEngine
         {
             return s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale).inversed();
             // return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale), true);
+        }
+
+        [[nodiscard]] const s3d::Mat3x2 GetMatrix() const
+        {
+            return matrix;
         }
     };
 }  // namespace ComponentEngine

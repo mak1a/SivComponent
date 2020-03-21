@@ -3,6 +3,7 @@
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
+#include "Collision/ShapeTransform.hpp"
 #include "ComponentEngine.hpp"
 
 namespace ComponentEngine::Siv
@@ -54,7 +55,7 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            shape.draw(thickness, color);
+            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(thickness, color);
         }
     };
 
@@ -97,13 +98,13 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            shape.draw(color);
+            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
         }
     };
 
     class Circle : public ComponentEngine::AttachableComponent
     {
-        using Shape = s3d::Triangle;
+        using Shape = s3d::Circle;
 
     private:
         Shape shape;
@@ -141,7 +142,7 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            shape.draw(color);
+            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
         }
     };
 
@@ -186,7 +187,7 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            shape.draw(color);
+            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
         }
     };
 }  // namespace ComponentEngine::Siv

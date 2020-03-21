@@ -8,7 +8,7 @@ namespace ComponentEngine
     class IComponent
     {
     protected:
-        std::weak_ptr<GameObject> gameobject;
+        mutable std::weak_ptr<GameObject> gameobject;
 
     protected:
         virtual void call_awake() = 0;

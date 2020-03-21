@@ -37,53 +37,53 @@ namespace ComponentEngine::Collision
 
         virtual bool intersects(const s3d::Circle& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::Rect& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::RectF& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::Line& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::Triangle& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::Quad& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::RoundRect& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::Polygon& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
         virtual bool intersects(const s3d::LineString& other) const override
         {
-            return other.intersects(shape);
+            return other.intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
-//        virtual bool intersects(const ICollider& other) const override
+        //        virtual bool intersects(const ICollider& other) const override
         virtual bool intersects(ICollider* other) const override
         {
-            return other->intersects(shape);
+            return other->intersects(Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()));
         }
 
     private:
@@ -99,14 +99,15 @@ namespace ComponentEngine::Collision
     };
 
     using CircleCollider = Collider<s3d::Circle>;
-    using RectCollider = Collider<s3d::Rect>;
-    using RectFCollider = Collider<s3d::RectF>;
+    // using RectCollider = Collider<s3d::Rect>;
+    // using RectFCollider = Collider<s3d::RectF>;
+    using RectCollider = Collider<s3d::RectF>;
     using LineCollider = Collider<s3d::Line>;
-    using TriangleCollider = Collider<s3d::Triangle>;
+    // using TriangleCollider = Collider<s3d::Triangle>;
     using QuadCollider = Collider<s3d::Quad>;
-    using RoundRectCollider = Collider<s3d::RoundRect>;
-    using PolygonCollider = Collider<s3d::Polygon>;
-    using LineStringCollider = Collider<s3d::LineString>;
+    // using RoundRectCollider = Collider<s3d::RoundRect>;
+    // using PolygonCollider = Collider<s3d::Polygon>;
+    // using LineStringCollider = Collider<s3d::LineString>;
 
     // template <class Shape>
     // class Collider : public AttachableComponent, public ColliderBase

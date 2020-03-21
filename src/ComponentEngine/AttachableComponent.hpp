@@ -29,7 +29,7 @@ namespace ComponentEngine
         }
 
     public:
-        std::weak_ptr<GameObject> GetGameObject()
+        std::weak_ptr<GameObject> GetGameObject() const
         {
             return gameobject;
         }

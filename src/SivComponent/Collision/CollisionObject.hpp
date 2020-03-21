@@ -5,6 +5,7 @@
 #include "../../ComponentEngine/AttachableComponent.hpp"
 #include "../../UserDefinition/CollisionLayer.hpp"
 #include "ICollider.hpp"
+#include "ShapeTransform.hpp"
 
 namespace ComponentEngine::Collision
 {
@@ -23,7 +24,7 @@ namespace ComponentEngine::Collision
     public:
         CollisionObject(UserDef::CollisionLayer _layer, size_t collidernum = 1)
             : layer(static_cast<Layer>(_layer))
-        
+
         {
             colliders.reserve(collidernum);
         }
