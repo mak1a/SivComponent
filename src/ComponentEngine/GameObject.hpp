@@ -6,6 +6,7 @@
 #include <list>
 #include <memory>
 
+#include "../UserDefinition/ObjectTag.hpp"
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
@@ -21,6 +22,7 @@ namespace ComponentEngine
     {
         friend class IScene;
         friend class CollisionSystem;
+
         // public:
         //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
 
@@ -29,8 +31,17 @@ namespace ComponentEngine
         Transform _transform;
         std::weak_ptr<IScene> scene;
 
+        Transform& SetWorldPosition(const s3d::Vec2& _position)
+        {
+            s3d::Print(_position);
+            // s3d::Print(U"mat:", );
+
+            return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
+        }
+
     private:
         std::string name = "unnamed";
+        UserDef::Tag objecttag;
 
     public:
         GameObject& SetName(const std::string& _name)
@@ -42,6 +53,17 @@ namespace ComponentEngine
         std::string GetName() const noexcept
         {
             return name;
+        }
+
+        GameObject& SetTag(UserDef::Tag _tag)
+        {
+            objecttag = _tag;
+            return *this;
+        }
+
+        UserDef::Tag GetTag() const
+        {
+            return objecttag;
         }
 
         std::weak_ptr<IScene> GetScene()
@@ -122,6 +144,7 @@ namespace ComponentEngine
         {
             active = true;
             _transform = trans;
+            objecttag = UserDef::Tag::Default;
         }
 
         // make_shared書くの面倒なのでね

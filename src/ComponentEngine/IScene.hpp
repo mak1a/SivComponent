@@ -66,6 +66,7 @@ namespace ComponentEngine
 
     public:
         virtual void Setup() = 0;
+        // virtual void EngineInit(ComponentEngine::SceneCommon&){};
 
         void AddObject(const std::shared_ptr<GameObject>& object)
         {

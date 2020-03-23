@@ -25,11 +25,6 @@ namespace ComponentEngine
     private:
         friend GameObject;
 
-        void update_matrix(const s3d::Mat3x2& _mat) const
-        {
-            matrix.setProduct(_mat, CreateMatrix());
-        }
-
     public:
         SivTransform2D& SetPosition(const s3d::Vec2& _position)
         {
@@ -42,15 +37,16 @@ namespace ComponentEngine
             return position;
         }
 
-        SivTransform2D& SetWorldPosition(const s3d::Vec2& _position)
+        SivTransform2D& SetWorldPosition(const s3d::Vec2& _position, const s3d::Mat3x2& inversedMatrix)
         {
-            position = matrix.inversed().transform(_position);
+            position = inversedMatrix.transform(_position);
+            s3d::Print(position);
             return *this;
         }
 
         s3d::Vec2 GetWorldPosition() const
         {
-            return matrix.transform(position);
+            return matrix.transform(s3d::Vec2::Zero());
         }
 
         SivTransform2D& SetRotateByRadian(double _rotate)
@@ -106,16 +102,35 @@ namespace ComponentEngine
         }
 
     private:
+        void update_matrix(const s3d::Mat3x2& _mat) const
+        {
+            auto movedpos = _mat.transform(position);
+            matrix = create_matrix(movedpos, scale, rotate, movedpos);
+
+            return;
+            auto thismat = create_matrix(_mat.transform(position), scale, rotate, _mat.transform(position));
+            // s3d::Mat3x2::Translate(position).rotated(rotate, _mat.transform(position)).scaled(scale)
+            matrix.setProduct(_mat, thismat);
+        }
+
     public:
+        static s3d::Mat3x2 create_matrix(const s3d::Vec2 trans, double scale, double rotate, const s3d::Vec2 rotatecenter = {0, 0})
+        {
+            return s3d::Mat3x2::Scale(scale).rotated(rotate, rotatecenter).translated(trans);
+        }
+
         [[nodiscard]] s3d::Mat3x2 CreateMatrix() const
         {
-            return s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale);
-            // return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale), true);
+            //拡大させて回転させて移動
+            return create_matrix(position, scale, rotate, GetWorldPosition());
+
+            //移動させて回転させて拡大する
+            return s3d::Mat3x2::Translate(position).rotated(rotate, GetWorldPosition()).scaled(scale);
         }
 
         [[nodiscard]] s3d::Mat3x2 CreateInversedMatrix() const
         {
-            return s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale).inversed();
+            return CreateMatrix().inversed();
             // return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale), true);
         }
 

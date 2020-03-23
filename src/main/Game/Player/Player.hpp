@@ -4,7 +4,7 @@
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
-#include "../../Utilities/IntervalCall.hpp"
+#include "../../../Utilities/IntervalCall.hpp"
 #include "Colliders.hpp"
 #include "PhotonComponent.hpp"
 #include "SivComponent.hpp"

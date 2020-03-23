@@ -33,4 +33,17 @@ class Game : public ComponentEngine::IScene
 
         players->AddChild(mainplayerobj);
     }
+
+    // メンバだと実体化してないと呼び出せない
+    // staticにすると不要でも実装しないと呼び出せない
+    // void EngineInit(ComponentEngine::SceneCommon& common) override
+    // {
+    //     common.AddObjectCreator("Player", [&]() {
+    //         //        auto obj = GameObject::Create();
+    //         auto obj = std::make_shared<GameObject>();
+    //         obj->AddComponent<Player>();
+    //         obj->AddComponent<Siv::Circle>()->SetShape({0, 0, 10});
+    //         return obj;
+    //     });
+    // }
 };

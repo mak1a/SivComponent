@@ -1,7 +1,7 @@
 
 #include "InstantiateEntry.hpp"
 #include "../SivComponent/SivComponent.hpp"
-#include "Game/Player.hpp"
+#include "Game/Player/Player.hpp"
 
 void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
 {

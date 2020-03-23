@@ -70,6 +70,9 @@ namespace ComponentEngine
             {
                 nextScene = sceneMaker[key]();
             }
+
+            //シーンによるエンジンへのデータ登録
+//            nextScene
         }
 
         void ChangeScene(const KeyType& key)

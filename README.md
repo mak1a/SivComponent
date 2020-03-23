@@ -25,7 +25,7 @@ Photonを使ったオンライン機能をコンポーネントにまとめた�
 
 # 運用の基本
 
-SceneManager -> Scene -> GameObject -> Component　のような保持関係になっています。上位オブジェクトは Get[Hoge]().lock() で取得することができます。(シーン遷移するためにはSceneManagerまで辿って呼ぶ必要があるのでかなり面倒ですが、あまり頻繁に書く機能ではないので…)
+SceneManager -> Scene -> GameObject -> Component　のような保持関係になっています。上位オブジェクトは Get[Hoge]().lock() で取得することができます。(シーン遷移するためにはSceneManagerまで辿って呼ぶ必要があるのでかなり面倒ですが、あまり頻繁に書く機能ではないので許容しています)
 
 1. ComponentEngine::ISceneを継承したクラスを作ります。
 1. ComponentEngine::AttachbleComponentを継承したクラスを作り、Start()やUpdate()に処理を書いていきます。Unityと同様です。
@@ -36,7 +36,7 @@ SceneManager -> Scene -> GameObject -> Component　のような保持関係に�
 大まかにはこのような形です。わからないことがあればTwitterかSlackで連絡でもください。テストユーザー大歓迎です。
 
 # ライブラリ
-一切同梱していません。ビルドする場合はパス等を自力で通す必要があります
+ビルドする場合はそれぞれインストールを行い、パス等を自力で通す必要があります
 
 boost 1.72.0  
 
@@ -51,5 +51,13 @@ Copyright (c) 2016-2019 OpenSiv3D Project
 
 
 
-ICU  
-Copyright © 1991-2020 Unicode, Inc.  
+~~ICU  
+Copyright © 1991-2020 Unicode, Inc.~~  
+
+# 開発用メモ
+
+RequireComponentが欲しい
+
+Prefabの登録がクソすぎるので各クラスに分散させられるような仕組みが必要　シーン登録時にセットで登録か？
+
+

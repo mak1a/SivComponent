@@ -20,12 +20,13 @@ void Main()
 {
     ComponentEngine::SceneManager manager;
 
-    manager.RegisterScene<TestScene>("test");
+        manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<ComponentEngine::Photon::PhotonInitScene>("PhotonInitOnceLoad");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");
     manager.RegisterScene<Game>("Game");
 
+    //はやくこれを消したい
     InstantiateEntry_Game(manager.GetCommon());
 
     while (s3d::System::Update())

@@ -1,9 +1,9 @@
 
 #include "Player.hpp"
 #include <Siv3D.hpp>
-#include "../../CustomEventList.hpp"
-#include "../../Matching.hpp"
-#include "../../SivComponent/SivComponent.hpp"
+#include "../../../CustomEventList.hpp"
+#include "../../../Matching.hpp"
+#include "../../../SivComponent/SivComponent.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 

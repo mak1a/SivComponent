@@ -73,13 +73,15 @@ namespace ComponentEngine::Siv
     private:
         void Draw() const override
         {
+            const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
+
             if (drawAt)
             {
-                font(text).drawAt(0, 0, color);
+                font(text).drawAt(pos, color);
             }
             else
             {
-                font(text).draw(0, 0, color);
+                font(text).draw(pos, color);
             }
         }
     };

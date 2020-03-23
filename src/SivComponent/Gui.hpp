@@ -3,7 +3,8 @@
 
 #define NO_USING_S3D
 #include <Siv3D.hpp>
-#include "ComponentEngine.hpp"
+#include "AttachableComponent.hpp"
+#include "GameObject.hpp"
 
 namespace ComponentEngine::Siv
 {
@@ -99,18 +100,20 @@ namespace ComponentEngine::Siv
     private:
         void Draw() const override
         {
+            const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
+
             if (drawAt)
             {
-                s3d::SimpleGUI::TextBoxAt(textstate, s3d::Vec2(0, 0), width, maxLength, isEnabled);
+                s3d::SimpleGUI::TextBoxAt(textstate, pos, width, maxLength, isEnabled);
             }
             else
             {
-                s3d::SimpleGUI::TextBox(textstate, s3d::Vec2(0, 0), width, maxLength, isEnabled);
+                s3d::SimpleGUI::TextBox(textstate, pos, width, maxLength, isEnabled);
             }
         }
     };
 
-    //実装をクソ雑にやってるので、デリゲートに登録するオブジェクトと生存期間合わせないと例外吐いて死亡
+    //実装が非常に仮の状態なので、デリゲートに登録するオブジェクトと生存期間合わせないと例外吐いて死亡
     class Button : public ComponentEngine::AttachableComponent
     {
         std::function<void()> delegate;
@@ -119,29 +122,34 @@ namespace ComponentEngine::Siv
         s3d::String text;
         bool drawAt;
 
-        void Draw() const override
-        // void Update() override
+        mutable bool pushed;
+
+        void Update() override
         {
-            bool pushed;
-
-            if (drawAt)
-            {
-                pushed = s3d::SimpleGUI::ButtonAt(text, s3d::Vec2(0, 0), width, isActive);
-            }
-            else
-            {
-                pushed = s3d::SimpleGUI::Button(text, s3d::Vec2(0, 0), width, isActive);
-            }
-
             if (pushed)
             {
                 delegate();
             }
         }
 
+        void Draw() const override
+        {
+            const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
+
+            if (drawAt)
+            {
+                pushed = s3d::SimpleGUI::ButtonAt(text, pos, width, isActive);
+            }
+            else
+            {
+                pushed = s3d::SimpleGUI::Button(text, pos, width, isActive);
+            }
+        }
+
         void Awake() override
         {
             width = 300;
+            pushed = false;
             isActive = true;
             text = U"Button";
             drawAt = true;

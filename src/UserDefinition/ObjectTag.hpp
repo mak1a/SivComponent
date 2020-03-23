@@ -4,6 +4,7 @@ namespace ComponentEngine::UserDef
 {
     enum class Tag
     {
+        Default,
         Player,
         Enemy,
         PlayerBullet,
