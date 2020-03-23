@@ -40,7 +40,6 @@ namespace ComponentEngine
         SivTransform2D& SetWorldPosition(const s3d::Vec2& _position, const s3d::Mat3x2& inversedMatrix)
         {
             position = inversedMatrix.transform(_position);
-            s3d::Print(position);
             return *this;
         }
 
@@ -104,19 +103,17 @@ namespace ComponentEngine
     private:
         void update_matrix(const s3d::Mat3x2& _mat) const
         {
-            auto movedpos = _mat.transform(position);
-            matrix = create_matrix(movedpos, scale, rotate, movedpos);
+            auto after = _mat.transform(position).moveBy(-_mat._31, -_mat._32);
 
-            return;
-            auto thismat = create_matrix(_mat.transform(position), scale, rotate, _mat.transform(position));
-            // s3d::Mat3x2::Translate(position).rotated(rotate, _mat.transform(position)).scaled(scale)
+            auto thismat = create_matrix(after, scale, rotate, _mat.transform(position));
+
             matrix.setProduct(_mat, thismat);
         }
 
     public:
         static s3d::Mat3x2 create_matrix(const s3d::Vec2 trans, double scale, double rotate, const s3d::Vec2 rotatecenter = {0, 0})
         {
-            return s3d::Mat3x2::Scale(scale).rotated(rotate, rotatecenter).translated(trans);
+            return s3d::Mat3x2::Scale(scale).translated(trans).rotated(rotate, rotatecenter);
         }
 
         [[nodiscard]] s3d::Mat3x2 CreateMatrix() const
@@ -131,7 +128,6 @@ namespace ComponentEngine
         [[nodiscard]] s3d::Mat3x2 CreateInversedMatrix() const
         {
             return CreateMatrix().inversed();
-            // return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale), true);
         }
 
         [[nodiscard]] const s3d::Mat3x2 GetMatrix() const

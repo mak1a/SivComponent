@@ -33,9 +33,6 @@ namespace ComponentEngine
 
         Transform& SetWorldPosition(const s3d::Vec2& _position)
         {
-            s3d::Print(_position);
-            // s3d::Print(U"mat:", );
-
             return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
         }
 
