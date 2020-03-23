@@ -7,15 +7,23 @@
 
 namespace ComponentEngine
 {
+    class GameObject;
     struct SivTransform2D
     {
     private:
         s3d::Vec2 position;
         // radian
         double rotate;
-        s3d::Vec2 scale;
+        double scale;
+
+        //現在までのオブジェクト関係から計算されたマトリックス(自分の数値も含む)
+        mutable s3d::Mat3x2 matrix;
+
         //描画順にのみ影響するz軸情報
-        int z;
+        // int z;
+
+    private:
+        friend GameObject;
 
     public:
         SivTransform2D& SetPosition(const s3d::Vec2& _position)
@@ -27,6 +35,17 @@ namespace ComponentEngine
         s3d::Vec2 GetPosition() const noexcept
         {
             return position;
+        }
+
+        SivTransform2D& SetWorldPosition(const s3d::Vec2& _position, const s3d::Mat3x2& inversedMatrix)
+        {
+            position = inversedMatrix.transform(_position);
+            return *this;
+        }
+
+        s3d::Vec2 GetWorldPosition() const
+        {
+            return matrix.transform(s3d::Vec2::Zero());
         }
 
         SivTransform2D& SetRotateByRadian(double _rotate)
@@ -46,35 +65,35 @@ namespace ComponentEngine
             return rotate;
         }
 
-        SivTransform2D& SetScale(const s3d::Vec2& _scale)
+        SivTransform2D& SetScale(double _scale)
         {
             scale = _scale;
             return *this;
         }
 
-        s3d::Vec2 GetScale() const noexcept
+        double GetScale() const noexcept
         {
             return scale;
         }
 
-        SivTransform2D& SetZ(int _z)
-        {
-            z = _z;
-            return *this;
-        }
+        // SivTransform2D& SetZ(int _z)
+        // {
+        //     z = _z;
+        //     return *this;
+        // }
 
-        int GetZ() const noexcept
-        {
-            return z;
-        }
+        // int GetZ() const noexcept
+        // {
+        //     return z;
+        // }
 
     public:
         SivTransform2D()
-            : SivTransform2D({0, 0}, 0.0, {1, 1})
+            : SivTransform2D({0, 0}, 0.0, 1.0)
         {
         }
 
-        SivTransform2D(const s3d::Vec2& _pos, double _rotate, const s3d::Vec2& _scale)
+        SivTransform2D(const s3d::Vec2& _pos, double _rotate, double _scale)
             : position(_pos)
             , rotate(_rotate)
             , scale(_scale)
@@ -82,13 +101,38 @@ namespace ComponentEngine
         }
 
     private:
-    public:
-        auto PushTransform() const -> decltype(std::make_unique<s3d::Transformer2D>())
+        void update_matrix(const s3d::Mat3x2& _mat) const
         {
-            return std::make_unique<s3d::Transformer2D>(s3d::Mat3x2::Translate(position).rotated(rotate).scaled(scale));
-            // return std::move(trans);
+            auto after = _mat.transform(position).moveBy(-_mat._31, -_mat._32);
+
+            auto thismat = create_matrix(after, scale, rotate, _mat.transform(position));
+
+            matrix.setProduct(_mat, thismat);
         }
 
-        void PopTransform() const {}
+    public:
+        static s3d::Mat3x2 create_matrix(const s3d::Vec2 trans, double scale, double rotate, const s3d::Vec2 rotatecenter = {0, 0})
+        {
+            return s3d::Mat3x2::Scale(scale).translated(trans).rotated(rotate, rotatecenter);
+        }
+
+        [[nodiscard]] s3d::Mat3x2 CreateMatrix() const
+        {
+            //拡大させて回転させて移動
+            return create_matrix(position, scale, rotate, GetWorldPosition());
+
+            //移動させて回転させて拡大する
+            return s3d::Mat3x2::Translate(position).rotated(rotate, GetWorldPosition()).scaled(scale);
+        }
+
+        [[nodiscard]] s3d::Mat3x2 CreateInversedMatrix() const
+        {
+            return CreateMatrix().inversed();
+        }
+
+        [[nodiscard]] const s3d::Mat3x2 GetMatrix() const
+        {
+            return matrix;
+        }
     };
 }  // namespace ComponentEngine

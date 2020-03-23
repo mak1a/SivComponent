@@ -1,10 +1,6 @@
-
 #include "SceneManager.hpp"
 
 namespace ComponentEngine
 {
-    std::string SceneManager::CommonParentObjectName() const
-    {
-        return "CommonParent";
-    }
+    SceneManager* SceneManager::manager = nullptr;
 }  // namespace ComponentEngine

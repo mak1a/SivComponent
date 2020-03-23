@@ -7,19 +7,40 @@
 #include <iostream>
 #endif
 
+#include <boost/noncopyable.hpp>
+
 #include "AttachableComponent.hpp"
 #include "GameObject.hpp"
+
+#include "../SivComponent/Collision/CollisionSystem.hpp"
+
 namespace ComponentEngine
 {
     class SceneManager;
 
-    class IScene : public std::enable_shared_from_this<IScene>
+    class IScene : public std::enable_shared_from_this<IScene>, boost::noncopyable
     {
     public:
         using KeyType = std::string;
 
     private:
+        ComponentEngine::Collision::CollisionSystem colsys;
+
         std::shared_ptr<GameObject> masterObject;
+
+        std::list<std::weak_ptr<GameObject>> destroyList;
+
+    public:
+        ComponentEngine::Collision::CollisionSystem& GetCollisionSystem()
+        {
+            return colsys;
+        }
+
+        //オブジェクト消去を予約
+        void Destroy(std::weak_ptr<GameObject> object)
+        {
+            destroyList.push_back(object);
+        }
 
     private:
         bool isInitialized;
@@ -45,11 +66,12 @@ namespace ComponentEngine
 
     public:
         virtual void Setup() = 0;
+        // virtual void EngineInit(ComponentEngine::SceneCommon&){};
 
         void AddObject(const std::shared_ptr<GameObject>& object)
         {
             //無効なポインタならエラー
-            if (object == nullptr)
+            if (!object)
             {
 #ifdef DEBUG
                 std::cout << "Object Pointer is Null." << std::endl;
@@ -95,13 +117,28 @@ namespace ComponentEngine
             }
 
             // Start呼び出し
-            masterObject->components_start();
+            masterObject->components_start(s3d::Mat3x2::Identity());
 
-            masterObject->components_update();
+            masterObject->components_update(s3d::Mat3x2::Identity());
 
-            masterObject->components_lateUpdate();
+            masterObject->components_lateUpdate(s3d::Mat3x2::Identity());
 
-            masterObject->components_draw();
+            //衝突判定コール
+            colsys.CollisionCall();
+
+            masterObject->components_draw(s3d::Mat3x2::Identity());
+
+            //消去処理
+            for (auto& obj : destroyList)
+            {
+                auto o = obj.lock();
+                if (!o)
+                {
+                    continue;
+                }
+
+                o->parent.lock()->DeleteChild(o);
+            }
         }
 
         void DestoryAllObjects()

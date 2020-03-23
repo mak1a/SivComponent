@@ -1,11 +1,16 @@
 #pragma once
 
+#define NO_S3D_USING
+#include <Siv3D.hpp>
 #include <boost/noncopyable.hpp>
 #include <list>
 #include <memory>
 
+#include "../UserDefinition/ObjectTag.hpp"
 #include "IComponent.hpp"
 #include "Transform.hpp"
+
+// #include "../SivComponent/Collision/CollisionSystem.hpp"
 
 namespace ComponentEngine
 {
@@ -16,6 +21,8 @@ namespace ComponentEngine
     class GameObject final : public std::enable_shared_from_this<GameObject>, private boost::noncopyable
     {
         friend class IScene;
+        friend class CollisionSystem;
+
         // public:
         //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
 
@@ -24,8 +31,14 @@ namespace ComponentEngine
         Transform _transform;
         std::weak_ptr<IScene> scene;
 
+        Transform& SetWorldPosition(const s3d::Vec2& _position)
+        {
+            return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
+        }
+
     private:
         std::string name = "unnamed";
+        UserDef::Tag objecttag;
 
     public:
         GameObject& SetName(const std::string& _name)
@@ -39,10 +52,45 @@ namespace ComponentEngine
             return name;
         }
 
-    public:
+        GameObject& SetTag(UserDef::Tag _tag)
+        {
+            objecttag = _tag;
+            return *this;
+        }
+
+        UserDef::Tag GetTag() const
+        {
+            return objecttag;
+        }
+
         std::weak_ptr<IScene> GetScene()
         {
+            // sceneの参照を持ってなかったら親から回収する
+            if (scene.expired())
+            {
+                scene = parent.lock()->GetScene();
+            }
+
             return scene;
+        }
+
+    private:
+        bool active;
+
+    public:
+        GameObject& SetActive(bool _active)
+        {
+            active = _active;
+            for (const auto& c : children)
+            {
+                c->SetActive(_active);
+            }
+            return *this;
+        }
+
+        bool GetActive() const noexcept
+        {
+            return active;
         }
 
     public:
@@ -53,11 +101,24 @@ namespace ComponentEngine
         }
 
     private:
-        std::list<IComponent*> components;
+        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
+        //メモリリークのリスクの方が大きい気もする。
+        std::list<std::shared_ptr<IComponent>> components;
 
         //親子オブジェクト
         std::weak_ptr<GameObject> parent;
         std::list<std::shared_ptr<GameObject>> children;
+
+    public:
+        [[nodiscard]] std::weak_ptr<GameObject>& GetParent()
+        {
+            return parent;
+        }
+
+        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren()
+        {
+            return children;
+        }
 
     private:
         // Start更新済みかどうか
@@ -75,26 +136,120 @@ namespace ComponentEngine
         {
         }
 
+        //実際に動くコンストラクタ
         explicit GameObject(const Transform& trans)
         {
+            active = true;
             _transform = trans;
+            objecttag = UserDef::Tag::Default;
+        }
+
+        // make_shared書くの面倒なのでね
+        static std::shared_ptr<GameObject> Create()
+        {
+            return std::make_shared<GameObject>();
         }
 
         template <class Component, class... Args>
-        Component* AddComponent(Args&&... args)
+        std::shared_ptr<Component> AddComponent(Args&&... args)
         {
-            Component* c = new Component(std::forward<Args>(args)...);
+            auto c = std::make_shared<Component>(std::forward<Args>(args)...);
             c->gameobject = weak_from_this();
             // std::cout << c->gameobject.lock()->GetName() << std::endl;
             components.push_back(c);
-            c->Awake();
+
+            c->call_awake();
             initializedAll = false;
             return c;
+        }
+
+        ///削除成功したらtrue
+        template <class Component>
+        bool DeleteComponent()
+        {
+            auto end = components.end();
+
+            for (auto c = components.begin(); c != end; ++c)
+            {
+                if (std::dynamic_pointer_cast<Component>(c))
+                {
+                    components.erase(c);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        template <class T>
+        std::shared_ptr<T> GetComponent() const
+        {
+            std::shared_ptr<T> component;
+
+            for (const auto& c : components)
+            {
+                if ((component = std::dynamic_pointer_cast<T>(c)))
+                {
+                    return component;
+                }
+            }
+            return nullptr;
+        }
+
+        template <class T>
+        std::shared_ptr<std::vector<std::shared_ptr<T>>> GetComponents() const
+        {
+            std::shared_ptr<std::vector<std::shared_ptr<T>>> _components;
+
+            for (const auto& c : components)
+            {
+                if (std::dynamic_pointer_cast<T>(c))
+                {
+                    _components->push_back(c);
+                }
+            }
+            return _components;
+        }
+
+        template <class T>
+        std::weak_ptr<T> GetComponentWeak() const
+        {
+            std::weak_ptr<T> component;
+            for (const auto& c : components)
+            {
+                if ((component = std::dynamic_pointer_cast<T>(c)))
+                {
+                    return component;
+                }
+            }
+            return std::weak_ptr<T>();
+        }
+
+        template <class T>
+        std::shared_ptr<std::vector<std::weak_ptr<T>>> GetComponentsWeak() const
+        {
+            std::shared_ptr<std::vector<std::weak_ptr<T>>> _components;
+
+            for (const auto& c : components)
+            {
+                if (std::dynamic_pointer_cast<T>(c))
+                {
+                    _components->push_back(c);
+                }
+            }
+            return _components;
         }
 
         void AddChild(const std::shared_ptr<GameObject>& child)
         {
             child->SetParent(weak_from_this());
+        }
+
+        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild()
+        {
+            auto object = std::make_shared<GameObject>();
+            object->scene = this->scene;
+            this->AddChild(object);
+            return object;
         }
 
         void SetParent(const std::weak_ptr<GameObject>& newParent)
@@ -119,8 +274,6 @@ namespace ComponentEngine
 
             //親を新しいオブジェクトに設定
             parent = newParent;
-            // DEBUG
-            // std::cout << "new parent is:" << parent.lock()->GetName() << "\n" << std::endl;
         }
 
     private:
@@ -167,12 +320,13 @@ namespace ComponentEngine
                 return;
             }
 
-            child->DestroyAllChildren();
+            child->DestroyAllChildrenComponents();
 
             children.erase(itr);
         }
 
     private:
+        //子オブジェクトを削除せずに外します
         bool RemoveChild(const std::shared_ptr<GameObject>& child)
         {
             auto itr = FindChildItr(child);
@@ -187,21 +341,6 @@ namespace ComponentEngine
         }
 
     public:
-        template <class T>
-        T* GetComponent()
-        {
-            T* component;
-
-            for (IComponent* c : components)
-            {
-                if ((component = dynamic_cast<T*>(c)))
-                {
-                    return component;
-                }
-            }
-            return nullptr;
-        }
-
         //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
         //すべての子オブジェクトを破壊する
         void DestroyAll()
@@ -226,7 +365,7 @@ namespace ComponentEngine
         {
             for (const auto& child : children)
             {
-                child->DestroyAllChildren();
+                child->DestroyAllChildrenComponents();
             }
 
             children.clear();
@@ -234,7 +373,7 @@ namespace ComponentEngine
 
         void DestroyAllChildrenComponents()
         {
-            for (IComponent* component : components)
+            for (const auto& component : components)
             {
                 component->OnDestroy();
             }
@@ -253,20 +392,14 @@ namespace ComponentEngine
         }
 
     public:
-        virtual void components_start() final;
+        void components_start(const s3d::Mat3x2&);
 
-        virtual void components_update() final;
+        void components_update(const s3d::Mat3x2&);
 
-        virtual void components_lateUpdate() final;
+        void components_lateUpdate(const s3d::Mat3x2&);
 
-        virtual void components_draw() const final;
-    };
+        void components_draw(const s3d::Mat3x2&) const;
 
-    template <>
-    inline Transform* GameObject::GetComponent()
-    {
-        return &_transform;
-    }
+        void components_call_collisionstay(std::shared_ptr<GameObject>& object);
+    };  // namespace ComponentEngine
 }  // namespace ComponentEngine
-
-// https://qiita.com/kgwryk28/items/4a066d6f81ffacbc758f

@@ -1,6 +1,8 @@
 
 #include "Utilities.hpp"
 
+#include <cmath>
+
 namespace Utilities
 {
     double DegToRad(double deg)
@@ -12,4 +14,5 @@ namespace Utilities
     {
         return rad * 180.0 / M_PI;
     }
+    // int GetPlayerNumber(const s3d::String& name) {}
 }  // namespace Utilities

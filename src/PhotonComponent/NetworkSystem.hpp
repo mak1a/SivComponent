@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -11,66 +12,26 @@
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "IObservable.hpp"
 
-namespace PhotonComponent
-{
-    static const ExitGames::Common::JString PLAYER_NAME = L"user";
+// #define PhotonDEBUG
 
+namespace ComponentEngine::Photon
+{
     std::string NetworkObjectName();
 
     class NetworkSystem : public ComponentEngine::AttachableComponent, public IPhotonObservable, public ExitGames::LoadBalancing::Listener
     {
-    public:
-        enum class States
-        {
-            INITIALIZED = 0,
-            CONNECTING,
-            CONNECTED,
-            JOINING,
-            JOINED,
-            SENT_DATA,
-            RECEIVED_DATA,
-            LEAVING,
-            LEFT,
-            DISCONNECTING,
-            DISCONNECTED
-        };
-
-    private:
-        States state;
+        ExitGames::Common::JString playerName;
 
     public:
-        States GetState()
+        NetworkSystem& SetPlayerName(const ExitGames::Common::JString& _playerName)
         {
-            return state;
+            playerName = _playerName;
+            return *this;
         }
 
-        std::string GetStateString()
+        ExitGames::Common::JString GetPlayerName() const noexcept
         {
-            static std::unordered_map<States, std::string> dic;
-
-            static bool once = [&]() {
-                dic[States::INITIALIZED] = "INITIALIZED";
-                dic[States::CONNECTING] = "CONNECTING";
-                dic[States::CONNECTED] = "CONNECTED";
-                dic[States::JOINING] = "JOINING";
-                dic[States::JOINED] = "JOINED";
-                dic[States::SENT_DATA] = "SENT_DATA";
-                dic[States::RECEIVED_DATA] = "RECEIVED_DATA";
-                dic[States::LEAVING] = "LEAVING";
-                dic[States::LEFT] = "LEFT";
-                dic[States::DISCONNECTING] = "DISCONNECTING";
-                dic[States::DISCONNECTED] = "DISCONNECTED";
-                return true;
-            }();
-
-            return dic[GetState()];
-        }
-
-    private:
-        void SetState(States nextState)
-        {
-            std::cout << "state = " << GetStateString() << std::endl;
-            state = nextState;
+            return playerName;
         }
 
     public:
@@ -84,41 +45,61 @@ namespace PhotonComponent
         void Update() override;
         void OnDestroy() override;
 
+    public:
         void createRoom(const ExitGames::Common::JString& roomName, nByte maxPlayers)
         {
             mLoadBalancingClient.opJoinOrCreateRoom(roomName, ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(maxPlayers));
         }
 
-        void OutputPlayers()
+    public:
+        using PlayerList = std::vector<ExitGames::LoadBalancing::Player*>;
+
+    private:
+        //プレイヤー情報の保持
+        PlayerList playerList;
+
+        void update_playerlist()
         {
-            auto players = mLoadBalancingClient.getCurrentlyJoinedRoom().getPlayers();
-            auto l = players.getSize();
-            for (int k = 0; k < l; ++k)
+            if (!mLoadBalancingClient.getIsInRoom())
             {
-                s3d::Print(players[k]->getName());
+                playerList.clear();
+                return;
             }
+
+            auto p = mLoadBalancingClient.getCurrentlyJoinedRoom().getPlayers();
+            auto len = p.getSize();
+            playerList.resize(len);
+
+            for (int k = 0; k < len; ++k)
+            {
+                playerList[k] = p[k];
+            }
+
+            std::sort(playerList.begin(), playerList.end(),
+                      [](ExitGames::LoadBalancing::Player* a, ExitGames::LoadBalancing::Player* b) { return a->getNumber() < b->getNumber(); });
         }
 
-        void SendEvent()
+    public:
+        //        ExitGames::Common::JVector<ExitGames::LoadBalancing::Player*>&
+        PlayerList& GetPlayerList()
         {
-            //            auto eventhash = new ExitGames::Common::Hashtable();
-            auto senddata = L"I am " + mLoadBalancingClient.getLocalPlayer().getName();
-            mLoadBalancingClient.opRaiseEvent(true, senddata, 10);
+            return playerList;
         }
 
     private:
         std::list<AttachableComponentPhotonCallbacks*> observers;
 
     public:  // IPhotonObservable
-        void Subscribe(PhotonComponent::AttachableComponentPhotonCallbacks* component) override
+        void Subscribe(ComponentEngine::Photon::AttachableComponentPhotonCallbacks* component) override
         {
             //多重登録へのチェックは面倒なのでなし！
             //ポインタで比較するか、購読側に登録済みか管理する機能をつければよい
             //そもそもコンストラクタでしか実行されない予定なので現状は不要なチェック
             observers.push_back(component);
+            component->networkSystem = this;
         }
 
-        void Dispose(PhotonComponent::AttachableComponentPhotonCallbacks* component) override
+        void Dispose(ComponentEngine::Photon::AttachableComponentPhotonCallbacks* component) override
         {
             observers.remove(component);
         }
@@ -128,83 +109,23 @@ namespace PhotonComponent
         ExitGames::Common::Logger mLogger;  // accessed by EGLOG()
 
     public:
+        ExitGames::LoadBalancing::Client& GetClient()
+        {
+            return mLoadBalancingClient;
+        }
+
+    public:
         ~NetworkSystem();
 
-    private:  // ExitGames::LoadBalancing::Listener
-              // void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
-              // {
-              //     s3d::Print(U"debugReturn");
-              //     s3d::Print(string.toString());
-              // };
-              // void connectionErrorReturn(int errorCode) override
-              // {
-              //     s3d::Print(U"connectionErrorReturn");
-              // };
-        // void clientErrorReturn(int errorCode) override
-        // {
-        //     s3d::Print(U"clientErrorReturn");
-        // };
-
-        // void warningReturn(int warningCode) override
-        // {
-        //     s3d::Print(U"warningReturn");
-        // };
-
-        // void serverErrorReturn(int errorCode) override
-        // {
-        //     s3d::Print(U"serverErrorReturn");
-        // };
-
-        // void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
-        // {
-        //     s3d::Print(U"joinRoomEventAction");
-        //     SetState(States::JOINED);
-        // };
-
-        // void leaveRoomEventAction(int playerNr, bool isInactive) override
-        // {
-        //     s3d::Print(U"leaveRoomEventAction");
-        // };
-
-        // void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
-        // {
-        //     s3d::Print(U"customEventAction");
-
-        //     if (eventCode == 10)
-        //     {
-        //         s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
-        //     }
-        // };
-
-        // void connectReturn(int errorCode,
-        //                    const ExitGames::Common::JString& errorString,
-        //                    const ExitGames::Common::JString& region,
-        //                    const ExitGames::Common::JString& cluster) override
-        // {
-        //     if (errorCode)
-        //     {
-        //         s3d::Print(U"connect error");
-
-        //         SetState(States::DISCONNECTING);
-        //         return;
-        //     }
-        //     s3d::Print(U"connected!");
-        //     SetState(States::CONNECTED);
-        // };
-
-        // void disconnectReturn() override
-        // {
-        //     s3d::Print(U"disconnectReturn");
-        // };
-
-        // void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
-        // {
-        //     s3d::Print(U"leaveRoomReturn");
-        // };
+    private:
+        // ExitGames::LoadBalancing::Listener
 
         // receive and print out debug out here
         virtual void debugReturn(int debugLevel, const ExitGames::Common::JString& string) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "debugReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->debugReturn(debugLevel, string);
@@ -214,6 +135,9 @@ namespace PhotonComponent
         // implement your error-handling here
         virtual void connectionErrorReturn(int errorCode) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "connectionErrorReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->connectionErrorReturn(errorCode);
@@ -221,6 +145,9 @@ namespace PhotonComponent
         }
         virtual void clientErrorReturn(int errorCode) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "clientErrorReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->clientErrorReturn(errorCode);
@@ -228,6 +155,9 @@ namespace PhotonComponent
         }
         virtual void warningReturn(int warningCode) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "warningReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->warningReturn(warningCode);
@@ -235,6 +165,9 @@ namespace PhotonComponent
         }
         virtual void serverErrorReturn(int errorCode) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "serverErrorReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->serverErrorReturn(errorCode);
@@ -246,6 +179,12 @@ namespace PhotonComponent
                                          const ExitGames::Common::JVector<int>& playernrs,
                                          const ExitGames::LoadBalancing::Player& player) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinRoomEventAction" << std::endl;
+#endif
+            //プレイヤーリストを更新
+            update_playerlist();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinRoomEventAction(playerNr, playernrs, player);
@@ -253,6 +192,12 @@ namespace PhotonComponent
         }
         virtual void leaveRoomEventAction(int playerNr, bool isInactive) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "leaveRoomEventAction" << std::endl;
+#endif
+            //プレイヤーリストを更新
+            update_playerlist();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->leaveRoomEventAction(playerNr, isInactive);
@@ -261,6 +206,9 @@ namespace PhotonComponent
 
         virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "customEventAction" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->customEventAction(playerNr, eventCode, eventContent);
@@ -273,13 +221,23 @@ namespace PhotonComponent
                                    const ExitGames::Common::JString& region,
                                    const ExitGames::Common::JString& cluster) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "connectReturn" << std::endl;
+#endif
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->connectReturn(errorCode, errorString, region, cluster);
             }
         }
+
         virtual void disconnectReturn(void) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "disconnectReturn" << std::endl;
+#endif
+            update_playerlist();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->disconnectReturn();
@@ -291,6 +249,9 @@ namespace PhotonComponent
                                       int errorCode,
                                       const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "createRoomReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->createRoomReturn(localPlayerNr, roomProperties, playerProperties, errorCode, errorString);
@@ -302,6 +263,9 @@ namespace PhotonComponent
                                             int errorCode,
                                             const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinOrCreateRoomReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinOrCreateRoomReturn(localPlayerNr, roomProperties, playerProperties, errorCode, errorString);
@@ -313,6 +277,9 @@ namespace PhotonComponent
                                                   int errorCode,
                                                   const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinRandomOrCreateRoomReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinRandomOrCreateRoomReturn(localPlayerNr, roomProperties, playerProperties, errorCode, errorString);
@@ -324,6 +291,9 @@ namespace PhotonComponent
                                     int errorCode,
                                     const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinRoomReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinRoomReturn(localPlayerNr, roomProperties, playerProperties, errorCode, errorString);
@@ -335,6 +305,9 @@ namespace PhotonComponent
                                           int errorCode,
                                           const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinRandomRoomReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinRandomRoomReturn(localPlayerNr, roomProperties, playerProperties, errorCode, errorString);
@@ -342,6 +315,11 @@ namespace PhotonComponent
         }
         virtual void leaveRoomReturn(int errorCode, const ExitGames::Common::JString& errorString) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "leaveRoomReturn" << std::endl;
+#endif
+            playerList.clear();
+
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->leaveRoomReturn(errorCode, errorString);
@@ -349,6 +327,9 @@ namespace PhotonComponent
         }
         virtual void joinLobbyReturn(void) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "joinLobbyReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->joinLobbyReturn();
@@ -356,6 +337,9 @@ namespace PhotonComponent
         }
         virtual void leaveLobbyReturn(void) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "leaveLobbyReturn" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->leaveLobbyReturn();
@@ -363,6 +347,9 @@ namespace PhotonComponent
         }
         virtual void onFindFriendsResponse(void) override
         {
+#ifdef PhotonDEBUG
+            std::cout << "onFindFriendsResponse" << std::endl;
+#endif
             for (AttachableComponentPhotonCallbacks* observer : observers)
             {
                 observer->onFindFriendsResponse();
@@ -431,11 +418,43 @@ namespace PhotonComponent
         //         observer->onCacheSliceChanged();
         //     }
         // }
-        // virtual void onMasterClientChanged(int /*id*/, int /*oldID*/)
+
+    public:
+        bool GetIsMasterClient()
+        {
+            if (playerList.size() == 0)
+            {
+                return false;
+            }
+
+            return playerList[0]->getNumber() == mLoadBalancingClient.getLocalPlayer().getNumber();
+        }
+
+        ///ルーム内でのプレイヤー番号の若さ(0から始まる)
+        int GetPlayerNumberInRoom()
+        {
+            const auto pl = playerList.size();
+            const auto myNumber = mLoadBalancingClient.getLocalPlayer().getNumber();
+            for (int i = 0; i < pl; ++i)
+            {
+                if (playerList[i]->getNumber() == myNumber)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+    private:
+        // virtual void onMasterClientChanged(int id, int oldID)
         // {
+        //     std::cout << "id" << id << " " << oldID << std::endl;
+        //     isMasterClient = id == mLoadBalancingClient.getLocalPlayer().getUserID();
+
         //     for (AttachableComponentPhotonCallbacks* observer : observers)
         //     {
-        //         observer->onMasterClientChanged();
+        //         observer->onMasterClientChanged(id, oldID);
         //     }
         // }
 
@@ -493,4 +512,4 @@ namespace PhotonComponent
         //     }
         // }
     };
-}  // namespace PhotonComponent
+}  // namespace ComponentEngine::Photon

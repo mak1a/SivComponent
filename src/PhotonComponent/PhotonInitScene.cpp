@@ -1,7 +1,7 @@
 #define NO_S3D_USING
 #include "PhotonInitScene.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     //シーン変更するだけのクラス
     class SceneChanger : public ComponentEngine::AttachableComponent
@@ -14,7 +14,7 @@ namespace PhotonComponent
 
     void PhotonInitScene::Setup()
     {
-        auto photon = GetSceneManager()->CreateAndGetCommonObject(NetworkObjectName());
+        auto photon = GetSceneManager()->GetCommon().CreateAndGetCommonObject(NetworkObjectName());
         photon->AddComponent<NetworkSystem>();
 
         CreateAndGetObject()->AddComponent<SceneChanger>();

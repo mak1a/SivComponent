@@ -6,13 +6,21 @@
 
 #include <LoadBalancing-cpp/inc/Client.h>
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
+    class NetworkSystem;
+
     class AttachableComponentPhotonCallbacks : public ComponentEngine::AttachableComponent
     {
+    protected:
+        NetworkSystem* networkSystem;
+        friend NetworkSystem;
+
     public:
-        void Awake() override;
-        void OnDestroy() override;
+        void Start() override final;
+        virtual void Start2(){};
+        virtual void OnDestroy() override final;
+        virtual void OnDestory2(){};
         // ~AttachableComponentPhotonCallbacks();
 
         // receive and print out debug out here
@@ -94,7 +102,7 @@ namespace PhotonComponent
         // virtual void onAppStatsUpdate(void) {}
         // virtual void onLobbyStatsUpdate(const ExitGames::Common::JVector<ExitGames::LoadBalancing::LobbyStatsResponse>& /*lobbyStats*/) {}
         // virtual void onCacheSliceChanged(int /*cacheSliceIndex*/) {}
-        // virtual void onMasterClientChanged(int /*id*/, int /*oldID*/) {}
+        // virtual void onMasterClientChanged(int id, int oldID) {}
 
         // // custom authentication
         // virtual void onCustomAuthenticationIntermediateStep(
@@ -120,4 +128,4 @@ namespace PhotonComponent
         // {
         // }
     };
-}  // namespace PhotonComponent
+}  // namespace ComponentEngine::Photon

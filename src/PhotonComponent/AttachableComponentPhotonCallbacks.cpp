@@ -2,17 +2,24 @@
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "NetworkSystem.hpp"
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
-    void AttachableComponentPhotonCallbacks::Awake()
+    void AttachableComponentPhotonCallbacks::Start()
     {
-        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject(NetworkObjectName());
+        //自身をコールバック対象に設定する
+        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Subscribe(this);
+        Start2();
     }
 
     void AttachableComponentPhotonCallbacks::OnDestroy()
     {
-        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommonObject(NetworkObjectName());
+        std::cout << "callback exit" << std::endl;
+
+        //コールバック対象から外れる
+        auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Dispose(this);
+        OnDestory2();
     }
-}  // namespace PhotonComponent
+
+}  // namespace ComponentEngine::Photon

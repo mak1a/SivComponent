@@ -1,20 +1,35 @@
 
 #pragma once
 
-#include <boost/noncopyable.hpp>
+#define NO_S3D_USING
 #include <memory>
-#include "GameObject.hpp"
+// #include "GameObject.hpp"
 #include "IComponent.hpp"
 
 namespace ComponentEngine
 {
+    class GameObject;
+
     //全てのコンポーネントの基本
     class AttachableComponent : public IComponent
     {
         friend class GameObject;
 
-    protected:
-        std::weak_ptr<GameObject> GetGameObject()
+    private:
+        bool active;
+
+    public:
+        void SetActive(bool _active) override
+        {
+            active = _active;
+        }
+        bool GetActive() const override
+        {
+            return active;
+        }
+
+    public:
+        std::weak_ptr<GameObject> GetGameObject() const
         {
             return gameobject;
         }
@@ -45,17 +60,26 @@ namespace ComponentEngine
 
     protected:
         // virtual funcs
-        virtual void Awake() override {}
+        virtual void Awake() {}
         virtual void Start() {}
         virtual void Update() override {}
         virtual void LateUpdate() override {}
         virtual void Draw() const override {}
-        virtual void OnDestroy() override{};
+        virtual void OnDestroy() override {}
+        virtual void OnStayCollision(std::shared_ptr<GameObject>&) override {}
 
         //これ自体の生成は禁止する
-        AttachableComponent(){};
+        AttachableComponent()
+        {
+            active = true;
+        };
 
     protected:
+        virtual void call_awake() override final
+        {
+            Awake();
+        }
+
         // Startを1回しか呼ばないように制御
         // この関数はここで固定する
         virtual void call_start() override final
@@ -65,6 +89,11 @@ namespace ComponentEngine
                 Start();
                 initialized = true;
             }
+        }
+
+        virtual bool _initialized() override final
+        {
+            return initialized;
         }
 
     public:

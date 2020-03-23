@@ -1,6 +1,6 @@
 #pragma once
 
-namespace PhotonComponent
+namespace ComponentEngine::Photon
 {
     class AttachableComponentPhotonCallbacks;
     class IPhotonObservable
