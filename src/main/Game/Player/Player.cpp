@@ -9,7 +9,7 @@ using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
 void Player::Start2()
 {
-    targetPos = GetGameObject().lock()->transform().GetPosition();
+    targetPos = GetGameObject().lock()->GetPosition();
 
     GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(isMine ? s3d::Palette::Limegreen : s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2));
 }
@@ -32,15 +32,15 @@ void Player::Update()
         axis.normalize();
     }
 
-    auto& trans = GetGameObject().lock()->transform();
-    auto pos = trans.GetPosition();
+    auto obj = GetGameObject().lock();
+    auto pos = obj->GetPosition();
     pos += axis * spd * s3d::Scene::DeltaTime();
-    trans.SetPosition(pos);
+    obj->SetPosition(pos);
 }
 
 void Player::SyncPosWithEasing()
 {
-    auto pos = GetGameObject().lock()->transform().GetPosition();
+    auto pos = GetGameObject().lock()->GetPosition();
     auto diff = targetPos - pos;
 
     //ラグを考慮して少し早く
@@ -53,7 +53,7 @@ void Player::SyncPosWithEasing()
     }
 
     //移動
-    GetGameObject().lock()->transform().SetPosition(pos + diff);
+    GetGameObject().lock()->SetPosition(pos + diff);
 }
 
 void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -76,7 +76,7 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
 
     //到着先を終点に設定
     targetPos = {x, y};
-    // GetGameObject().lock()->transform().SetPosition({x, y});
+    // GetGameObject().lock()->SetPosition({x, y});
 }
 
 void Player::SendInstantiateMessage()
@@ -84,7 +84,7 @@ void Player::SendInstantiateMessage()
     // 自己位置の送信
     dictype dic;
 
-    auto pos = GetGameObject().lock()->transform().GetPosition();
+    auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
 
@@ -96,7 +96,7 @@ void Player::SyncPos()
     // 自己位置の送信
     dictype dic;
 
-    auto pos = GetGameObject().lock()->transform().GetPosition();
+    auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
 
@@ -133,8 +133,8 @@ void PlayerMaster::customEventAction(int playerNr, nByte eventCode, const ExitGa
     auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player", obj);
 
     s3d::Print(s3d::Vec2(x, y));
-    otherplayer->transform().SetPosition({x, y});
-    s3d::Print(otherplayer->transform().GetPosition());
+    otherplayer->SetPosition({x, y});
+    s3d::Print(otherplayer->GetPosition());
 
     auto player = otherplayer->GetComponent<Player>();
     player->playerNr = playerNr;

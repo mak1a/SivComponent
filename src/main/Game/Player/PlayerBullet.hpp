@@ -14,12 +14,12 @@ class BulletManager : public AttachableComponent
 
     void CreateBullet()
     {
-        auto playerpos = player->GetGameObject().lock()->transform().GetWorldPosition();
+        auto playerpos = player->GetGameObject().lock()->GetWorldPosition();
 
         auto bullet = inst();
         GetGameObject().lock()->AddChild(bullet);
 
-        bullet->transform().SetPosition(player->GetGameObject().lock()->transform().GetPosition());
+        bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
     }
 
     void Update() override

@@ -27,26 +27,80 @@ namespace ComponentEngine
         // 上位オブジェクトへの参照
         std::weak_ptr<IScene> scene;
 
-        // TODO: これだけ委譲が実装されてるので他も統一したい
-        Transform& SetWorldPosition(const s3d::Vec2& _position)
+    private:
+        static s3d::Mat3x2 identity_matrix;
+        const s3d::Mat3x2& parent_matrix() const
         {
-            return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
+            auto p = parent.lock();
+            if (p)
+            {
+                return identity_matrix;
+            }
+            return p->_transform.matrix;
         }
 
-        s3d::Vec2 GetWorldPosition()
+    public:
+        GameObject& SetPosition(const s3d::Vec2& _position)
+        {
+            return SetLocalPosition(_position);
+        }
+
+        s3d::Vec2 GetPosition() const
+        {
+            return GetLocalPosition();
+        }
+
+        GameObject& SetWorldPosition(const s3d::Vec2& _position)
+        {
+            _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed(), parent_matrix());
+            return *this;
+        }
+
+        s3d::Vec2 GetWorldPosition() const
         {
             return _transform.GetWorldPosition();
         }
 
-        Transform& SetLocalPosition(const s3d::Vec2& _position)
+        GameObject& SetLocalPosition(const s3d::Vec2& _position)
         {
-            return _transform.SetPosition(_position);
+            _transform.SetPosition(_position, parent_matrix());
+            return *this;
         }
 
-        s3d::Vec2 GetLocalPosition()
+        s3d::Vec2 GetLocalPosition() const
         {
             return _transform.GetPosition();
         }
+
+        //---
+        GameObject& SetRotateByRadian(double _rotate)
+        {
+            _transform.SetRotateByRadian(_rotate, parent_matrix());
+            return *this;
+        }
+
+        GameObject& SetRotateByAngle(double angle)
+        {
+            _transform.SetRotateByAngle(angle, parent_matrix());
+            return *this;
+        }
+
+        double GetRotate() const noexcept
+        {
+            return _transform.GetRotate();
+        }
+
+        GameObject& SetScale(double _scale)
+        {
+            _transform.SetScale(_scale, parent_matrix());
+            return *this;
+        }
+
+        double GetScale() const noexcept
+        {
+            return _transform.GetScale();
+        }
+        //---
 
     private:
         std::string name = "unnamed";
@@ -278,14 +332,14 @@ namespace ComponentEngine
 
             if (parent.lock())
             {
-                // DEBUG
-                // std::cout << "parent is:" << parent.lock()->GetName() << std::endl;
                 //今の親と関係を解消
                 parent.lock()->RemoveChild(shared_from_this());
             }
 
             //親を新しいオブジェクトに設定
             parent = newParent;
+            //親の変換座標を使って自分の変換座標を更新
+            this->_transform.update_matrix(parent.lock()->_transform.matrix);
         }
 
     private:
@@ -404,14 +458,17 @@ namespace ComponentEngine
         }
 
     public:
-        void components_start(const s3d::Mat3x2&);
+        // regulary IScene API
+        void components_start();
 
-        void components_update(const s3d::Mat3x2&);
+        void components_update();
 
-        void components_lateUpdate(const s3d::Mat3x2&);
+        void components_lateUpdate();
 
-        void components_draw(const s3d::Mat3x2&) const;
+        void components_draw() const;
 
+    public:
+        // IScene event API
         void components_call_collisionstay(std::shared_ptr<GameObject>& object);
     };  // namespace ComponentEngine
 }  // namespace ComponentEngine

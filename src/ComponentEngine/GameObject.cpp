@@ -7,10 +7,8 @@
 
 namespace ComponentEngine
 {
-    void GameObject::components_start(const s3d::Mat3x2& _matrix)
+    void GameObject::components_start()
     {
-        _transform.update_matrix(_matrix);
-
         if (!initializedAll)
         {
             //全部初期化後は呼び出しが無駄なので処理カット用
@@ -37,13 +35,12 @@ namespace ComponentEngine
                 continue;
             }
             // TODO: Transformの処理
-            child->components_start(_transform.matrix);
+            child->components_start();
         }
     }
 
-    void GameObject::components_update(const s3d::Mat3x2& _matrix)
+    void GameObject::components_update()
     {
-        _transform.update_matrix(_matrix);
 
         for (auto& component : components)
         {
@@ -60,13 +57,12 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_update(_transform.matrix);
+            child->components_update();
         }
     }
 
-    void GameObject::components_lateUpdate(const s3d::Mat3x2& _matrix)
+    void GameObject::components_lateUpdate()
     {
-        _transform.update_matrix(_matrix);
 
         for (auto& component : components)
         {
@@ -83,13 +79,12 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_lateUpdate(_transform.matrix);
+            child->components_lateUpdate();
         }
     }
 
-    void GameObject::components_draw(const s3d::Mat3x2& _matrix) const
+    void GameObject::components_draw() const
     {
-        _transform.update_matrix(_matrix);
 
         // z情報を設定
         // s3d::Graphics2D::SetZ();
@@ -111,7 +106,7 @@ namespace ComponentEngine
             {
                 continue;
             }
-            child->components_draw(_transform.matrix);
+            child->components_draw();
         }
     }
 
@@ -122,4 +117,6 @@ namespace ComponentEngine
             c->OnStayCollision(object);
         }
     }
+
+    s3d::Mat3x2 GameObject::identity_matrix = s3d::Mat3x2::Identity();
 }  // namespace ComponentEngine

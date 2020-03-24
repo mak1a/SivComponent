@@ -67,7 +67,7 @@ class TestScene : public ComponentEngine::IScene
         cir->AddComponent<ComponentEngine::Collision::CircleCollider>()->SetShape(c);
         cir->AddComponent<Siv::Circle>()->SetShape(c).SetColor(s3d::Palette::Green);
         auto up = CreateAndGetObject();
-        up->transform().SetScale(2);
+        up->SetScale(2);
         up->AddChild(cir);
 
         auto rec = CreateAndGetObject();
@@ -88,19 +88,19 @@ class TestScene : public ComponentEngine::IScene
         };
 
         auto dummy3 = CreateAndGetObject();
-        dummy3->transform().SetScale(2);
+        dummy3->SetScale(2);
         dummy3->AddChild(mousemake(s3d::Palette::Yellow));
 
         auto dummy = CreateAndGetObject();
-        dummy->transform().SetPosition({100, 100}).SetScale(1.2);
+        dummy->SetPosition({100, 100}).SetScale(1.2);
         dummy->AddChild(mousemake(s3d::Palette::Lightcoral));
 
         auto dummy2 = CreateAndGetObject();
-        dummy2->transform().SetRotateByAngle(45);
+        dummy2->SetRotateByAngle(45);
         dummy2->AddChild(mousemake(s3d::Palette::Lightblue));
 
         auto moveobj = CreateAndGetObject();
-        moveobj->transform().SetScale(2).SetRotateByAngle(30);
+        moveobj->SetScale(2).SetRotateByAngle(30);
         moveobj->AddChild(rec);
     }
 };

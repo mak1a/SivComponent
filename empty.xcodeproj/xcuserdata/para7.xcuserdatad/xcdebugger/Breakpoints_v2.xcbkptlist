@@ -64,8 +64,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "174"
             endingLineNumber = "174"
-            landmarkName = "AddComponent(args)"
-            landmarkType = "7">
+            landmarkName = "GameObject"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "5C542C73-356F-4154-9D63-E55A91BB2F26 - 3db95e0ca4acccef"
@@ -128,7 +128,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
             endingLineNumber = "214"
-            landmarkName = "GetComponents()"
+            landmarkName = "Create()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -536,8 +536,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "31"
             endingLineNumber = "31"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "Setup()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
