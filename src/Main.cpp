@@ -20,7 +20,7 @@ void Main()
 {
     ComponentEngine::SceneManager manager;
 
-     manager.RegisterScene<TestScene>("test");
+//     manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<ComponentEngine::Photon::PhotonInitScene>("PhotonInitOnceLoad");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");

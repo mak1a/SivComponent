@@ -3,11 +3,11 @@
 #include <list>
 
 #define NO_S3D_USING
-// #include <Siv3D.hpp>
-// #include "../../../PhotonComponent/PhotonComponent.hpp"
-// #include "../../../SivComponent/Collision/Colliders.hpp"
-// #include "../../../SivComponent/SivComponent.hpp"
-// #include "../../../Utilities/IntervalCall.hpp"
+ #include <Siv3D.hpp>
+ #include "../../../PhotonComponent/PhotonComponent.hpp"
+ #include "../../../SivComponent/Collision/Colliders.hpp"
+ #include "../../../SivComponent/SivComponent.hpp"
+ #include "../../../Utilities/IntervalCall.hpp"
 
 using namespace ComponentEngine;
 

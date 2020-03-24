@@ -73,9 +73,6 @@ namespace ComponentEngine
             //無効なポインタならエラー
             if (!object)
             {
-#ifdef DEBUG
-                std::cout << "Object Pointer is Null." << std::endl;
-#endif
                 return;
             }
             masterObject->AddChild(object);
@@ -146,15 +143,7 @@ namespace ComponentEngine
             masterObject->DestroyAll();
         }
 
-        virtual ~IScene()
-        {
-            std::cout << "scene destory" << std::endl;
-            std::cout << "master:" << masterObject.use_count() << std::endl;
-            for (auto& c : masterObject->children)
-            {
-                std::cout << c->GetName() << ":" << c.use_count() << std::endl;
-            }
-        }
+        virtual ~IScene() = default;
     };
 
 }  // namespace ComponentEngine
