@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComponentEngine.hpp"
+#include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "Player.hpp"
 
 class BulletManager : public AttachableComponent

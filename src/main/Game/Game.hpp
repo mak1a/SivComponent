@@ -1,12 +1,12 @@
 
 #pragma once
 
-#include "ComponentEngine.hpp"
-#include "PhotonComponent.hpp"
-#include "SivComponent.hpp"
+//#include "../../ComponentEngine/ComponentEngine.hpp"
+//#include "PhotonComponent.hpp"
+//#include "SivComponent.hpp"
 
-#include "Player.hpp"
-#include "PlayerBullet.hpp"
+#include "Player/Player.hpp"
+#include "Player/PlayerBullet.hpp"
 
 class Game : public ComponentEngine::IScene
 {

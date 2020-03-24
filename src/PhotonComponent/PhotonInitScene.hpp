@@ -3,7 +3,7 @@
 
 #define NO_S3D_USING
 //#include <iostream>
-#include "ComponentEngine.hpp"
+#include "../ComponentEngine/ComponentEngine.hpp"
 
 #include "LoadBalancing-cpp/inc/Client.h"
 #include "NetworkSystem.hpp"
