@@ -9,7 +9,13 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         //        auto obj = GameObject::Create();
         auto obj = std::make_shared<GameObject>();
         obj->AddComponent<Player>();
-        obj->AddComponent<Siv::Circle>()->SetShape({0,0, 10});
+        obj->AddComponent<Siv::Circle>()->SetShape({0, 0, 10});
+        return obj;
+    });
+
+    common.AddObjectCreator("PlayerBullet", [&]() {
+        auto obj = GameObject::Create();
+        obj->AddComponent<Siv::Circle>()->SetShape({0, 0, 8}).SetColor(s3d::Palette::Darkblue);
         return obj;
     });
 }

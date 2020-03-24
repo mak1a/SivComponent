@@ -6,6 +6,7 @@
 #include "SivComponent.hpp"
 
 #include "Player.hpp"
+#include "PlayerBullet.hpp"
 
 class Game : public ComponentEngine::IScene
 {
@@ -32,6 +33,9 @@ class Game : public ComponentEngine::IScene
         //    player->SendInstantiateMessage();
 
         players->AddChild(mainplayerobj);
+
+        auto o = CreateAndGetObject();
+        o->AddComponent<BulletManager>()->player = player;
     }
 
     // メンバだと実体化してないと呼び出せない

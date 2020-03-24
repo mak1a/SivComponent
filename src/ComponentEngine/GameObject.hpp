@@ -10,8 +10,6 @@
 #include "IComponent.hpp"
 #include "Transform.hpp"
 
-// #include "../SivComponent/Collision/CollisionSystem.hpp"
-
 namespace ComponentEngine
 {
     using Transform = SivTransform2D;
@@ -23,17 +21,31 @@ namespace ComponentEngine
         friend class IScene;
         friend class CollisionSystem;
 
-        // public:
-        //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
-
     public:
         // GameObjectは必ずtransformを持つ
         Transform _transform;
+        // 上位オブジェクトへの参照
         std::weak_ptr<IScene> scene;
 
+        // TODO: これだけ委譲が実装されてるので他も統一したい
         Transform& SetWorldPosition(const s3d::Vec2& _position)
         {
             return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
+        }
+
+        s3d::Vec2 GetWorldPosition()
+        {
+            return _transform.GetWorldPosition();
+        }
+
+        Transform& SetLocalPosition(const s3d::Vec2& _position)
+        {
+            return _transform.SetPosition(_position);
+        }
+
+        s3d::Vec2 GetLocalPosition()
+        {
+            return _transform.GetPosition();
         }
 
     private:

@@ -49,7 +49,7 @@ namespace ComponentEngine
             return object;
         }
 
-    private:  // Instantiate機構
+    public:  // Instantiate機構
         using instantiate_key = std::string;
         using Functype = std::function<std::shared_ptr<GameObject>()>;
         std::unordered_map<instantiate_key, Functype> prefabs;
