@@ -1,9 +1,7 @@
 
 #pragma once
 
-#define NO_S3D_USING
 #include <memory>
-// #include "GameObject.hpp"
 #include "IComponent.hpp"
 
 namespace ComponentEngine
@@ -19,44 +17,17 @@ namespace ComponentEngine
         bool active;
 
     public:
-        void SetActive(bool _active) override
-        {
-            active = _active;
-        }
-        bool GetActive() const override
-        {
-            return active;
-        }
+        void SetActive(bool _active) override;
+        bool GetActive() const override;
 
     public:
-        std::weak_ptr<GameObject> GetGameObject() const
-        {
-            return gameobject;
-        }
-
-        //        auto GetScene() -> decltype(gameobject.lock()->GetScene())
-        //        {
-        //            return gameobject.lock()->GetScene();
-        //        }
-
-        //        auto transform() -> decltype(gameobject.lock()->transform())
-        //        {
-        //            return gameobject.lock()->transform();
-        //        }
-
-        //        SceneManager* GetSceneManager()
-        //        {
-        //            return gameobject->
-        //        }
+        std::weak_ptr<GameObject> GetGameObject() const;
 
     private:
         bool initialized = false;
 
     public:
-        bool IsInitialized()
-        {
-            return initialized;
-        }
+        bool IsInitialized();
 
     protected:
         // virtual funcs
@@ -69,10 +40,7 @@ namespace ComponentEngine
         virtual void OnStayCollision(std::shared_ptr<GameObject>&) override {}
 
         //これ自体の生成は禁止する
-        AttachableComponent()
-        {
-            active = true;
-        };
+        AttachableComponent();
 
     protected:
         virtual void call_awake() override final
@@ -82,19 +50,9 @@ namespace ComponentEngine
 
         // Startを1回しか呼ばないように制御
         // この関数はここで固定する
-        virtual void call_start() override final
-        {
-            if (!initialized)
-            {
-                Start();
-                initialized = true;
-            }
-        }
+        virtual void call_start() override final;
 
-        virtual bool _initialized() override final
-        {
-            return initialized;
-        }
+        virtual bool _initialized() override final;
 
     public:
         virtual ~AttachableComponent() = default;

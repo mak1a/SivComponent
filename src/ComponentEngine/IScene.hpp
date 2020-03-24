@@ -73,9 +73,6 @@ namespace ComponentEngine
             //無効なポインタならエラー
             if (!object)
             {
-#ifdef DEBUG
-                std::cout << "Object Pointer is Null." << std::endl;
-#endif
                 return;
             }
             masterObject->AddChild(object);
@@ -117,16 +114,16 @@ namespace ComponentEngine
             }
 
             // Start呼び出し
-            masterObject->components_start(s3d::Mat3x2::Identity());
+            masterObject->components_start();
 
-            masterObject->components_update(s3d::Mat3x2::Identity());
+            masterObject->components_update();
 
-            masterObject->components_lateUpdate(s3d::Mat3x2::Identity());
+            masterObject->components_lateUpdate();
 
             //衝突判定コール
             colsys.CollisionCall();
 
-            masterObject->components_draw(s3d::Mat3x2::Identity());
+            masterObject->components_draw();
 
             //消去処理
             for (auto& obj : destroyList)
@@ -146,15 +143,7 @@ namespace ComponentEngine
             masterObject->DestroyAll();
         }
 
-        virtual ~IScene()
-        {
-            std::cout << "scene destory" << std::endl;
-            std::cout << "master:" << masterObject.use_count() << std::endl;
-            for (auto& c : masterObject->children)
-            {
-                std::cout << c->GetName() << ":" << c.use_count() << std::endl;
-            }
-        }
+        virtual ~IScene() = default;
     };
 
 }  // namespace ComponentEngine

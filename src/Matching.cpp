@@ -192,17 +192,17 @@ void Matching::Setup()
 {
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
     auto list = CreateAndGetObject();
-    list->transform().SetPosition({100, 100});
+    list->SetPosition({100, 100});
     list->AddComponent<PlayerListDisplay>();
     list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください");
 
     auto bt = CreateAndGetObject();
     bt->AddComponent<TitleBt>();
-    bt->transform().SetPosition({200, s3d::Scene::Height() - 60});
+    bt->SetPosition({200, s3d::Scene::Height() - 60});
 
     bt = CreateAndGetObject();
     bt->AddComponent<GameBt>();
-    bt->transform().SetPosition({s3d::Scene::Width() - 200, s3d::Scene::Height() - 60});
+    bt->SetPosition({s3d::Scene::Width() - 200, s3d::Scene::Height() - 60});
 
     // for (int i = 0; i < 4; ++i)
     // {

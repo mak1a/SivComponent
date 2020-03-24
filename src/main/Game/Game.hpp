@@ -1,12 +1,12 @@
 
 #pragma once
 
-#include "ComponentEngine.hpp"
-#include "PhotonComponent.hpp"
-#include "SivComponent.hpp"
+//#include "../../ComponentEngine/ComponentEngine.hpp"
+//#include "PhotonComponent.hpp"
+//#include "SivComponent.hpp"
 
-#include "Player.hpp"
-#include "PlayerBullet.hpp"
+#include "Player/Player.hpp"
+#include "Player/PlayerBullet.hpp"
 
 class Game : public ComponentEngine::IScene
 {
@@ -23,7 +23,7 @@ class Game : public ComponentEngine::IScene
         auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
         auto system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
 
-        mainplayerobj->transform().SetPosition(Player::playerInitpos[system->GetPlayerNumberInRoom()]);
+        mainplayerobj->SetPosition(Player::playerInitpos[system->GetPlayerNumberInRoom()]);
 
         auto player = mainplayerobj->GetComponent<Player>();
         player->SetMine(true);

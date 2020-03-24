@@ -71,23 +71,23 @@ void TitleScene::Setup()
     auto genbt = CreateAndGetObject();
     obj->AddChild(genbt);
 
-    obj->transform().SetPosition(s3d::Scene::Center());
+    obj->SetPosition(s3d::Scene::Center());
     auto gen = genbt->AddComponent<NameGenerator>();
     gen->tbox = obj->AddComponent<ComponentEngine::Siv::TextBox>();
     genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() { gen->Generate(); });
-    genbt->transform().SetPosition({0, 40});
+    genbt->SetPosition({0, 40});
     gen->Generate();
 
     //マッチングボタン
     auto bt = CreateAndGetObject();
-    bt->transform().SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 3});
+    bt->SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 3});
     auto btscript = bt->AddComponent<ChangeSceneBt>();
     bt->AddComponent<Siv::Button>()->SetText(U"マッチング開始").SetDelegate([=]() { btscript->ChangeToMatching(); });
     btscript->generator = gen;
 
     //タイトル
     auto title = CreateAndGetObject();
-    title->transform().SetPosition({0, 100});
+    title->SetPosition({0, 100});
     title->AddComponent<Siv::Text>()->SetText(U"オンラインCoopゲーム(仮題 α版)").SetFont(s3d::Font(50)).SetColor(s3d::Palette::Black);
 }
 

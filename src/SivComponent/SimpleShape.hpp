@@ -3,8 +3,8 @@
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
+#include "../ComponentEngine/ComponentEngine.hpp"
 #include "Collision/ShapeTransform.hpp"
-#include "ComponentEngine.hpp"
 
 namespace ComponentEngine::Siv
 {
@@ -187,7 +187,8 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
+            auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
+            s.draw(color);
         }
     };
 }  // namespace ComponentEngine::Siv

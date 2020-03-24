@@ -3,8 +3,8 @@
 
 #define NO_USING_S3D
 #include <Siv3D.hpp>
-#include "AttachableComponent.hpp"
-#include "GameObject.hpp"
+#include "../ComponentEngine/AttachableComponent.hpp"
+#include "../ComponentEngine/GameObject.hpp"
 
 namespace ComponentEngine::Siv
 {
