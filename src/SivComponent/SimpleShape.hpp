@@ -187,7 +187,8 @@ namespace ComponentEngine::Siv
     protected:
         void Draw() const override
         {
-            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
+            auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
+            s.draw(color);
         }
     };
 }  // namespace ComponentEngine::Siv

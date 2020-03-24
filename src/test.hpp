@@ -28,11 +28,11 @@ class TestScene : public ComponentEngine::IScene
 {
     void Setup() override
     {
-        // mode1
-        // matrix check
+        // // mode1
+        // // matrix check
 
         // auto x = CreateAndGetObject();
-        // x->transform().SetPosition({300, 200});
+        // x->SetPosition({300, 200});
         // // x->transform().SetRotateByAngle(45);
         // // x->transform().SetScale(2);
 
@@ -46,7 +46,7 @@ class TestScene : public ComponentEngine::IScene
         //     auto y = CreateAndGetObject();
         //     x->AddChild(y);
 
-        //     y->transform().SetPosition(pos);
+        //     y->SetPosition(pos);
 
         //     y->AddComponent<Siv::Rect>()->SetShape(r);
         // }

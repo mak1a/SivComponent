@@ -121,10 +121,10 @@ namespace ComponentEngine
             auto after = parentMatrix.transform(position).moveBy(-parentMatrix._31, -parentMatrix._32);
 
             //自分の変換座標による行列を生成
-            auto matrix = create_matrix(after, scale, rotate, parentMatrix.transform(position));
+            const auto currentmatrix = create_matrix(after, scale, rotate, parentMatrix.transform(position));
 
             //親の行列と掛け合わせる
-            matrix.setProduct(parentMatrix, matrix);
+            matrix.setProduct(parentMatrix, currentmatrix);
         }
 
     public:

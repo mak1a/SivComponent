@@ -29,10 +29,11 @@ namespace ComponentEngine
 
     private:
         static s3d::Mat3x2 identity_matrix;
-        const s3d::Mat3x2& parent_matrix() const
+        s3d::Mat3x2& parent_matrix() const
         {
             auto p = parent.lock();
-            if (p)
+            //親がなければ代わりの行列を返す
+            if (!p)
             {
                 return identity_matrix;
             }
