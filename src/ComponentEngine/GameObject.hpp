@@ -21,6 +21,36 @@ namespace ComponentEngine
         friend class IScene;
         friend class CollisionSystem;
 
+    private:
+        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
+        //メモリリークのリスクの方が大きい気もする。
+        std::list<std::shared_ptr<IComponent>> components;
+
+        //親子オブジェクト
+        std::weak_ptr<GameObject> parent;
+        std::list<std::shared_ptr<GameObject>> children;
+
+    public:
+        [[nodiscard]] std::weak_ptr<GameObject>& GetParent()
+        {
+            return parent;
+        }
+
+        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren()
+        {
+            return children;
+        }
+
+    private:
+        // Start更新済みかどうか
+        bool initializedAll = false;
+
+    public:
+        bool IsInitializedAll()
+        {
+            return initializedAll;
+        }
+
     public:
         // GameObjectは必ずtransformを持つ
         Transform _transform;
@@ -40,6 +70,16 @@ namespace ComponentEngine
             return p->_transform.matrix;
         }
 
+        //子オブジェクトに変換行列を適用する
+        void update_children_matrix()
+        {
+            for (std::shared_ptr<GameObject>& child : children)
+            {
+                child->_transform.update_matrix(_transform.matrix);
+                child->update_children_matrix();
+            }
+        }
+
     public:
         GameObject& SetPosition(const s3d::Vec2& _position)
         {
@@ -54,6 +94,7 @@ namespace ComponentEngine
         GameObject& SetWorldPosition(const s3d::Vec2& _position)
         {
             _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed(), parent_matrix());
+            update_children_matrix();
             return *this;
         }
 
@@ -65,6 +106,7 @@ namespace ComponentEngine
         GameObject& SetLocalPosition(const s3d::Vec2& _position)
         {
             _transform.SetPosition(_position, parent_matrix());
+            update_children_matrix();
             return *this;
         }
 
@@ -77,12 +119,14 @@ namespace ComponentEngine
         GameObject& SetRotateByRadian(double _rotate)
         {
             _transform.SetRotateByRadian(_rotate, parent_matrix());
+            update_children_matrix();
             return *this;
         }
 
         GameObject& SetRotateByAngle(double angle)
         {
             _transform.SetRotateByAngle(angle, parent_matrix());
+            update_children_matrix();
             return *this;
         }
 
@@ -94,6 +138,7 @@ namespace ComponentEngine
         GameObject& SetScale(double _scale)
         {
             _transform.SetScale(_scale, parent_matrix());
+            update_children_matrix();
             return *this;
         }
 
@@ -165,36 +210,6 @@ namespace ComponentEngine
         Transform& transform()
         {
             return _transform;
-        }
-
-    private:
-        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
-        //メモリリークのリスクの方が大きい気もする。
-        std::list<std::shared_ptr<IComponent>> components;
-
-        //親子オブジェクト
-        std::weak_ptr<GameObject> parent;
-        std::list<std::shared_ptr<GameObject>> children;
-
-    public:
-        [[nodiscard]] std::weak_ptr<GameObject>& GetParent()
-        {
-            return parent;
-        }
-
-        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren()
-        {
-            return children;
-        }
-
-    private:
-        // Start更新済みかどうか
-        bool initializedAll = false;
-
-    public:
-        bool IsInitializedAll()
-        {
-            return initializedAll;
         }
 
     public:

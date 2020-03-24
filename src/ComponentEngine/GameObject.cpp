@@ -27,7 +27,6 @@ namespace ComponentEngine
             }
         }
 
-        //子オブジェクトも初期化済みだったら飛ばすようにしたい
         for (const auto& child : children)
         {
             if (!child->GetActive())
@@ -41,7 +40,6 @@ namespace ComponentEngine
 
     void GameObject::components_update()
     {
-
         for (auto& component : components)
         {
             if (!component->GetActive() || !component->_initialized())
@@ -63,7 +61,6 @@ namespace ComponentEngine
 
     void GameObject::components_lateUpdate()
     {
-
         for (auto& component : components)
         {
             if (!component->GetActive() || !component->_initialized())
@@ -85,7 +82,6 @@ namespace ComponentEngine
 
     void GameObject::components_draw() const
     {
-
         // z情報を設定
         // s3d::Graphics2D::SetZ();
         //あっ

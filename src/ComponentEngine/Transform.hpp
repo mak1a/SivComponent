@@ -27,11 +27,10 @@ namespace ComponentEngine
 
         // get set
     private:
-        SivTransform2D& SetPosition(const s3d::Vec2& _position, const s3d::Mat3x2& parentMatrix)
+        /*SivTransform2D&*/ void SetPosition(const s3d::Vec2& _position, const s3d::Mat3x2& parentMatrix)
         {
             position = _position;
             update_matrix(parentMatrix);
-            return *this;
         }
 
     public:
@@ -41,11 +40,10 @@ namespace ComponentEngine
         }
 
     private:
-        SivTransform2D& SetWorldPosition(const s3d::Vec2& _position, const s3d::Mat3x2& inversedMatrix, const s3d::Mat3x2& parentMatrix)
+        /*SivTransform2D&*/ void SetWorldPosition(const s3d::Vec2& _position, const s3d::Mat3x2& inversedMatrix, const s3d::Mat3x2& parentMatrix)
         {
             position = inversedMatrix.transform(_position);
             update_matrix(parentMatrix);
-            return *this;
         }
 
     public:
@@ -55,18 +53,16 @@ namespace ComponentEngine
         }
 
     private:
-        SivTransform2D& SetRotateByRadian(double _rotate, const s3d::Mat3x2& parentMatrix)
+        /*SivTransform2D&*/ void SetRotateByRadian(double _rotate, const s3d::Mat3x2& parentMatrix)
         {
             rotate = _rotate;
             update_matrix(parentMatrix);
-            return *this;
         }
 
-        SivTransform2D& SetRotateByAngle(double angle, const s3d::Mat3x2& parentMatrix)
+        /*SivTransform2D&*/ void SetRotateByAngle(double angle, const s3d::Mat3x2& parentMatrix)
         {
             rotate = Utilities::DegToRad(angle);
             update_matrix(parentMatrix);
-            return *this;
         }
 
     public:
@@ -76,11 +72,10 @@ namespace ComponentEngine
         }
 
     private:
-        SivTransform2D& SetScale(double _scale, const s3d::Mat3x2& parentMatrix)
+        /*SivTransform2D&*/ void SetScale(double _scale, const s3d::Mat3x2& parentMatrix)
         {
             scale = _scale;
             update_matrix(parentMatrix);
-            return *this;
         }
 
     public:
