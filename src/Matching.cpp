@@ -81,6 +81,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
             return;
         }
+
         networkSystem->GetClient().opJoinRandomOrCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions(), ExitGames::Common::Hashtable(), 4);
         s3d::Print(U"connected!");
     };
@@ -171,6 +172,7 @@ public:
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
 
         system->GetClient().opRaiseEvent(true, (int)networkSystem->GetClient().getServerTime() + 5000, CustomEvent::GameStart);
+
         Matching::GameStartTime = networkSystem->GetClient().getServerTime() + 5000;
 
         system->GetClient().getCurrentlyJoinedRoom().setIsOpen(false);

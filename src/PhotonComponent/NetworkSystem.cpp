@@ -9,7 +9,7 @@ namespace ComponentEngine::Photon
     }
 
     NetworkSystem::NetworkSystem()
-        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::TCP)
+        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::UDP)
     {
         SetPlayerName(L"null player");
 

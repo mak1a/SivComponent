@@ -54,9 +54,9 @@ namespace ComponentEngine
         bool GetActive() const noexcept;
         Transform& transform();
 
-        void AddChild(const std::shared_ptr<GameObject>& child);
+        void AddChild(const std::shared_ptr<GameObject>& child, bool pushfront = false);
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild();
-        void SetParent(const std::weak_ptr<GameObject>& newParent);
+        void SetParent(const std::weak_ptr<GameObject>& newParent, bool pushfront = false);
         std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const;
         std::shared_ptr<GameObject> FindChild(const std::string& name) const;
 
@@ -192,7 +192,7 @@ namespace ComponentEngine
         // GameObjectは必ずtransformを持つ
         Transform _transform;
         // 上位オブジェクトへの参照
-        std::weak_ptr<IScene> scene;
+        IScene* scene;
 
         std::string name = "unnamed";
         UserDef::Tag objecttag;

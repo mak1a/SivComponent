@@ -3,8 +3,6 @@
 
 #include "./../../../ComponentEngine/ComponentEngine.hpp"
 
-using namespace ComponentEngine;
-
 class Enemy : public AttachableComponent
 {
     void OnStayCollision(std::shared_ptr<GameObject>& obj) override
@@ -15,4 +13,8 @@ class Enemy : public AttachableComponent
             GetGameObject().lock()->GetScene().lock()->Destroy(GetGameObject().lock());
         }
     }
+
+    class EnemyManager : public AttachableComponent
+    {
+    };
 };

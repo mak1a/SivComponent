@@ -113,7 +113,7 @@ namespace ComponentEngine
         auto thispos = this->GetLocalPosition();
 
         //相手の座標をこちらのローカル座標系に変換
-        auto targetpos = parent.lock()->        _transform.matrix.transform(targetWorldPos);
+        auto targetpos = parent.lock()->_transform.matrix.transform(targetWorldPos);
 
         //ベクトルを計算
         auto diff = targetpos - thispos;
@@ -198,9 +198,9 @@ namespace ComponentEngine
         objecttag = UserDef::Tag::Default;
     }
 
-    void GameObject::AddChild(const std::shared_ptr<GameObject>& child)
+    void GameObject::AddChild(const std::shared_ptr<GameObject>& child, bool pushfront)
     {
-        child->SetParent(weak_from_this());
+        child->SetParent(weak_from_this(), pushfront);
     }
     std::shared_ptr<GameObject> GameObject::CreateAndGetChild()
     {
@@ -210,7 +210,7 @@ namespace ComponentEngine
         return object;
     }
 
-    void GameObject::SetParent(const std::weak_ptr<GameObject>& newParent)
+    void GameObject::SetParent(const std::weak_ptr<GameObject>& newParent, bool pushfront)
     {
         //現在の関係をデバッグ出力
         // std::cout << "this is:" << GetName() << std::endl;
@@ -219,8 +219,17 @@ namespace ComponentEngine
         {
             return;
         }
+
         //自分を新しい親の子オブジェクトに設定
-        newParent.lock()->children.push_back(shared_from_this());
+        if (pushfront)
+        {
+            newParent.lock()->children.push_front(shared_from_this());
+        }
+        else
+
+        {
+            newParent.lock()->children.push_back(shared_from_this());
+        }
 
         if (parent.lock())
         {

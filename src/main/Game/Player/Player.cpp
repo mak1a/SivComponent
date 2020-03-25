@@ -3,7 +3,7 @@
 #include <Siv3D.hpp>
 #include "../../../CustomEventList.hpp"
 #include "../../../Matching.hpp"
-#include "../../../SivComponent/SivComponent.hpp"
+// #include "../../../SivComponent/SivComponent.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
@@ -11,7 +11,10 @@ void Player::Start2()
 {
     targetPos = GetGameObject().lock()->GetPosition();
 
-    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(isMine ? s3d::Palette::Limegreen : s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2));
+    constexpr auto playercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Lightblue, 0.5);
+    constexpr auto othercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2);
+
+    GetGameObject().lock()->GetComponent<Siv::Rect>()->SetColor(isMine ? playercolor : othercolor);
 }
 
 void Player::Update()
@@ -129,12 +132,13 @@ void PlayerMaster::customEventAction(int playerNr, nByte eventCode, const ExitGa
 
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
-    auto obj = GetGameObject().lock();
-    auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player", obj);
 
-    s3d::Print(s3d::Vec2(x, y));
+    //プレイヤーを生成
+    auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player");
+    //描画順を調整して追加
+    GetGameObject().lock()->AddChild(otherplayer, true);
+
     otherplayer->SetPosition({x, y});
-    s3d::Print(otherplayer->GetPosition());
 
     auto player = otherplayer->GetComponent<Player>();
     player->playerNr = playerNr;
