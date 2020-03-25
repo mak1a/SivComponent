@@ -85,7 +85,7 @@ namespace ComponentEngine
             }
 #endif
             nextScene = sceneMaker[key]();
-            nextScene->manager = this;
+            nextScene->_set_manager(this);
         }
 
         void UpdateCurrentScene()
@@ -100,10 +100,10 @@ namespace ComponentEngine
                 }
                 currentScene.swap(nextScene);
                 nextScene.reset();
-                currentScene->manager = this;
+                currentScene->_set_manager(this);
 
                 //共通オブジェクトの設定
-                currentScene->masterObject->AddChild(common.commonParent);
+                currentScene->GetMasterObject()->AddChild(common.commonParent);
             }
 
             //シーンの更新

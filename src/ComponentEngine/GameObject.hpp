@@ -192,7 +192,7 @@ namespace ComponentEngine
         // GameObjectは必ずtransformを持つ
         Transform _transform;
         // 上位オブジェクトへの参照
-        IScene* scene;
+        std::weak_ptr<IScene> scene;
 
         std::string name = "unnamed";
         UserDef::Tag objecttag;
