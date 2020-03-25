@@ -3,10 +3,10 @@
 #include <list>
 
 #define NO_S3D_USING
- #include <Siv3D.hpp>
-  #include "../../../PhotonComponent/PhotonComponent.hpp"
-  #include "../../../SivComponent/Collision/Colliders.hpp"
-  #include "../../../SivComponent/SivComponent.hpp"
+#include <Siv3D.hpp>
+#include "../../../PhotonComponent/PhotonComponent.hpp"
+#include "../../../SivComponent/Collision/Colliders.hpp"
+#include "../../../SivComponent/SivComponent.hpp"
 #include "../../../Utilities/IntervalCall.hpp"
 
 using namespace ComponentEngine;
@@ -26,6 +26,8 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
 
     double spd;
 
+    std::shared_ptr<GameObject> master;
+
 public:
     int playerNr;
 
@@ -42,13 +44,7 @@ public:
     void SendInstantiateMessage();
     void SyncPos();
 
-    Player()
-        //秒間10同期
-        : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
-    {
-        isMine = false;
-        spd = 130.0;
-    }
+    Player();
 
 private:
     void SyncPosWithEasing();

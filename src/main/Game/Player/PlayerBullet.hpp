@@ -24,6 +24,7 @@ public:
 class BulletManager : public Photon::AttachableComponentPhotonCallbacks
 {
     ComponentEngine::SceneCommon::Functype inst;
+    // std::shared_ptr<GameObject> master;
 
     void Start2() override;
 

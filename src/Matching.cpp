@@ -27,10 +27,10 @@ class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPho
         auto plist = networkSystem->GetPlayerList();
 
         s3d::String str;
-        for (ExitGames::LoadBalancing::Player* player : plist)
+        for (int i = 0; i < plist.size(); ++i)
         {
-            int num = Utilities::GetPlayerNumber(player->getName());
-            str += s3d::Format(player->getNumber(), U" : Player", num, U"\n");
+            int num = Utilities::GetPlayerNumber(plist[i]->getName());
+            str += s3d::Format(i + 1, U" : Player", num, U"\n");
         }
         text->SetText(str);
     }
@@ -55,19 +55,20 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
 
         networkSystem->Connect();
+        s3d::Print(U"connecting...");
 
         networkSystem->GetClient().fetchServerTimestamp();
     }
 
-    void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
-    {
-        s3d::Print(U"customEventAction");
+    // void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override
+    // {
+    //     s3d::Print(U"customEventAction");
 
-        if (eventCode == 10)
-        {
-            s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
-        }
-    };
+    //     if (eventCode == 10)
+    //     {
+    //         s3d::Print(ExitGames::Common::ValueObject<ExitGames::Common::JString>(eventContent).toString());
+    //     }
+    // };
 
     void connectReturn(int errorCode,
                        const ExitGames::Common::JString& errorString,
@@ -76,27 +77,54 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
     {
         if (errorCode)
         {
-            s3d::Print(U"connect error");
+            s3d::Print(U"connect error.");
+
+            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+            return;
+        }
+        s3d::Print(U"connected!");
+
+        // networkSystem->GetClient().opJoinRandomOrCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions(), ExitGames::Common::Hashtable(), 4);
+
+        networkSystem->GetClient().opJoinRandomRoom(ExitGames::Common::Hashtable(), 4);
+
+        s3d::Print(U"Search Room...");
+    };
+
+    void joinRandomRoomReturn(int localPlayerNr,
+                              const ExitGames::Common::Hashtable& roomProperties,
+                              const ExitGames::Common::Hashtable& playerProperties,
+                              int errorCode,
+                              const ExitGames::Common::JString& errorString) override
+
+    {
+        if (errorCode)
+        {
+            s3d::Print(U"Room not found.");
+
+            networkSystem->GetClient().opCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(4));
+
+            s3d::Print(U"Create Room...");
+        }
+        s3d::Print(U"Connected Room!");
+    }
+
+    void joinRoomReturn(int localPlayerNr,
+                        const ExitGames::Common::Hashtable& roomProperties,
+                        const ExitGames::Common::Hashtable& playerProperties,
+                        int errorCode,
+                        const ExitGames::Common::JString& errorString) override
+    {
+        if (errorCode)
+        {
+            s3d::Print(U"CreateRoom error!");
+            s3d::Print(U"Please back to Title.");
 
             GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
             return;
         }
 
-        networkSystem->GetClient().opJoinRandomOrCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions(), ExitGames::Common::Hashtable(), 4);
-        s3d::Print(U"connected!");
-    };
-
-    void joinOrCreateRoomReturn(int localPlayerNr,
-                                const ExitGames::Common::Hashtable& roomProperties,
-                                const ExitGames::Common::Hashtable& playerProperties,
-                                int errorCode,
-                                const ExitGames::Common::JString& errorString) override
-    {
-        if (errorCode)
-        {
-            networkSystem->Disconnect();
-            GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
-        }
+        s3d::Print(U"Join Room!");
     }
 
     // void disconnectReturn() override
@@ -194,7 +222,7 @@ void Matching::Setup()
 {
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
     auto list = CreateAndGetObject();
-    list->SetPosition({100, 100});
+    list->SetPosition({200, 100});
     list->AddComponent<PlayerListDisplay>();
     list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください");
 

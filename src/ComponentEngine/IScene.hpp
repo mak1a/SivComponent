@@ -78,13 +78,13 @@ namespace ComponentEngine
                 return;
             }
             masterObject->AddChild(object);
-            // object->scene = weak_from_this();
+            object->scene = weak_from_this();
         }
 
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject()
         {
             auto object = std::make_shared<GameObject>();
-            // object->scene = weak_from_this();
+            object->scene = weak_from_this();
             masterObject->AddChild(object);
             return object;
         }
@@ -92,7 +92,7 @@ namespace ComponentEngine
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject(const Transform& transform)
         {
             auto object = std::make_shared<GameObject>(transform);
-            // object->scene = weak_from_this();
+            object->scene = weak_from_this();
             masterObject->AddChild(object);
             return object;
         }
@@ -135,7 +135,7 @@ namespace ComponentEngine
         {
             masterObject = std::make_shared<GameObject>();
             masterObject->SetName("MasterObject");
-            // masterObject->scene = weak_from_this();
+            masterObject->scene = weak_from_this();
         }
 
         void DestoryAllObjects()

@@ -6,11 +6,14 @@
 void BulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
+
+    //    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
 }
 
+//弾発射情報を送信
 void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 {
-    const s3d::Vec2 pos = bullet->GetGameObject().lock()->GetPosition();
+    const s3d::Vec2 pos = bullet->GetGameObject().lock()->GetLocalPosition();
     const s3d::Vec2 spd = bullet->moveValue;
     const int servertime = networkSystem->GetServerTime();
 
@@ -24,14 +27,10 @@ void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 
     table.put<short, int>(static_cast<short>(99), servertime);
 
-    s3d::Print(U"send");
-    s3d::Print(pos);
-    s3d::Print(spd);
-    s3d::Print(servertime);
-
     networkSystem->GetClient().opRaiseEvent(true, table, CustomEvent::PlayerShot);
 }
 
+//弾を受信
 void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
     if (eventCode != CustomEvent::PlayerShot)
@@ -63,16 +62,11 @@ void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     auto b = bullet->GetComponent<Bullet>();
     b->moveValue = spd;
     b->lifetime -= lagtime;
-
-    s3d::Print(U"receive");
-    s3d::Print(pos);
-    s3d::Print(spd);
-    s3d::Print(servertime);
 }
 
 void BulletManager::CreateBullet()
 {
-    auto playerpos = player->GetGameObject().lock()->GetWorldPosition();
+    // const auto playerpos = player->GetGameObject().lock()->GetLocalPosition();
 
     auto bullet = inst();
     GetGameObject().lock()->AddChild(bullet);
@@ -80,7 +74,14 @@ void BulletManager::CreateBullet()
     bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
 
     auto b = bullet->GetComponent<Bullet>();
-    b->SetMove(s3d::Cursor::PosF(), 110);
+    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), 110);
+
+    // s3d::Print(U"Player:", playerpos);
+    // s3d::Print(U"Cursor:", s3d::Cursor::PosF());
+    // s3d::Print(U"Target:", master->transform().GetMatrix().inversed().transform(s3d::Cursor::PosF()));
+    // s3d::Print(U"offset loal:", s3d::Cursor::PosF() - player->GetGameObject().lock()->GetLocalPosition());
+    // s3d::Print(U"offset world:", s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition());
+
     b->isMine = true;
 
     SendBulletInfo(b);
@@ -112,5 +113,6 @@ void Bullet::Update()
 
 void Bullet::SetMove(const s3d::Vec2& target, double speed)
 {
-    moveValue = GetGameObject().lock()->LookAt(target) * speed;
+    moveValue = target.normalized() * speed;
+    // moveValue = GetGameObject().lock()->LookAt(target) * speed;
 }

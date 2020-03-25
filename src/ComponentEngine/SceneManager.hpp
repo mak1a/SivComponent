@@ -53,8 +53,6 @@ namespace ComponentEngine
             }
 #endif
 
-            // auto _this = this;
-
             FuncType func = [&]() -> ScenePtr {
                 ScenePtr scene = std::make_shared<SceneName>();
                 //ポインタの注入
@@ -72,7 +70,7 @@ namespace ComponentEngine
             }
 
             //シーンによるエンジンへのデータ登録
-//            nextScene
+            //            nextScene
         }
 
         void ChangeScene(const KeyType& key)
@@ -97,9 +95,9 @@ namespace ComponentEngine
                 if (currentScene)
                 {
                     currentScene->DestoryAllObjects();
+                    currentScene.reset();
                 }
                 currentScene.swap(nextScene);
-                nextScene.reset();
                 currentScene->_set_manager(this);
 
                 //共通オブジェクトの設定

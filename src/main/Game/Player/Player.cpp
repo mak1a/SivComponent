@@ -7,6 +7,14 @@
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
+Player::Player()
+    //秒間10同期
+    : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
+{
+    isMine = false;
+    spd = 50.0;
+}
+
 void Player::Start2()
 {
     targetPos = GetGameObject().lock()->GetPosition();
@@ -15,6 +23,8 @@ void Player::Start2()
     constexpr auto othercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2);
 
     GetGameObject().lock()->GetComponent<Siv::Rect>()->SetColor(isMine ? playercolor : othercolor);
+
+    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
 }
 
 void Player::Update()
@@ -25,8 +35,10 @@ void Player::Update()
         return;
     }
 
+    //位置同期を行う
     syncpos.Run();
 
+    //キー入力により移動
     s3d::Vec2 axis;
     axis.x = (s3d::KeyD.pressed() - s3d::KeyA.pressed());
     axis.y = (s3d::KeyS.pressed() - s3d::KeyW.pressed());
@@ -39,6 +51,9 @@ void Player::Update()
     auto pos = obj->GetPosition();
     pos += axis * spd * s3d::Scene::DeltaTime();
     obj->SetPosition(pos);
+
+    auto x = master->GetPosition() - axis * spd * s3d::Scene::DeltaTime();
+    master->SetPosition(x);
 }
 
 void Player::SyncPosWithEasing()
