@@ -1,10 +1,68 @@
 
 
 #include "PlayerBullet.hpp"
+#include "../../../CustomEventList.hpp"
 
-void BulletManager::Start()
+void BulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
+}
+
+void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
+{
+    const s3d::Vec2 pos = bullet->GetGameObject().lock()->GetPosition();
+    const s3d::Vec2 spd = bullet->moveValue;
+    const int servertime = networkSystem->GetServerTime();
+
+    //座標と発生時刻を送る
+    ExitGames::Common::Hashtable table;
+    table.put<short, double>(static_cast<short>(0), pos.x);
+    table.put<short, double>(static_cast<short>(1), pos.y);
+
+    table.put<short, double>(static_cast<short>(10), spd.x);
+    table.put<short, double>(static_cast<short>(11), spd.y);
+
+    table.put<short, int>(static_cast<short>(99), servertime);
+
+    s3d::Print(U"send");
+    s3d::Print(pos);
+    s3d::Print(spd);
+    s3d::Print(servertime);
+
+    networkSystem->GetClient().opRaiseEvent(true, table, CustomEvent::PlayerShot);
+}
+
+void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+{
+    if (eventCode != CustomEvent::PlayerShot)
+    {
+        return;
+    }
+
+    //情報取得
+
+    // ExitGames::Common::Hashtable table = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContent).getDataCopy();
+
+    ExitGames::Common::Hashtable table = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContent).getDataCopy();
+
+    s3d::Vec2 pos, spd;
+    pos.x = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(0))).getDataCopy();
+    pos.y = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(1))).getDataCopy();
+    spd.x = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(10))).getDataCopy();
+    spd.y = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(11))).getDataCopy();
+
+    int servertime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(99))).getDataCopy();
+
+    //オブジェクト生成
+    auto bullet = inst();
+    GetGameObject().lock()->AddChild(bullet);
+    bullet->SetPosition(pos);
+    bullet->GetComponent<Bullet>()->moveValue = spd;
+
+    s3d::Print(U"receive");
+    s3d::Print(pos);
+    s3d::Print(spd);
+    s3d::Print(servertime);
 }
 
 void BulletManager::CreateBullet()
@@ -16,7 +74,11 @@ void BulletManager::CreateBullet()
 
     bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
 
-    bullet->GetComponent<Bullet>()->SetMove(s3d::Cursor::PosF(), 190);
+    auto b = bullet->GetComponent<Bullet>();
+    b->SetMove(s3d::Cursor::PosF(), 190);
+    b->isMine = true;
+
+    SendBulletInfo(b);
 }
 
 void BulletManager::Update()

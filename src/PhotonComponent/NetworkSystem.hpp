@@ -34,6 +34,11 @@ namespace ComponentEngine::Photon
             return playerName;
         }
 
+        int GetServerTime() const
+        {
+            return mLoadBalancingClient.getServerTime();
+        }
+
     public:
         const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
         const ExitGames::Common::JString appVersion = L"1.0";
