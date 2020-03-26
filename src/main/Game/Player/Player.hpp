@@ -2,8 +2,6 @@
 
 #include <list>
 
-#define NO_S3D_USING
-#include <Siv3D.hpp>
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../../../SivComponent/Collision/Colliders.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
@@ -18,6 +16,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
     bool isMine;
+    //線形補間用
     s3d::Vec2 targetPos;
 
     // void Start2() override;
@@ -50,6 +49,7 @@ private:
     void SyncPosWithEasing();
 
 public:
+    //プレイヤーの位置初期化用配列
     static s3d::Vec2 playerInitpos[4];
 };
 

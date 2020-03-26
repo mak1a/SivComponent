@@ -9,6 +9,6 @@ namespace ComponentEngine::UserDef
         Enemy,
         PlayerBullet,
         EnemyBullet,
-        Field,
+        Wall,
     };
 }

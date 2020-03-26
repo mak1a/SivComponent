@@ -1,6 +1,5 @@
 
 #include "Player.hpp"
-#include <Siv3D.hpp>
 #include "../../../CustomEventList.hpp"
 #include "../../../Matching.hpp"
 // #include "../../../SivComponent/SivComponent.hpp"

@@ -3,7 +3,7 @@
 
 void Game::Setup()
 {
-    s3d::Scene::SetBackground(s3d::Palette::Lightgrey);
+    s3d::Scene::SetBackground(s3d::Palette::Whitesmoke);
 
     //描画順を最初にするため弾をここに
     auto bulletmanager = CreateAndGetObject();
@@ -27,4 +27,34 @@ void Game::Setup()
     players->AddChild(mainplayerobj);
 
     bulletmanager->AddComponent<BulletManager>()->player = player;
+
+    //壁を作る
+
+    //厚さは600
+    //広さは1000
+    const auto wallmake = GetSceneManager()->GetCommon().GetInstantiate("MapFieldWall");
+
+    auto walls = CreateAndGetObject();
+    // scope
+    {
+        constexpr int fieldwidth = 400;
+        constexpr int wallwidth = 600 / 2;
+
+        auto top = wallmake();
+        top->SetPosition({300 - fieldwidth - wallwidth, 300});
+
+        auto bottom = wallmake();
+        bottom->SetPosition({300 + fieldwidth + wallwidth, 300});
+
+        auto right = wallmake();
+        right->SetPosition({300, 300 + fieldwidth + wallwidth}).SetRotateByAngle(90);
+
+        auto left = wallmake();
+        left->SetPosition({300, 300 - fieldwidth - wallwidth}).SetRotateByAngle(90);
+
+        walls->AddChild(top);
+        walls->AddChild(bottom);
+        walls->AddChild(left);
+        walls->AddChild(right);
+    }
 }
