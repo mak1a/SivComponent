@@ -180,14 +180,15 @@ namespace ComponentEngine::Siv
 
         Rect()
             : color(s3d::Palette::White)
-            , shape(0, 0, 100, 100)
+            , shape(-50, -50, 100, 100)
         {
         }
 
     protected:
         void Draw() const override
         {
-            auto s = Collision::transformed(shape.movedBy(-shape.size / 2), GetGameObject().lock()->transform().GetMatrix());
+            // auto s = Collision::transformed(shape.movedBy(-shape.size / 2), GetGameObject().lock()->transform().GetMatrix());
+            auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
             s.draw(color);
         }
     };

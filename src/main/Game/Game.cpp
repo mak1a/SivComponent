@@ -1,5 +1,6 @@
 
 #include "Game.hpp"
+#include "Enemy/EnemyManager.hpp"
 
 void Game::Setup()
 {
@@ -7,6 +8,11 @@ void Game::Setup()
 
     //描画順を最初にするため弾をここに
     auto bulletmanager = CreateAndGetObject();
+
+    //敵管理システム
+    auto enemys = CreateAndGetObject();
+    enemys->SetName("Enemys");
+    enemys->AddComponent<EnemyManager>();
 
     auto players = CreateAndGetObject();
     players->SetName("Players");
