@@ -24,6 +24,9 @@ void Player::Start2()
     GetGameObject().lock()->GetComponent<Siv::Rect>()->SetColor(isMine ? playercolor : othercolor);
 
     master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
+
+    //移動前座標をセット
+    movehistory = GetGameObject().lock()->GetPosition();
 }
 
 void Player::Update()
@@ -47,12 +50,24 @@ void Player::Update()
     }
 
     auto obj = GetGameObject().lock();
+    //現在位置を記録
+    movehistory = obj->GetPosition();
+    //移動
     auto pos = obj->GetPosition();
     pos += axis * spd * s3d::Scene::DeltaTime();
     obj->SetPosition(pos);
 
-    auto x = master->GetPosition() - axis * spd * s3d::Scene::DeltaTime();
-    master->SetPosition(x);
+    //カメラ座標を計算する
+    auto center = s3d::Scene::CenterF();
+
+    //カメラ中央との距離を取る
+    auto diff = obj->GetWorldPosition() - s3d::Scene::CenterF();
+
+    diff.x = diff.x - s3d::Clamp(diff.x, -100.0, 100.0);
+    diff.y = diff.y - s3d::Clamp(diff.y, -100.0, 100.0);
+
+    const auto currentPos = master->GetPosition();
+    master->SetPosition(currentPos - diff);
 }
 
 void Player::SyncPosWithEasing()
@@ -122,6 +137,25 @@ void Player::SyncPos()
 
 s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(200, 200), s3d::Vec2(400, 200), s3d::Vec2(200, 400), s3d::Vec2(400, 400)};
 
+//壁とぶつかったときの処理
+void Player::OnWall()
+{
+    s3d::Print(U"OnWall");
+
+    GetGameObject().lock()->SetPosition(movehistory);
+}
+
+void Player::OnEnemy() {}
+void Player::OnEnemyBullet() {}
+
+void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
+{
+    if (other->GetTag() == UserDef::Tag::Wall)
+    {
+        OnWall();
+    }
+}
+
 //----------------------------------
 
 //プレイヤーを生成
@@ -176,9 +210,19 @@ void PlayerMaster::leaveRoomEventAction(int playerNr, bool isInactive)
     }
 }
 
-void PlayerMaster::Start2()
+PlayerMaster::PlayerMaster()
 {
     players.reserve(4);
+}
+
+void PlayerMaster::Start2()
+{
+    //カメラ位置を設定
+    const auto playerpos = players[0]->GetGameObject().lock()->GetPosition();
+
+    auto diff = s3d::Scene::CenterF() - playerpos;
+
+    GetGameObject().lock()->GetScene().lock()->GetMasterObject()->SetPosition(diff);
 
     //送り続ける
     initsync = Utilities::IntervalCall(50, [&]() { players[0]->SendInstantiateMessage(); });

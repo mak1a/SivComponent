@@ -15,9 +15,16 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void Update() override;
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
+    void OnWall();
+    void OnEnemy();
+    void OnEnemyBullet();
+
+    void OnStayCollision(std::shared_ptr<GameObject>& other) override;
+
     bool isMine;
     //線形補間用
     s3d::Vec2 targetPos;
+    s3d::Vec2 movehistory;
 
     // void Start2() override;
 
@@ -73,5 +80,6 @@ class PlayerMaster : public Photon::AttachableComponentPhotonCallbacks
     Utilities::IntervalCall initsync;
 
 public:
+    PlayerMaster();
     std::vector<std::shared_ptr<Player>> players;
 };
