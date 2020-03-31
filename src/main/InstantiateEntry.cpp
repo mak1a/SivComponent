@@ -3,7 +3,7 @@
 #include "../SivComponent/SivComponent.hpp"
 
 #include "Game/Player/Player.hpp"
-#include "Game/Player/PlayerBullet.hpp"
+#include "Game/Bullet.hpp"
 
 #include "Game/Enemy/Enemy.hpp"
 #include "Game/Field/MapWall.hpp"
@@ -39,6 +39,22 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         return obj;
     });
 
+    //敵の弾
+    common.AddObjectCreator("EnemyBullet", []() {
+        auto obj = GameObject::Create();
+        constexpr s3d::Circle shape(0, 0, 6);
+
+        obj->SetTag(UserDef::Tag::EnemyBullet);
+        obj->AddComponent<Siv::Circle>()->SetShape(shape).SetColor(s3d::Palette::Red);
+        auto bu = obj->AddComponent<Bullet>();
+        obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::EnemyBullet);
+        obj->AddComponent<Collision::CircleCollider>()->SetShape(shape);
+        //数値は仮設定
+        bu->lifetime = 1.5;
+        bu->attack = 10;
+        return obj;
+    });
+
     //マップを囲う壁
     common.AddObjectCreator("MapFieldWall", []() {
         std::shared_ptr<GameObject> obj = GameObject::Create();
@@ -56,26 +72,26 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         return obj;
     });
 
-    //敵
-    common.AddObjectCreator("EnemyStandard", []() {
-        std::shared_ptr<GameObject> obj = GameObject::Create();
-        constexpr s3d::Rect shape(-10, -10, 20, 20);
+    // //敵
+    // common.AddObjectCreator("EnemyStandard", []() {
+    //     std::shared_ptr<GameObject> obj = GameObject::Create();
+    //     constexpr s3d::Rect shape(-10, -10, 20, 20);
 
-        obj->AddComponent<Enemy>();
-        obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Enemy);
-        obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
-        obj->AddComponent<Siv::Rect>()->SetShape(shape).SetColor(s3d::Palette::Darkred);
-        return obj;
-    });
+    //     obj->AddComponent<Enemy>();
+    //     obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Enemy);
+    //     obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
+    //     obj->AddComponent<Siv::Rect>()->SetShape(shape).SetColor(s3d::Palette::Darkred);
+    //     return obj;
+    // });
 
-    common.AddObjectCreator("EnemyBomb", []() {
-        std::shared_ptr<GameObject> obj = GameObject::Create();
+    // common.AddObjectCreator("EnemyBomb", []() {
+    //     std::shared_ptr<GameObject> obj = GameObject::Create();
 
-        return obj;
-    });
+    //     return obj;
+    // });
 
-    common.AddObjectCreator("EnemyKiller", []() {
-        std::shared_ptr<GameObject> obj = GameObject::Create();
-        return obj;
-    });
+    // common.AddObjectCreator("EnemyKiller", []() {
+    //     std::shared_ptr<GameObject> obj = GameObject::Create();
+    //     return obj;
+    // });
 }

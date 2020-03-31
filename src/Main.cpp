@@ -4,7 +4,7 @@
 #include "PhotonComponent/PhotonComponent.hpp"
 
 #include "Matching.hpp"
-#include "PhotonComponent/PhotonInitScene.hpp"
+#include "PhotonComponent/PhotonInit.hpp"
 #include "Title.hpp"
 #include "main/Game/Game.hpp"
 #include "main/InstantiateEntry.hpp"
@@ -20,8 +20,9 @@ void Main()
 {
     ComponentEngine::SceneManager manager;
 
-//     manager.RegisterScene<TestScene>("test");
-    manager.RegisterScene<ComponentEngine::Photon::PhotonInitScene>("PhotonInitOnceLoad");
+    Photon::PhotonInit(manager);
+
+    // manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<Matching>("Matching");
     manager.RegisterScene<Game>("Game");

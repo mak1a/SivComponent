@@ -46,7 +46,7 @@
 		8A1476AB2411736B00389E76 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476A92411736B00389E76 /* Utils.cpp */; };
 		8A1476B42414FD8000389E76 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B22414FD8000389E76 /* SceneManager.cpp */; };
 		8A1476B82416CA1300389E76 /* NetworkSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B62416CA1300389E76 /* NetworkSystem.cpp */; };
-		8A1476BB2416F25500389E76 /* PhotonInitScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B92416F25500389E76 /* PhotonInitScene.cpp */; };
+		8A1476BB2416F25500389E76 /* PhotonInit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476B92416F25500389E76 /* PhotonInit.cpp */; };
 		8A1476BE2416F3D600389E76 /* PhotonComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */; };
 		8A1476C12416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476BF2416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp */; };
 		8A1476CE2418D9A700389E76 /* Title.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A1476CC2418D9A700389E76 /* Title.cpp */; };
@@ -67,12 +67,13 @@
 		8A26283C242663780011FCF2 /* test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26283A242663780011FCF2 /* test.cpp */; };
 		8A26283F242674E80011FCF2 /* ShapeTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26283D242674E80011FCF2 /* ShapeTransform.cpp */; };
 		8A26284224289AAC0011FCF2 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284024289AAC0011FCF2 /* Enemy.cpp */; };
-		8A26284524289ACC0011FCF2 /* PlayerBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284324289ACC0011FCF2 /* PlayerBullet.cpp */; };
+		8A26284524289ACC0011FCF2 /* Bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284324289ACC0011FCF2 /* Bullet.cpp */; };
 		8A26284C242B86DB0011FCF2 /* PlayerCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284A242B86DB0011FCF2 /* PlayerCore.cpp */; };
 		8A26284F242CCBE60011FCF2 /* EnemyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284D242CCBE60011FCF2 /* EnemyManager.cpp */; };
 		8A262853242CCD0A0011FCF2 /* MapWall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262851242CCD0A0011FCF2 /* MapWall.cpp */; };
 		8A2628562430F7010011FCF2 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628542430F7010011FCF2 /* Timer.cpp */; };
 		8A262859243307510011FCF2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262857243307510011FCF2 /* GameState.cpp */; };
+		8A26285C2433554E0011FCF2 /* PlayerBulletManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -125,8 +126,8 @@
 		8A1476B32414FD8000389E76 /* SceneManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneManager.hpp; sourceTree = "<group>"; };
 		8A1476B62416CA1300389E76 /* NetworkSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkSystem.cpp; sourceTree = "<group>"; };
 		8A1476B72416CA1300389E76 /* NetworkSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkSystem.hpp; sourceTree = "<group>"; };
-		8A1476B92416F25500389E76 /* PhotonInitScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonInitScene.cpp; sourceTree = "<group>"; };
-		8A1476BA2416F25500389E76 /* PhotonInitScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PhotonInitScene.hpp; sourceTree = "<group>"; };
+		8A1476B92416F25500389E76 /* PhotonInit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonInit.cpp; sourceTree = "<group>"; };
+		8A1476BA2416F25500389E76 /* PhotonInit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PhotonInit.hpp; sourceTree = "<group>"; };
 		8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonComponent.cpp; sourceTree = "<group>"; };
 		8A1476BD2416F3D600389E76 /* PhotonComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PhotonComponent.hpp; sourceTree = "<group>"; };
 		8A1476BF2416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AttachableComponentPhotonCallbacks.cpp; sourceTree = "<group>"; };
@@ -174,8 +175,8 @@
 		8A26283E242674E80011FCF2 /* ShapeTransform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ShapeTransform.hpp; sourceTree = "<group>"; };
 		8A26284024289AAC0011FCF2 /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		8A26284124289AAC0011FCF2 /* Enemy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
-		8A26284324289ACC0011FCF2 /* PlayerBullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBullet.cpp; sourceTree = "<group>"; };
-		8A26284424289ACC0011FCF2 /* PlayerBullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerBullet.hpp; sourceTree = "<group>"; };
+		8A26284324289ACC0011FCF2 /* Bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bullet.cpp; sourceTree = "<group>"; };
+		8A26284424289ACC0011FCF2 /* Bullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Bullet.hpp; sourceTree = "<group>"; };
 		8A262848242A3B2A0011FCF2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		8A26284A242B86DB0011FCF2 /* PlayerCore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerCore.cpp; sourceTree = "<group>"; };
 		8A26284B242B86DB0011FCF2 /* PlayerCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerCore.hpp; sourceTree = "<group>"; };
@@ -187,6 +188,8 @@
 		8A2628552430F7010011FCF2 /* Timer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
 		8A262857243307510011FCF2 /* GameState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
 		8A262858243307510011FCF2 /* GameState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameState.hpp; sourceTree = "<group>"; };
+		8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBulletManager.cpp; sourceTree = "<group>"; };
+		8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerBulletManager.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -351,8 +354,8 @@
 			isa = PBXGroup;
 			children = (
 				8A1476C624176FD300389E76 /* IObservable.hpp */,
-				8A1476B92416F25500389E76 /* PhotonInitScene.cpp */,
-				8A1476BA2416F25500389E76 /* PhotonInitScene.hpp */,
+				8A1476B92416F25500389E76 /* PhotonInit.cpp */,
+				8A1476BA2416F25500389E76 /* PhotonInit.hpp */,
 				8A1476B62416CA1300389E76 /* NetworkSystem.cpp */,
 				8A1476B72416CA1300389E76 /* NetworkSystem.hpp */,
 				8A1476BC2416F3D600389E76 /* PhotonComponent.cpp */,
@@ -381,6 +384,8 @@
 				8A26284724289BA70011FCF2 /* Enemy */,
 				8A26284624289AD30011FCF2 /* Player */,
 				8A1476DD241C92FC00389E76 /* Game.cpp */,
+				8A26284324289ACC0011FCF2 /* Bullet.cpp */,
+				8A26284424289ACC0011FCF2 /* Bullet.hpp */,
 				8A1476DE241C92FC00389E76 /* Game.hpp */,
 			);
 			path = Game;
@@ -436,8 +441,8 @@
 			children = (
 				8A1476E0241F536A00389E76 /* Player.cpp */,
 				8A1476E1241F536A00389E76 /* Player.hpp */,
-				8A26284324289ACC0011FCF2 /* PlayerBullet.cpp */,
-				8A26284424289ACC0011FCF2 /* PlayerBullet.hpp */,
+				8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */,
+				8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -552,15 +557,16 @@
 				8A2071BA2400321000284059 /* IScene.cpp in Sources */,
 				8A1476DF241C92FC00389E76 /* Game.cpp in Sources */,
 				8A2071B7240017A300284059 /* Transform.cpp in Sources */,
+				8A26285C2433554E0011FCF2 /* PlayerBulletManager.cpp in Sources */,
 				8A26283F242674E80011FCF2 /* ShapeTransform.cpp in Sources */,
-				8A1476BB2416F25500389E76 /* PhotonInitScene.cpp in Sources */,
+				8A1476BB2416F25500389E76 /* PhotonInit.cpp in Sources */,
 				8A1476E2241F536A00389E76 /* Player.cpp in Sources */,
 				8A26284224289AAC0011FCF2 /* Enemy.cpp in Sources */,
 				8A1476A224113B9B00389E76 /* Text.cpp in Sources */,
 				8A2071B4240016C400284059 /* GameObject.cpp in Sources */,
 				8A1476CE2418D9A700389E76 /* Title.cpp in Sources */,
 				2C17789A1CE0AA7C00BB8AD0 /* Main.cpp in Sources */,
-				8A26284524289ACC0011FCF2 /* PlayerBullet.cpp in Sources */,
+				8A26284524289ACC0011FCF2 /* Bullet.cpp in Sources */,
 				8A1476C12416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp in Sources */,
 				8A1476A8241164C400389E76 /* SimpleShape.cpp in Sources */,
 				8A262853242CCD0A0011FCF2 /* MapWall.cpp in Sources */,

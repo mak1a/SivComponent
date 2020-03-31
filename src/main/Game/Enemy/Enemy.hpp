@@ -1,16 +1,29 @@
 
 #pragma once
 
+#include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "./../../../ComponentEngine/ComponentEngine.hpp"
 
-class Enemy : public AttachableComponent
+class Enemy : public Photon::AttachableComponentPhotonCallbacks
 {
-    void OnStayCollision(std::shared_ptr<GameObject>& obj) override
+    int life = 30;
+    int enemynumber;
+
+    void OnStayCollision(std::shared_ptr<GameObject>& obj) override;
+
+public:
+    void SetEnemyNumber(int n)
     {
-        //弾当たったら
-        if (obj->GetTag() == UserDef::Tag::PlayerBullet)
-        {
-            GetGameObject().lock()->GetScene().lock()->Destroy(this->GetGameObject().lock());
-        }
+        enemynumber = n;
+    }
+
+    int GetEnemyNumber() const
+    {
+        return enemynumber;
+    }
+
+    int GetLife() const
+    {
+        return life;
     }
 };

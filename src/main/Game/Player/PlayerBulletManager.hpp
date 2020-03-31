@@ -1,29 +1,11 @@
 #pragma once
 
 #include "../../../ComponentEngine/ComponentEngine.hpp"
+#include "../../../PhotonComponent/PhotonComponent.hpp"
+#include "../Bullet.hpp"
 #include "Player.hpp"
 
-class Bullet : public AttachableComponent
-{
-public:
-    int attack;
-    double lifetime;
-    bool isMine;
-    s3d::Vec2 moveValue;
-
-    Bullet()
-    {
-        isMine = false;
-    }
-
-    void SetMove(const s3d::Vec2& target, double speed);
-
-private:
-    void Update() override;
-    void OnStayCollision(std::shared_ptr<GameObject>& other) override;
-};
-
-class BulletManager : public Photon::AttachableComponentPhotonCallbacks
+class PlayerBulletManager : public Photon::AttachableComponentPhotonCallbacks
 {
     ComponentEngine::SceneCommon::Functype inst;
     double fireInterval;

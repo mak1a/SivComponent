@@ -6,7 +6,7 @@
 //#include "SivComponent.hpp"
 
 #include "Player/Player.hpp"
-#include "Player/PlayerBullet.hpp"
+#include "Bullet.hpp"
 
 class Game : public ComponentEngine::IScene
 {

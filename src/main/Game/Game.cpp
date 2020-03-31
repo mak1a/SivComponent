@@ -4,6 +4,7 @@
 #include "GameMaster/GameState.hpp"
 #include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
+#include "Player/PlayerBulletManager.hpp"
 
 void Game::Setup()
 {
@@ -48,7 +49,7 @@ void Game::Setup()
 
     players->AddChild(mainplayerobj);
 
-    bulletmanager->AddComponent<BulletManager>()->player = player;
+    bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
 
     auto walls = altercamera->CreateChild();
     walls->SetName("Walls");

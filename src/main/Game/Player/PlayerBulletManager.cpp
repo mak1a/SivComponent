@@ -1,9 +1,8 @@
+#include "PlayerBulletManager.hpp"
 
-
-#include "PlayerBullet.hpp"
 #include "../../../CustomEventList.hpp"
 
-void BulletManager::Start2()
+void PlayerBulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
     fireInterval = 1.0;
@@ -12,7 +11,7 @@ void BulletManager::Start2()
 }
 
 //弾発射情報を送信
-void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
+void PlayerBulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 {
     const s3d::Vec2 pos = bullet->GetGameObject().lock()->GetLocalPosition();
     const s3d::Vec2 spd = bullet->moveValue;
@@ -32,7 +31,7 @@ void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 }
 
 //弾を受信
-void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
     if (eventCode != CustomEvent::PlayerShot)
     {
@@ -65,7 +64,7 @@ void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     b->lifetime -= lagtime;
 }
 
-void BulletManager::CreateBullet()
+void PlayerBulletManager::CreateBullet()
 {
     // const auto playerpos = player->GetGameObject().lock()->GetLocalPosition();
 
@@ -82,7 +81,7 @@ void BulletManager::CreateBullet()
     SendBulletInfo(b);
 }
 
-void BulletManager::Update()
+void PlayerBulletManager::Update()
 {
     fireInterval -= s3d::Scene::DeltaTime();
 
@@ -91,33 +90,4 @@ void BulletManager::Update()
         CreateBullet();
         fireInterval = 0.2;
     }
-}
-
-//----------------------------------------
-//----------------------------------------
-
-void Bullet::Update()
-{
-    auto obj = GetGameObject().lock();
-    auto pos = obj->GetPosition();
-    obj->SetPosition(pos.moveBy(moveValue * s3d::Scene::DeltaTime()));
-
-    lifetime -= s3d::Scene::DeltaTime();
-    if (lifetime < 0)
-    {
-        auto obj = GetGameObject().lock();
-        obj->GetScene().lock()->Destroy(obj);
-    }
-}
-
-void Bullet::SetMove(const s3d::Vec2& target, double speed)
-{
-    moveValue = target.normalized() * speed;
-    // moveValue = GetGameObject().lock()->LookAt(target) * speed;
-}
-
-void Bullet::OnStayCollision(std::shared_ptr<GameObject>& other)
-{
-    auto obj = GetGameObject().lock();
-    obj->GetScene().lock()->Destroy(obj);
 }

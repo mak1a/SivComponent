@@ -6,9 +6,10 @@
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
+constexpr int PosSyncPerSecond = 8;
+
 Player::Player()
-    //秒間10同期
-    : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
+    : syncpos((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncPos(); })
 {
     isMine = false;
     // spd = 60.0;
