@@ -224,8 +224,8 @@ void PlayerManager::Start2()
     // altercamera
     GetGameObject().lock()->GetScene().lock()->GetMasterObject()->FindChildByName("AlterCamera")->SetPosition(diff);
 
-    // 送り続ける
-    initsync = Utilities::IntervalCall(50, [&]() { players[0]->SendInstantiateMessage(); });
+    // 送り続ける 1秒に8回
+    initsync = Utilities::IntervalCall(1000 / 8, [&]() { players[0]->SendInstantiateMessage(); });
 }
 
 void PlayerManager::Update()

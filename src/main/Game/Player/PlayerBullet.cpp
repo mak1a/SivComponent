@@ -6,6 +6,7 @@
 void BulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
+    fireInterval = 0.0;
 
     //    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
 }
@@ -76,12 +77,6 @@ void BulletManager::CreateBullet()
     auto b = bullet->GetComponent<Bullet>();
     b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), 110);
 
-    // s3d::Print(U"Player:", playerpos);
-    // s3d::Print(U"Cursor:", s3d::Cursor::PosF());
-    // s3d::Print(U"Target:", master->transform().GetMatrix().inversed().transform(s3d::Cursor::PosF()));
-    // s3d::Print(U"offset loal:", s3d::Cursor::PosF() - player->GetGameObject().lock()->GetLocalPosition());
-    // s3d::Print(U"offset world:", s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition());
-
     b->isMine = true;
 
     SendBulletInfo(b);
@@ -89,13 +84,17 @@ void BulletManager::CreateBullet()
 
 void BulletManager::Update()
 {
-    if (s3d::MouseL.down())
+    fireInterval -= s3d::Scene::DeltaTime();
+
+    if (s3d::MouseL.pressed() && fireInterval < 0)
     {
         CreateBullet();
+        fireInterval = 0.2;
     }
 }
 
-//----
+//----------------------------------------
+//----------------------------------------
 
 void Bullet::Update()
 {
