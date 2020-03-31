@@ -32,7 +32,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
 
     double spd;
 
-    std::shared_ptr<GameObject> master;
+    std::shared_ptr<GameObject> camera;
 
 public:
     int playerNr;
@@ -69,7 +69,7 @@ namespace DataName::Player
 
 //----------------------------------
 
-class PlayerMaster : public Photon::AttachableComponentPhotonCallbacks
+class PlayerManager : public Photon::AttachableComponentPhotonCallbacks
 {
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
     void leaveRoomEventAction(int playerNr, bool isInactive) override;
@@ -80,6 +80,6 @@ class PlayerMaster : public Photon::AttachableComponentPhotonCallbacks
     Utilities::IntervalCall initsync;
 
 public:
-    PlayerMaster();
+    PlayerManager();
     std::vector<std::shared_ptr<Player>> players;
 };

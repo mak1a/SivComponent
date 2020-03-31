@@ -279,6 +279,29 @@ namespace ComponentEngine
         return *itr;
     }
 
+    std::shared_ptr<GameObject> GameObject::FindChildByName(const std::string& name) const
+    {
+        for (auto& child : children)
+        {
+            if (child->name == name)
+            {
+                return child;
+            }
+        }
+
+        for (auto& child : children)
+        {
+            auto x = child->FindChildByName(name);
+
+            if (x)
+            {
+                return x;
+            }
+        }
+
+        return nullptr;
+    }
+
     void GameObject::DeleteChild(const std::shared_ptr<GameObject>& child)
     {
         auto itr = FindChildItr(child);

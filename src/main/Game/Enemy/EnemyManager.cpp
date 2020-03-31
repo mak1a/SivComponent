@@ -11,3 +11,5 @@ void EnemyManager::Start2()
     obj->AddChild(creator())->SetPosition({0, 600});
     obj->AddChild(creator())->SetPosition({600, 600});
 }
+
+void EnemyManager::Update() {}

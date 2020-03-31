@@ -71,6 +71,8 @@
 		8A26284C242B86DB0011FCF2 /* PlayerCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284A242B86DB0011FCF2 /* PlayerCore.cpp */; };
 		8A26284F242CCBE60011FCF2 /* EnemyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26284D242CCBE60011FCF2 /* EnemyManager.cpp */; };
 		8A262853242CCD0A0011FCF2 /* MapWall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262851242CCD0A0011FCF2 /* MapWall.cpp */; };
+		8A2628562430F7010011FCF2 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628542430F7010011FCF2 /* Timer.cpp */; };
+		8A262859243307510011FCF2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262857243307510011FCF2 /* GameState.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +183,10 @@
 		8A26284E242CCBE60011FCF2 /* EnemyManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EnemyManager.hpp; sourceTree = "<group>"; };
 		8A262851242CCD0A0011FCF2 /* MapWall.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MapWall.cpp; sourceTree = "<group>"; };
 		8A262852242CCD0A0011FCF2 /* MapWall.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MapWall.hpp; sourceTree = "<group>"; };
+		8A2628542430F7010011FCF2 /* Timer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
+		8A2628552430F7010011FCF2 /* Timer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
+		8A262857243307510011FCF2 /* GameState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
+		8A262858243307510011FCF2 /* GameState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameState.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -452,6 +458,10 @@
 			children = (
 				8A26284A242B86DB0011FCF2 /* PlayerCore.cpp */,
 				8A26284B242B86DB0011FCF2 /* PlayerCore.hpp */,
+				8A2628542430F7010011FCF2 /* Timer.cpp */,
+				8A2628552430F7010011FCF2 /* Timer.hpp */,
+				8A262857243307510011FCF2 /* GameState.cpp */,
+				8A262858243307510011FCF2 /* GameState.hpp */,
 			);
 			path = GameMaster;
 			sourceTree = "<group>";
@@ -558,6 +568,7 @@
 				8A26284C242B86DB0011FCF2 /* PlayerCore.cpp in Sources */,
 				8A1476D7241A9AC400389E76 /* PhotonUtilities.cpp in Sources */,
 				8A1476AB2411736B00389E76 /* Utils.cpp in Sources */,
+				8A262859243307510011FCF2 /* GameState.cpp in Sources */,
 				8A2071A72400058100284059 /* AttachableComponent.cpp in Sources */,
 				8A1476A524113BAC00389E76 /* SivComponent.cpp in Sources */,
 				8A1476EB24209A1D00389E76 /* InstantiateEntry.cpp in Sources */,
@@ -566,6 +577,7 @@
 				8A1476E82420924800389E76 /* Matching.cpp in Sources */,
 				8A14767F240FA72800389E76 /* Utilities.cpp in Sources */,
 				8A26284F242CCBE60011FCF2 /* EnemyManager.cpp in Sources */,
+				8A2628562430F7010011FCF2 /* Timer.cpp in Sources */,
 				8A1476B42414FD8000389E76 /* SceneManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

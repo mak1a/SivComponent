@@ -11,7 +11,8 @@ Player::Player()
     : syncpos((int32_t)(1000 / 15), [&]() { SyncPos(); })
 {
     isMine = false;
-    spd = 60.0;
+    // spd = 60.0;
+    spd = 60.0 * 5;
 }
 
 void Player::Start2()
@@ -23,7 +24,7 @@ void Player::Start2()
 
     GetGameObject().lock()->GetComponent<Siv::Rect>()->SetColor(isMine ? playercolor : othercolor);
 
-    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
+    camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
 
     //移動前座標をセット
     movehistory = GetGameObject().lock()->GetPosition();
@@ -57,17 +58,14 @@ void Player::Update()
     pos += axis * spd * s3d::Scene::DeltaTime();
     obj->SetPosition(pos);
 
-    //カメラ座標を計算する
-    auto center = s3d::Scene::CenterF();
-
     //カメラ中央との距離を取る
     auto diff = obj->GetWorldPosition() - s3d::Scene::CenterF();
 
     diff.x = diff.x - s3d::Clamp(diff.x, -100.0, 100.0);
     diff.y = diff.y - s3d::Clamp(diff.y, -100.0, 100.0);
 
-    const auto currentPos = master->GetPosition();
-    master->SetPosition(currentPos - diff);
+    const auto currentPos = camera->GetPosition();
+    camera->SetPosition(currentPos - diff);
 }
 
 void Player::SyncPosWithEasing()
@@ -135,7 +133,8 @@ void Player::SyncPos()
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerSync);
 }
 
-s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(200, 200), s3d::Vec2(400, 200), s3d::Vec2(200, 400), s3d::Vec2(400, 400)};
+constexpr int offset = 200;
+s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(-offset, -offset), s3d::Vec2(offset, -offset), s3d::Vec2(-offset, offset), s3d::Vec2(offset, offset)};
 
 //壁とぶつかったときの処理
 void Player::OnWall()
@@ -159,7 +158,7 @@ void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
 //----------------------------------
 
 //プレイヤーを生成
-void PlayerMaster::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
     if (eventCode != CustomEvent::PlayerInit)
     {
@@ -194,7 +193,7 @@ void PlayerMaster::customEventAction(int playerNr, nByte eventCode, const ExitGa
 }
 
 //部屋から退場したら消す
-void PlayerMaster::leaveRoomEventAction(int playerNr, bool isInactive)
+void PlayerManager::leaveRoomEventAction(int playerNr, bool isInactive)
 {
     auto end = players.end();
     for (auto player = players.begin(); player != end; ++player)
@@ -210,25 +209,26 @@ void PlayerMaster::leaveRoomEventAction(int playerNr, bool isInactive)
     }
 }
 
-PlayerMaster::PlayerMaster()
+PlayerManager::PlayerManager()
 {
     players.reserve(4);
 }
 
-void PlayerMaster::Start2()
+void PlayerManager::Start2()
 {
     //カメラ位置を設定
     const auto playerpos = players[0]->GetGameObject().lock()->GetPosition();
 
     auto diff = s3d::Scene::CenterF() - playerpos;
 
-    GetGameObject().lock()->GetScene().lock()->GetMasterObject()->SetPosition(diff);
+    // altercamera
+    GetGameObject().lock()->GetScene().lock()->GetMasterObject()->FindChildByName("AlterCamera")->SetPosition(diff);
 
-    //送り続ける
+    // 送り続ける
     initsync = Utilities::IntervalCall(50, [&]() { players[0]->SendInstantiateMessage(); });
 }
 
-void PlayerMaster::Update()
+void PlayerManager::Update()
 {
     if (initsync.IsStop())
     {

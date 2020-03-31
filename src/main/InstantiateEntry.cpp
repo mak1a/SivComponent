@@ -46,7 +46,8 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         obj->AddComponent<MapWall>();
         obj->SetTag(UserDef::Tag::Wall);
         obj->SetName("wall");
-        constexpr s3d::RectF rect(-300, -(1000 + 600 * 2) / 2, 600, 1000 + 600 * 2);
+        constexpr int width = 2000, height = 600;
+        constexpr s3d::RectF rect(-width / 2, -height / 2, width, height);
 
         obj->AddComponent<Siv::Rect>()->SetShape(rect).SetColor(s3d::Palette::Gray);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Field);

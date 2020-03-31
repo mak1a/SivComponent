@@ -9,7 +9,7 @@ namespace ComponentEngine
     class GameObject;
 
     //全てのコンポーネントの基本
-    class AttachableComponent : public IComponent
+    class AttachableComponent : public IComponent, public std::enable_shared_from_this<AttachableComponent>
     {
         friend class GameObject;
 

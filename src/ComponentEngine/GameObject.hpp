@@ -54,11 +54,15 @@ namespace ComponentEngine
         bool GetActive() const noexcept;
         Transform& transform();
 
+        [[nodiscard]] std::shared_ptr<GameObject> CreateChild();
         const std::shared_ptr<GameObject>& AddChild(const std::shared_ptr<GameObject>& child, bool pushfront = false);
+        //子オブジェクトを新しく生成
         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild();
         void SetParent(const std::weak_ptr<GameObject>& newParent, bool pushfront = false);
         std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const;
         std::shared_ptr<GameObject> FindChild(const std::string& name) const;
+
+        std::shared_ptr<GameObject> FindChildByName(const std::string&) const;
 
         void DeleteChild(const std::shared_ptr<GameObject>& child);
         //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
@@ -194,7 +198,7 @@ namespace ComponentEngine
         // 上位オブジェクトへの参照
         std::weak_ptr<IScene> scene;
 
-        std::string name = "unnamed";
+        std::string name = "gameobject";
         UserDef::Tag objecttag;
 
         bool active;

@@ -14,6 +14,7 @@ namespace ComponentEngine
 {
     class SceneManager;
 
+    //なぜかファイル分割できん
     class IScene : public std::enable_shared_from_this<IScene>, boost::noncopyable
     {
     public:
@@ -49,6 +50,11 @@ namespace ComponentEngine
             }
 
             manager = m;
+        }
+
+        std::shared_ptr<GameObject> FindObject(const std::string& name) const
+        {
+            return masterObject->FindChildByName(name);
         }
 
         SceneManager* GetSceneManager()

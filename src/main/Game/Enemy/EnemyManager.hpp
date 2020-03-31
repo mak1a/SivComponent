@@ -5,6 +5,8 @@
 
 class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
 {
+    double randomValue;
+
     void Start2() override;
-    // void Update() override;
+    void Update() override;
 };
