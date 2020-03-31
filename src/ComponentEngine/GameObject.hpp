@@ -57,7 +57,7 @@ namespace ComponentEngine
         [[nodiscard]] std::shared_ptr<GameObject> CreateChild();
         const std::shared_ptr<GameObject>& AddChild(const std::shared_ptr<GameObject>& child, bool pushfront = false);
         //子オブジェクトを新しく生成
-        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild();
+        // [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild();
         void SetParent(const std::weak_ptr<GameObject>& newParent, bool pushfront = false);
         std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const;
         std::shared_ptr<GameObject> FindChild(const std::string& name) const;

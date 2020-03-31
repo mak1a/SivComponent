@@ -2,6 +2,7 @@
 #include "Game.hpp"
 #include "Enemy/EnemyManager.hpp"
 #include "GameMaster/GameState.hpp"
+#include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
 
 void Game::Setup()
@@ -19,16 +20,16 @@ void Game::Setup()
     gameSystem->AddComponent<GameState>();
 
     //描画順を最初にするため弾をここに
-    auto bulletmanager = altercamera->CreateAndGetChild();
+    auto bulletmanager = altercamera->CreateChild();
     bulletmanager->SetName("BulletManager");
 
     //敵管理システム
-    auto enemyManager = altercamera->CreateAndGetChild();
+    auto enemyManager = altercamera->CreateChild();
     enemyManager->SetName("EnemyManager");
     enemyManager->AddComponent<EnemyManager>();
     enemyManager->SetActive(false);
 
-    auto players = altercamera->CreateAndGetChild();
+    auto players = altercamera->CreateChild();
     players->SetName("PlayerManager");
 
     //自分を作る
@@ -49,7 +50,7 @@ void Game::Setup()
 
     bulletmanager->AddComponent<BulletManager>()->player = player;
 
-    auto walls = altercamera->CreateAndGetChild();
+    auto walls = altercamera->CreateChild();
     walls->SetName("Walls");
     // wallscope
     {
@@ -81,6 +82,16 @@ void Game::Setup()
         walls->AddChild(right);
     }
 
+    //プレイヤーコアを生成
+    auto core = altercamera->CreateChild();
+    core->SetTag(UserDef::Tag::Wall);
+    core->AddComponent<PlayerCore>();
+    core->AddComponent<Collision::CollisionObject>(Collision::Layer::Field);
+    constexpr int coresize = 50;
+    constexpr s3d::RectF corerect(-coresize, -coresize, coresize * 2, coresize * 2);
+    core->AddComponent<Collision::RectCollider>()->SetShape(corerect);
+    core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Green);
+
     // UI
 
     //タイマー
@@ -93,7 +104,7 @@ void Game::Setup()
     t->SetActive(false);
     time->AddComponent<TimerSetup>()->timerobject = t;
 
-    auto& statetext = time->CreateAndGetChild()->SetName("time text");
+    auto& statetext = time->CreateChild()->SetName("time text");
     statetext.SetPosition({0, -40});
     statetext.AddComponent<Siv::Text>();
 }

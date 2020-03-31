@@ -204,7 +204,7 @@ namespace ComponentEngine
         return child;
     }
 
-    std::shared_ptr<GameObject> GameObject::CreateAndGetChild()
+    std::shared_ptr<GameObject> GameObject::CreateChild()
     {
         auto object = std::make_shared<GameObject>();
         object->scene = this->scene;

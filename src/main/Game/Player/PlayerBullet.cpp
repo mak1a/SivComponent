@@ -6,7 +6,7 @@
 void BulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
-    fireInterval = 0.0;
+    fireInterval = 1.0;
 
     //    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
 }
@@ -16,7 +16,7 @@ void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 {
     const s3d::Vec2 pos = bullet->GetGameObject().lock()->GetLocalPosition();
     const s3d::Vec2 spd = bullet->moveValue;
-    const int servertime = networkSystem->GetServerTime();
+    //    const int servertime = networkSystem->GetServerTime();
 
     //座標と発生時刻を送る
     ExitGames::Common::Hashtable table;
@@ -26,7 +26,7 @@ void BulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
     table.put<short, double>(static_cast<short>(10), spd.x);
     table.put<short, double>(static_cast<short>(11), spd.y);
 
-    table.put<short, int>(static_cast<short>(99), servertime);
+    //    table.put<short, int>(static_cast<short>(99), servertime);
 
     networkSystem->GetClient().opRaiseEvent(true, table, CustomEvent::PlayerShot);
 }
@@ -48,7 +48,7 @@ void BulletManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     spd.x = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(10))).getDataCopy();
     spd.y = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(11))).getDataCopy();
 
-    int servertime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(99))).getDataCopy();
+    //    int servertime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(99))).getDataCopy();
 
     //ラグ計算
     // double lagtime = (networkSystem->GetServerTime() - servertime) / 1000.0;
@@ -114,4 +114,10 @@ void Bullet::SetMove(const s3d::Vec2& target, double speed)
 {
     moveValue = target.normalized() * speed;
     // moveValue = GetGameObject().lock()->LookAt(target) * speed;
+}
+
+void Bullet::OnStayCollision(std::shared_ptr<GameObject>& other)
+{
+    auto obj = GetGameObject().lock();
+    obj->GetScene().lock()->Destroy(obj);
 }

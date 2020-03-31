@@ -16,9 +16,11 @@ public:
         isMine = false;
     }
 
-    void Update() override;
-
     void SetMove(const s3d::Vec2& target, double speed);
+
+private:
+    void Update() override;
+    void OnStayCollision(std::shared_ptr<GameObject>& other) override;
 };
 
 class BulletManager : public Photon::AttachableComponentPhotonCallbacks
@@ -27,13 +29,11 @@ class BulletManager : public Photon::AttachableComponentPhotonCallbacks
     double fireInterval;
 
     void Start2() override;
+    void Update() override;
 
     void CreateBullet();
-
     void SendBulletInfo(std::shared_ptr<Bullet>& bullet);
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
-
-    void Update() override;
 
 public:
     std::shared_ptr<Player> player;

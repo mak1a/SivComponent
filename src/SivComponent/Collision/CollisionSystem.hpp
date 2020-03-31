@@ -18,7 +18,7 @@ namespace ComponentEngine::Collision
     private:
         using Layers = std::list<CollisionObject*>;
 
-        std::vector<std::pair<Layer, Layer>> collisionTable;
+        std::vector<std::pair<LayerType, LayerType>> collisionTable;
 
         std::array<Layers, UserDef::COLLISIONLAYER_SIZE> colliders;
 
@@ -28,17 +28,17 @@ namespace ComponentEngine::Collision
             // PlayerとEnemyの仮判定
 
             //フィールドとの判定
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Field, (Layer)UserDef::CollisionLayer::Player));
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Field, (Layer)UserDef::CollisionLayer::Enemy));
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Field, (Layer)UserDef::CollisionLayer::PlayerBullet));
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Field, (Layer)UserDef::CollisionLayer::EnemyBullet));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::Player));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::Enemy));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::PlayerBullet));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::EnemyBullet));
 
             //弾の判定
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::PlayerBullet, (Layer)UserDef::CollisionLayer::Enemy));
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::EnemyBullet, (Layer)UserDef::CollisionLayer::Player));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::PlayerBullet, (LayerType)UserDef::CollisionLayer::Enemy));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::EnemyBullet, (LayerType)UserDef::CollisionLayer::Player));
 
             //敵とプレイヤーの接触
-            collisionTable.push_back(std::make_pair((Layer)UserDef::CollisionLayer::Player, (Layer)UserDef::CollisionLayer::Enemy));
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Player, (LayerType)UserDef::CollisionLayer::Enemy));
         }
 
         void Register(CollisionObject* collider)
