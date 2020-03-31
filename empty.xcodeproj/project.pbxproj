@@ -74,6 +74,7 @@
 		8A2628562430F7010011FCF2 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628542430F7010011FCF2 /* Timer.cpp */; };
 		8A262859243307510011FCF2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262857243307510011FCF2 /* GameState.cpp */; };
 		8A26285C2433554E0011FCF2 /* PlayerBulletManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */; };
+		8A2628622433B1300011FCF2 /* PlayerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628602433B1300011FCF2 /* PlayerManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +191,8 @@
 		8A262858243307510011FCF2 /* GameState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameState.hpp; sourceTree = "<group>"; };
 		8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBulletManager.cpp; sourceTree = "<group>"; };
 		8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerBulletManager.hpp; sourceTree = "<group>"; };
+		8A2628602433B1300011FCF2 /* PlayerManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerManager.cpp; sourceTree = "<group>"; };
+		8A2628612433B1300011FCF2 /* PlayerManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerManager.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -443,6 +446,8 @@
 				8A1476E1241F536A00389E76 /* Player.hpp */,
 				8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */,
 				8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */,
+				8A2628602433B1300011FCF2 /* PlayerManager.cpp */,
+				8A2628612433B1300011FCF2 /* PlayerManager.hpp */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -582,6 +587,7 @@
 				8A2628392423B9350011FCF2 /* CollisionObject.cpp in Sources */,
 				8A1476E82420924800389E76 /* Matching.cpp in Sources */,
 				8A14767F240FA72800389E76 /* Utilities.cpp in Sources */,
+				8A2628622433B1300011FCF2 /* PlayerManager.cpp in Sources */,
 				8A26284F242CCBE60011FCF2 /* EnemyManager.cpp in Sources */,
 				8A2628562430F7010011FCF2 /* Timer.cpp in Sources */,
 				8A1476B42414FD8000389E76 /* SceneManager.cpp in Sources */,

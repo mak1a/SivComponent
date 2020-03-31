@@ -5,6 +5,7 @@
 #include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
 #include "Player/PlayerBulletManager.hpp"
+#include "Player/PlayerManager.hpp"
 
 void Game::Setup()
 {

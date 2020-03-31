@@ -2,8 +2,8 @@
 #include "InstantiateEntry.hpp"
 #include "../SivComponent/SivComponent.hpp"
 
-#include "Game/Player/Player.hpp"
 #include "Game/Bullet.hpp"
+#include "Game/Player/Player.hpp"
 
 #include "Game/Enemy/Enemy.hpp"
 #include "Game/Field/MapWall.hpp"
@@ -40,20 +40,20 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
     });
 
     //敵の弾
-    common.AddObjectCreator("EnemyBullet", []() {
-        auto obj = GameObject::Create();
-        constexpr s3d::Circle shape(0, 0, 6);
+    // common.AddObjectCreator("EnemyBullet", []() {
+    //     auto obj = GameObject::Create();
+    //     constexpr s3d::Circle shape(0, 0, 6);
 
-        obj->SetTag(UserDef::Tag::EnemyBullet);
-        obj->AddComponent<Siv::Circle>()->SetShape(shape).SetColor(s3d::Palette::Red);
-        auto bu = obj->AddComponent<Bullet>();
-        obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::EnemyBullet);
-        obj->AddComponent<Collision::CircleCollider>()->SetShape(shape);
-        //数値は仮設定
-        bu->lifetime = 1.5;
-        bu->attack = 10;
-        return obj;
-    });
+    //     obj->SetTag(UserDef::Tag::EnemyBullet);
+    //     obj->AddComponent<Siv::Circle>()->SetShape(shape).SetColor(s3d::Palette::Red);
+    //     auto bu = obj->AddComponent<Bullet>();
+    //     obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::EnemyBullet);
+    //     obj->AddComponent<Collision::CircleCollider>()->SetShape(shape);
+    //     //数値は仮設定
+    //     bu->lifetime = 1.5;
+    //     bu->attack = 10;
+    //     return obj;
+    // });
 
     //マップを囲う壁
     common.AddObjectCreator("MapFieldWall", []() {

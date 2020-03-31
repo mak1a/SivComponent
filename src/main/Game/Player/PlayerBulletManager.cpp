@@ -75,7 +75,6 @@ void PlayerBulletManager::CreateBullet()
 
     auto b = bullet->GetComponent<Bullet>();
     b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), 110);
-
     b->isMine = true;
 
     SendBulletInfo(b);

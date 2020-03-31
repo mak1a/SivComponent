@@ -727,7 +727,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
-            endingLineNumber = "38">
+            endingLineNumber = "38"
+            landmarkName = "EnemyManager::CreateStandardEnemy(position)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -741,7 +743,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
-            endingLineNumber = "45">
+            endingLineNumber = "45"
+            landmarkName = "EnemyManager::CreateBullet(enemy, target, spd, lifetime, attack)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -1,8 +1,7 @@
 
 #include "Player.hpp"
 #include "../../../CustomEventList.hpp"
-#include "../../../Matching.hpp"
-// #include "../../../SivComponent/SivComponent.hpp"
+#include "../../../SivComponent/SivComponent.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
@@ -154,92 +153,4 @@ void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
     {
         OnWall();
     }
-}
-
-//----------------------------------
-
-//プレイヤーを生成
-void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
-{
-    if (eventCode != CustomEvent::PlayerInit)
-    {
-        return;
-    }
-
-    //初期化済みなら弾く
-    for (const auto& n : players)
-    {
-        if (n->playerNr == playerNr)
-        {
-            return;
-        }
-    }
-
-    ExitGames::Common::Dictionary<nByte, double> dic =
-        ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, double> >(eventContent).getDataCopy();
-
-    double x = *dic.getValue(DataName::Player::posX);
-    double y = *dic.getValue(DataName::Player::posY);
-
-    //プレイヤーを生成
-    auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player");
-    //描画順を調整して追加
-    GetGameObject().lock()->AddChild(otherplayer, true);
-
-    otherplayer->SetPosition({x, y});
-
-    auto player = otherplayer->GetComponent<Player>();
-    player->playerNr = playerNr;
-    players.push_back(player);
-}
-
-//部屋から退場したら消す
-void PlayerManager::leaveRoomEventAction(int playerNr, bool isInactive)
-{
-    auto end = players.end();
-    for (auto player = players.begin(); player != end; ++player)
-    {
-        if ((*player)->playerNr == playerNr)
-        {
-            GetGameObject().lock()->GetScene().lock()->Destroy((*player)->GetGameObject().lock());
-
-            players.erase(player);
-
-            return;
-        }
-    }
-}
-
-PlayerManager::PlayerManager()
-{
-    players.reserve(4);
-}
-
-void PlayerManager::Start2()
-{
-    //カメラ位置を設定
-    const auto playerpos = players[0]->GetGameObject().lock()->GetPosition();
-
-    auto diff = s3d::Scene::CenterF() - playerpos;
-
-    // altercamera
-    GetGameObject().lock()->GetScene().lock()->GetMasterObject()->FindChildByName("AlterCamera")->SetPosition(diff);
-
-    // 送り続ける 1秒に8回
-    initsync = Utilities::IntervalCall(1000 / 8, [&]() { players[0]->SendInstantiateMessage(); });
-}
-
-void PlayerManager::Update()
-{
-    if (initsync.IsStop())
-    {
-        return;
-    }
-
-    if (Matching::GameStartTime - networkSystem->GetClient().getServerTime() < 0)
-    {
-        initsync.Stop();
-    }
-
-    initsync.Run();
 }

@@ -1,10 +1,6 @@
 #pragma once
 
-#include <list>
-
 #include "../../../PhotonComponent/PhotonComponent.hpp"
-#include "../../../SivComponent/Collision/Colliders.hpp"
-#include "../../../SivComponent/SivComponent.hpp"
 #include "../../../Utilities/IntervalCall.hpp"
 
 using namespace ComponentEngine;
@@ -66,20 +62,3 @@ namespace DataName::Player
     constexpr nByte posY = 2;
     constexpr nByte initalized = 4;
 };  // namespace DataName::Player
-
-//----------------------------------
-
-class PlayerManager : public Photon::AttachableComponentPhotonCallbacks
-{
-    void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
-    void leaveRoomEventAction(int playerNr, bool isInactive) override;
-    void Start2() override;
-
-    void Update() override;
-
-    Utilities::IntervalCall initsync;
-
-public:
-    PlayerManager();
-    std::vector<std::shared_ptr<Player>> players;
-};
