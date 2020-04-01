@@ -199,9 +199,11 @@ public:
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
 
-        system->GetClient().opRaiseEvent(true, (int)networkSystem->GetClient().getServerTime() + 5000, CustomEvent::GameStart);
+        const int starttime = networkSystem->GetClient().getServerTime() + 5000;
 
-        Matching::GameStartTime = networkSystem->GetClient().getServerTime() + 5000;
+        system->GetClient().opRaiseEvent(true, starttime, CustomEvent::GameStart);
+
+        Matching::GameStartTime = starttime;
 
         system->GetClient().getCurrentlyJoinedRoom().setIsOpen(false);
         manager->ChangeScene("Game");

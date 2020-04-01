@@ -15,11 +15,15 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         //        auto obj = GameObject::Create();
         auto obj = std::make_shared<GameObject>();
         obj->AddComponent<Player>();
-        // obj->AddComponent<Siv::Circle>()->SetShape({0, 0, 10});
-        constexpr s3d::RectF shape(-10, -10, 20, 20);
+        constexpr int size = 20;
+        constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
         obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
+        //ライフ表示
+        auto txt = obj->CreateChild();
+        txt->SetPosition({0, size * 1.5});
+        txt->AddComponent<Siv::Text>()->SetFont(s3d::Font(12, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
         return obj;
     });
 

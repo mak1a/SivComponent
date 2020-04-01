@@ -1,6 +1,6 @@
 #include "PlayerBulletManager.hpp"
-
 #include "../../../CustomEventList.hpp"
+#include "Player.hpp"
 
 void PlayerBulletManager::Start2()
 {

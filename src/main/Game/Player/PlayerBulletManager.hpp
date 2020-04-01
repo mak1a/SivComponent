@@ -3,7 +3,8 @@
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../Bullet.hpp"
-#include "Player.hpp"
+
+class Player;
 
 class PlayerBulletManager : public Photon::AttachableComponentPhotonCallbacks
 {

@@ -2,7 +2,6 @@
 #pragma once
 
 #include "../../../PhotonComponent/PhotonComponent.hpp"
-
 #include "../../../Utilities/IntervalCall.hpp"
 
 class Player;

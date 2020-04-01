@@ -1,9 +1,11 @@
 
 #include "Game.hpp"
+#include "Enemy/Enemy.hpp"
 #include "Enemy/EnemyManager.hpp"
 #include "GameMaster/GameState.hpp"
 #include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
+#include "Player/Player.hpp"
 #include "Player/PlayerBulletManager.hpp"
 #include "Player/PlayerManager.hpp"
 
@@ -28,7 +30,7 @@ void Game::Setup()
     //敵管理システム
     auto enemyManager = altercamera->CreateChild();
     enemyManager->SetName("EnemyManager");
-    enemyManager->AddComponent<EnemyManager>();
+    auto enemyManagerComp = enemyManager->AddComponent<EnemyManager>();
     enemyManager->SetActive(false);
 
     auto players = altercamera->CreateChild();
@@ -45,12 +47,16 @@ void Game::Setup()
     player->SetMine(true);
     player->playerNr = system->GetClient().getLocalPlayer().getNumber();
 
-    players->AddComponent<PlayerManager>()->players.push_back(player);
-    //    player->SendInstantiateMessage();
+    auto playerManagerComp = players->AddComponent<PlayerManager>();
+    playerManagerComp->players.push_back(player);
 
     players->AddChild(mainplayerobj);
 
     bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
+
+    //データ注入
+    Enemy::playerManager = playerManagerComp.get();
+    Enemy::enemyManager = enemyManagerComp.get();
 
     auto walls = altercamera->CreateChild();
     walls->SetName("Walls");
@@ -93,6 +99,8 @@ void Game::Setup()
     constexpr s3d::RectF corerect(-coresize, -coresize, coresize * 2, coresize * 2);
     core->AddComponent<Collision::RectCollider>()->SetShape(corerect);
     core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Green);
+    //コアの位置を通達
+    enemyManagerComp->playercore = core;
 
     // UI
 

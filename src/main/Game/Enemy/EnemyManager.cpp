@@ -28,6 +28,7 @@ void EnemyManager::CreateStandardEnemy(const s3d::Vec2& position)
 
     auto enemy = obj->AddComponent<Enemy>();
     enemy->enemyManager = this;
+    enemy->TargetObject = playercore;
     obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Enemy);
     obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
     obj->AddComponent<Siv::Rect>()->SetShape(shape).SetColor(s3d::Palette::Darkred);

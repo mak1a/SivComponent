@@ -10,24 +10,20 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void Start2() override;
     void Update() override;
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
-
     void OnWall();
     void OnEnemy();
     void OnEnemyBullet();
-
     void OnStayCollision(std::shared_ptr<GameObject>& other) override;
 
     bool isMine;
+    double spd;
+    int life = 100;
+
     //線形補間用
     s3d::Vec2 targetPos;
     s3d::Vec2 movehistory;
 
-    // void Start2() override;
-
     Utilities::IntervalCall syncpos;
-
-    double spd;
-
     std::shared_ptr<GameObject> camera;
 
 public:

@@ -19,6 +19,8 @@ class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
     std::shared_ptr<GameObject> bullets;
 
 public:
+    std::shared_ptr<GameObject> playercore;
+
     void CreateStandardEnemy(const s3d::Vec2& position);
 
     void CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack = 10);

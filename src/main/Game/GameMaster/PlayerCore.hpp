@@ -4,7 +4,7 @@
 
 class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
 {
-    int life = 100;
+    int life = 1000;
 
     void OnStayCollision(std::shared_ptr<GameObject>& other) override;
 
