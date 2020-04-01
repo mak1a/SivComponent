@@ -39,6 +39,11 @@ public:
         isMine = ismine;
     }
 
+    int GetLife() const
+    {
+        return life;
+    }
+
     void SendInstantiateMessage();
     void SyncPos();
 

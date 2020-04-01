@@ -1,12 +1,11 @@
 
 #include "InstantiateEntry.hpp"
 #include "../SivComponent/SivComponent.hpp"
-
 #include "Game/Bullet.hpp"
-#include "Game/Player/Player.hpp"
-
 #include "Game/Enemy/Enemy.hpp"
 #include "Game/Field/MapWall.hpp"
+#include "Game/Player/Player.hpp"
+#include "Game/Player/PlayerLifeView.hpp"
 
 void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
 {
@@ -14,16 +13,21 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
     common.AddObjectCreator("Player", []() {
         //        auto obj = GameObject::Create();
         auto obj = std::make_shared<GameObject>();
-        obj->AddComponent<Player>();
+        const auto player = obj->AddComponent<Player>();
         constexpr int size = 20;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
         obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
+
         //ライフ表示
-        auto txt = obj->CreateChild();
-        txt->SetPosition({0, size * 1.5});
-        txt->AddComponent<Siv::Text>()->SetFont(s3d::Font(12, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
+        auto txtobj = obj->CreateChild();
+        txtobj->SetPosition({0, size * 1.5});
+        const auto text = txtobj->AddComponent<Siv::Text>();
+        text->SetFont(s3d::Font(12, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
+        auto view = txtobj->AddComponent<PlayerLifeView>();
+        view->player = player;
+        view->text = text;
         return obj;
     });
 
