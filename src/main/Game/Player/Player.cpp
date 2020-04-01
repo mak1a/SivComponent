@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "../../../CustomEventList.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
+#include "../Bullet.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
@@ -17,30 +18,30 @@ Player::Player()
 
 void Player::Start2()
 {
+    //移動先を自分の現座標に
     targetPos = GetGameObject().lock()->GetPosition();
+
+    // GetComponent
+    rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
+    camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
 
     constexpr auto playercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Lightblue, 0.5);
     constexpr auto othercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2);
 
-    GetGameObject().lock()->GetComponent<Siv::Rect>()->SetColor(isMine ? playercolor : othercolor);
-
-    camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
+    rect->SetColor(isMine ? playercolor : othercolor);
 
     //移動前座標をセット
     movehistory = GetGameObject().lock()->GetPosition();
+
+    //ライフをセット
+    life = maxlife;
+
+    //今の色を保存
+    defaultcolor = rect->GetColor();
 }
 
-void Player::Update()
+void Player::Move()
 {
-    if (!isMine)
-    {
-        SyncPosWithEasing();
-        return;
-    }
-
-    //位置同期を行う
-    syncpos.Run();
-
     //キー入力により移動
     s3d::Vec2 axis;
     axis.x = (s3d::KeyD.pressed() - s3d::KeyA.pressed());
@@ -66,6 +67,39 @@ void Player::Update()
 
     const auto currentPos = camera->GetPosition();
     camera->SetPosition(currentPos - diff);
+}
+
+void Player::Revive()
+{
+    counttimer -= s3d::Scene::DeltaTime();
+    if (counttimer < 0)
+    {
+        //ライフ回復、状態変更、色を戻す
+        life = maxlife;
+        state = PlayerStates::normal;
+        rect->SetColor(defaultcolor);
+    }
+}
+
+void Player::Update()
+{
+    //自分じゃなければ何もしない
+    if (!isMine)
+    {
+        SyncPosWithEasing();
+        return;
+    }
+
+    //位置同期を行う
+    syncpos.Run();
+
+    if (state == PlayerStates::reviving)
+    {
+        Revive();
+        return;
+    }
+
+    Move();
 }
 
 void Player::SyncPosWithEasing()
@@ -149,8 +183,28 @@ void Player::OnEnemyBullet() {}
 
 void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
 {
+    if (!isMine)
+    {
+        return;
+    }
+
     if (other->GetTag() == UserDef::Tag::Wall)
     {
         OnWall();
+    }
+
+    if (other->GetTag() == UserDef::Tag::EnemyBullet)
+    {
+        auto bullet = other->GetComponent<Bullet>();
+        life -= bullet->attack;
+
+        //ライフが尽きたら
+        if (life <= 0 && state != PlayerStates::reviving)
+        {
+            //状態を変更して色を黒くする
+            state = PlayerStates::reviving;
+            counttimer = 6.0;
+            rect->SetColor(defaultcolor.lerp(s3d::Palette::Black, 0.6));
+        }
     }
 }

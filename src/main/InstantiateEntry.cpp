@@ -22,7 +22,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
 
         //ライフ表示
         auto txtobj = obj->CreateChild();
-        txtobj->SetPosition({0, size * 1.5});
+        txtobj->SetPosition({0, size * 1});
         const auto text = txtobj->AddComponent<Siv::Text>();
         text->SetFont(s3d::Font(12, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
         auto view = txtobj->AddComponent<PlayerLifeView>();

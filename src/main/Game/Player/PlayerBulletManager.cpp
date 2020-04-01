@@ -84,6 +84,12 @@ void PlayerBulletManager::Update()
 {
     fireInterval -= s3d::Scene::DeltaTime();
 
+    //死んでたら発射できない
+    if (player->state == Player::PlayerStates::reviving)
+    {
+        return;
+    }
+
     if (s3d::MouseL.pressed() && fireInterval < 0)
     {
         CreateBullet();

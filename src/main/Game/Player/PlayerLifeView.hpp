@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../../../ComponentEngine/ComponentEngine.hpp";
+#include "../../../ComponentEngine/ComponentEngine.hpp"
 
 class Player;
 

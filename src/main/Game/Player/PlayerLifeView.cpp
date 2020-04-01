@@ -8,5 +8,17 @@ void PlayerLifeView::Update()
 {
     const int life = player->GetLife();
 
-    text->SetText(s3d::Format(U"❤", life));
+    switch (player->state)
+    {
+        case Player::PlayerStates::normal:
+            text->SetText(s3d::Format(U"❤", life));
+            break;
+
+        case Player::PlayerStates::reviving:
+            text->SetText(U"revive...");
+            break;
+            
+        default:
+            break;
+    }
 }
