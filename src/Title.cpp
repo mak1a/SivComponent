@@ -22,13 +22,23 @@ private:
 
     static int n;
 
+    void generate_name()
+    {
+        n = s3d::Random(0, 1000);
+    }
+
 public:
-    void Start() override
+    void Awake() override
     {
         if (n == -1)
         {
-            Generate();
+            generate_name();
         }
+    }
+
+    void Start() override
+    {
+        tbox.lock()->SetText(GetNameSiv());
     }
 
     s3d::String GetNameSiv()
@@ -40,10 +50,9 @@ public:
     {
         return ExitGames::Common::JString(L"Player") + n;
     }
-
     void Generate()
     {
-        n = s3d::Random(0, 1000);
+        generate_name();
         tbox.lock()->SetText(GetNameSiv());
     }
 };
@@ -55,7 +64,8 @@ struct ChangeSceneBt : public ComponentEngine::AttachableComponent
     void ChangeToMatching()
     {
         auto manager = GetGameObject().lock()->GetScene().lock()->GetSceneManager();
-        manager->GetCommon().GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
+        manager->GetCommon()
+            .GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
             ->GetComponent<ComponentEngine::Photon::NetworkSystem>()
             ->SetPlayerName(generator->GetNamePhoton());
         manager->ChangeScene("Matching");
@@ -76,7 +86,6 @@ void TitleScene::Setup()
     gen->tbox = obj->AddComponent<ComponentEngine::Siv::TextBox>();
     genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() { gen->Generate(); });
     genbt->SetPosition({0, 40});
-    gen->Generate();
 
     //マッチングボタン
     auto bt = CreateAndGetObject();

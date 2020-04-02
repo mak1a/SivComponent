@@ -206,7 +206,13 @@ namespace ComponentEngine
 
     std::shared_ptr<GameObject> GameObject::CreateChild()
     {
+        return CreateChild("");
+    }
+
+    std::shared_ptr<GameObject> GameObject::CreateChild(const std::string& objectName)
+    {
         auto object = std::make_shared<GameObject>();
+        object->SetName(objectName);
         object->scene = this->scene;
         this->AddChild(object);
         return object;

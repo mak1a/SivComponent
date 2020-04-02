@@ -3,6 +3,8 @@
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 
+class EnemyManager;
+
 class Timer : public AttachableComponent
 {
 public:
@@ -10,9 +12,10 @@ public:
     std::shared_ptr<Siv::Text> text;
     s3d::Stopwatch watch;
 
+    std::shared_ptr<EnemyManager> enemyManager;
+
 private:
     void Start() override;
-
     void Update() override;
 };
 

@@ -5,6 +5,7 @@
 #include "GameMaster/GameState.hpp"
 #include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
+#include "GameMaster/UIManager.hpp"
 #include "Player/Player.hpp"
 #include "Player/PlayerBulletManager.hpp"
 #include "Player/PlayerManager.hpp"
@@ -15,26 +16,26 @@ void Game::Setup()
 
     s3d::Scene::SetBackground(s3d::Palette::Whitesmoke);
 
-    auto altercamera = CreateAndGetObject();
-    altercamera->SetName("AlterCamera");
+    auto Altercamera = CreateAndGetObject();
+    Altercamera->SetName("AlterCamera");
 
     //ゲーム状態管理システムは代替カメラ配下にしない
-    auto gameSystem = CreateAndGetObject();
-    gameSystem->SetName("GameSystem");
-    gameSystem->AddComponent<GameState>();
+    auto Gamesystem = CreateAndGetObject();
+    Gamesystem->SetName("GameSystem");
+    Gamesystem->AddComponent<GameState>();
 
     //描画順を最初にするため弾をここに
-    auto bulletmanager = altercamera->CreateChild();
-    bulletmanager->SetName("BulletManager");
+    auto Bulletmanager = Altercamera->CreateChild();
+    Bulletmanager->SetName("BulletManager");
 
     //敵管理システム
-    auto enemyManager = altercamera->CreateChild();
-    enemyManager->SetName("EnemyManager");
-    auto enemyManagerComp = enemyManager->AddComponent<EnemyManager>();
-    enemyManager->SetActive(false);
+    auto Enemymanager = Altercamera->CreateChild();
+    Enemymanager->SetName("EnemyManager");
+    auto enemyManagerComp = Enemymanager->AddComponent<EnemyManager>();
+    Enemymanager->SetActive(false);
 
-    auto players = altercamera->CreateChild();
-    players->SetName("PlayerManager");
+    auto Playermanager = Altercamera->CreateChild();
+    Playermanager->SetName("PlayerManager");
 
     //自分を作る
     auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
@@ -47,18 +48,18 @@ void Game::Setup()
     player->SetMine(true);
     player->playerNr = system->GetClient().getLocalPlayer().getNumber();
 
-    auto playerManagerComp = players->AddComponent<PlayerManager>();
+    auto playerManagerComp = Playermanager->AddComponent<PlayerManager>();
     playerManagerComp->players.push_back(player);
 
-    players->AddChild(mainplayerobj);
+    Playermanager->AddChild(mainplayerobj);
 
-    bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
+    Bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
 
     //データ注入
     Enemy::playerManager = playerManagerComp.get();
     Enemy::enemyManager = enemyManagerComp.get();
 
-    auto walls = altercamera->CreateChild();
+    auto walls = Altercamera->CreateChild();
     walls->SetName("Walls");
     // wallscope
     {
@@ -91,7 +92,7 @@ void Game::Setup()
     }
 
     //プレイヤーコアを生成
-    auto core = altercamera->CreateChild();
+    auto core = Altercamera->CreateChild();
     core->SetTag(UserDef::Tag::Wall);
     core->AddComponent<PlayerCore>();
     core->AddComponent<Collision::CollisionObject>(Collision::Layer::Field);
@@ -103,9 +104,11 @@ void Game::Setup()
     enemyManagerComp->playercore = core;
 
     // UI
+    auto UI = CreateAndGetObject();
+    auto uimanager = UI->AddComponent<UIManager>();
 
     //タイマー
-    auto time = CreateAndGetObject();
+    auto time = UI->CreateChild();
     time->SetPosition({s3d::Scene::Width() / 2, 70});
 
     time->SetName("Timer");
@@ -117,4 +120,21 @@ void Game::Setup()
     auto& statetext = time->CreateChild()->SetName("time text");
     statetext.SetPosition({0, -40});
     statetext.AddComponent<Siv::Text>();
+
+    //コアのHP表示
+
+    //勝利・敗北UI
+    auto resultUI = UI->CreateChild("ResultUI");
+    auto returnTitleBt = resultUI->CreateChild("TitleBack");
+    auto victoryUI = resultUI->CreateChild("victoryUI");
+    auto defeatUI = resultUI->CreateChild("defeatUI");
+    auto connectionError = resultUI->CreateChild("connectionError");
+
+    //依存関係
+    uimanager->objects.playerManager = Playermanager;
+    uimanager->objects.enemyManager = Enemymanager;
+    uimanager->objects.defeatUI = defeatUI;
+    uimanager->objects.victoryUI = victoryUI;
+    uimanager->objects.timeUI = time;
+    uimanager->objects.returnTitleBt = returnTitleBt;
 }

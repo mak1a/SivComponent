@@ -14,7 +14,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         //        auto obj = GameObject::Create();
         auto obj = std::make_shared<GameObject>();
         const auto player = obj->AddComponent<Player>();
-        constexpr int size = 20;
+        constexpr double size = 20;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
         obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
@@ -22,9 +22,9 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
 
         //ライフ表示
         auto txtobj = obj->CreateChild();
-        txtobj->SetPosition({0, size * 1});
+        txtobj->SetPosition({0, size * 0.9});
         const auto text = txtobj->AddComponent<Siv::Text>();
-        text->SetFont(s3d::Font(12, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
+        text->SetFont(s3d::Font(14, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
         auto view = txtobj->AddComponent<PlayerLifeView>();
         view->player = player;
         view->text = text;

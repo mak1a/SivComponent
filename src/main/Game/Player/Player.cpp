@@ -12,8 +12,8 @@ Player::Player()
     : syncpos((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncPos(); })
 {
     isMine = false;
-    // spd = 60.0;
-    spd = 60.0 * 5;
+    spd = 90.0;
+    // spd = 60.0 * 5;
 }
 
 void Player::Start2()
