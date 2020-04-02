@@ -95,12 +95,13 @@ void Game::Setup()
     //プレイヤーコアを生成
     auto core = Altercamera->CreateChild();
     core->SetTag(UserDef::Tag::Wall);
-    core->AddComponent<PlayerCore>();
+    auto playerCoreComp = core->AddComponent<PlayerCore>();
     core->AddComponent<Collision::CollisionObject>(Collision::Layer::Field);
     constexpr int coresize = 50;
     constexpr s3d::RectF corerect(-coresize, -coresize, coresize * 2, coresize * 2);
     core->AddComponent<Collision::RectCollider>()->SetShape(corerect);
-    core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Green);
+    core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Lightgreen);
+    core->AddComponent<Siv::RectFrame>()->SetShape(corerect).SetColor(s3d::Palette::Green.lerp(s3d::Palette::Blue, 0.5)).SetInnerThickness(5);
     //コアの位置を通達
     enemyManagerComp->playercore = core;
 
@@ -114,9 +115,9 @@ void Game::Setup()
 
     time->SetName("Timer");
     time->AddComponent<Siv::Text>()->SetColor(s3d::Palette::Black).SetFont(s3d::Font(50, s3d::Typeface::Bold));
-    auto t = time->AddComponent<Timer>();
-    t->SetActive(false);
-    time->AddComponent<TimerSetup>()->timerobject = t;
+    auto timerComp = time->AddComponent<Timer>();
+    timerComp->SetActive(false);
+    time->AddComponent<TimerSetup>()->timerobject = timerComp;
 
     auto& statetext = time->CreateChild()->SetName("time text");
     statetext.SetPosition({0, -40});
@@ -126,23 +127,53 @@ void Game::Setup()
 
     //勝利・敗北UI
     auto resultUI = UI->CreateChild("ResultUI");
+
     auto returnTitleBt = resultUI->CreateChild("TitleBack");
     auto victoryUI = resultUI->CreateChild("victoryUI");
     auto defeatUI = resultUI->CreateChild("defeatUI");
     auto connectionError = resultUI->CreateChild("connectionError");
 
-    victoryUI->AddComponent<Siv::Text>()->SetText(U"勝利！").SetFont(s3d::Font(100, s3d::Typeface::Black)).SetColor(s3d::Palette::Red).SetDrawAt(true);
+    returnTitleBt->SetActive(false);
+    victoryUI->SetActive(false);
+    defeatUI->SetActive(false);
+    connectionError->SetActive(false);
+
+    victoryUI->AddComponent<Siv::Text>()
+        ->SetText(U"勝利！")
+        .SetFont(s3d::Font(100, s3d::Typeface::Black))
+        .SetColor(s3d::Palette::Red)
+        .SetDrawAt(true)
+        .SetShadowEnable(true);
     victoryUI->SetPosition(s3d::Scene::CenterF());
+
+    defeatUI->AddComponent<Siv::Text>()
+        ->SetText(U"敗北…")
+        .SetFont(s3d::Font(100, s3d::Typeface::Black))
+        .SetColor(s3d::Palette::Blue)
+        .SetDrawAt(true)
+        .SetShadowEnable(true);
+    defeatUI->SetPosition(s3d::Scene::CenterF());
+
+    connectionError->AddComponent<Siv::Text>()
+        ->SetText(U"通信が切断されました")
+        .SetFont(s3d::Font(40, s3d::Typeface::Medium))
+        .SetColor(s3d::Palette::Black)
+        .SetDrawAt(true);
+    connectionError->SetPosition(s3d::Scene::CenterF());
 
     returnTitleBt->AddComponent<ReturnTitleBt>();
     returnTitleBt->AddComponent<Siv::Button>()->SetText(U"タイトルへ戻る");
     returnTitleBt->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 60});
 
     //依存関係
+    timerComp->uimanager = uimanager;
+    playerCoreComp->uimanager = uimanager;
+
     uimanager->objects.playerManager = Playermanager;
     uimanager->objects.enemyManager = Enemymanager;
     uimanager->objects.defeatUI = defeatUI;
     uimanager->objects.victoryUI = victoryUI;
     uimanager->objects.timeUI = time;
     uimanager->objects.returnTitleBt = returnTitleBt;
+    uimanager->objects.playerBulletManager = Bulletmanager;
 }

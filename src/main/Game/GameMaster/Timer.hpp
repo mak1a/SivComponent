@@ -4,6 +4,7 @@
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 
 class EnemyManager;
+class UIManager;
 
 class Timer : public AttachableComponent
 {
@@ -13,6 +14,7 @@ public:
     s3d::Stopwatch watch;
 
     std::shared_ptr<EnemyManager> enemyManager;
+    std::shared_ptr<UIManager> uimanager;
 
 private:
     void Start() override;

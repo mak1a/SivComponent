@@ -5,14 +5,13 @@
 
 class UIManager : public Photon::AttachableComponentPhotonCallbacks
 {
+public:
     void OnVictory();
     void OnDefeat();
-    //通信接続が切れた時の処理
 
-public:
     //インテリセンス用
     struct
     {
-        std::shared_ptr<GameObject> playerManager, enemyManager, victoryUI, defeatUI, timeUI, returnTitleBt;
+        std::shared_ptr<GameObject> playerManager, playerBulletManager, enemyManager, victoryUI, defeatUI, timeUI, returnTitleBt;
     } objects;
 };

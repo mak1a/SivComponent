@@ -2,6 +2,7 @@
 #include "Timer.hpp"
 #include "../../../Matching.hpp"
 #include "GameState.hpp"
+#include "UIManager.hpp"
 
 void Timer::Start()
 {
@@ -26,6 +27,7 @@ void Timer::Update()
     //ゲームクリア
     if (t < 0)
     {
+        uimanager->OnVictory();
     }
     text->SetText(s3d::ToString(t));
 }

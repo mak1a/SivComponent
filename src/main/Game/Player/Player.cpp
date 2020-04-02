@@ -38,6 +38,8 @@ void Player::Start2()
 
     //今の色を保存
     defaultcolor = rect->GetColor();
+
+    state = PlayerStates::normal;
 }
 
 void Player::Move()
@@ -172,8 +174,6 @@ s3d::Vec2 Player::playerInitpos[4] = {s3d::Vec2(-offset, -offset), s3d::Vec2(off
 //壁とぶつかったときの処理
 void Player::OnWall()
 {
-    s3d::Print(U"OnWall");
-
     GetGameObject().lock()->SetPosition(movehistory);
 }
 

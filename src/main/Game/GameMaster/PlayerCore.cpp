@@ -1,6 +1,22 @@
 
 #include "PlayerCore.hpp"
 #include "../Bullet.hpp"
+#include "UIManager.hpp"
+
+void PlayerCore::Start2()
+{
+    frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();
+    rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
+}
+
+void PlayerCore::Update()
+{
+    framethickness = std::max(5, framethickness - 1);
+    frame->SetInnerThickness(framethickness);
+
+    // HPに応じて色を変化
+    // rect->SetColor();
+}
 
 void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
 {
@@ -8,7 +24,7 @@ void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
     {
         auto b = other->GetComponent<Bullet>();
         life -= b->attack;
-        s3d::Print(life);
+        framethickness = 20;
     }
 
     if (other->GetTag() == UserDef::Tag::PlayerBullet)
@@ -16,7 +32,13 @@ void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
         auto b = other->GetComponent<Bullet>();
         //フレンドリーファイア補正
         life -= (b->attack / 5);
-        s3d::Print(life);
+        framethickness = 12;
+    }
+
+    if (life <= 0)
+    {
+        rect->SetColor(s3d::Palette::Black);
+        uimanager->OnDefeat();
     }
 }
 

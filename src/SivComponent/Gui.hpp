@@ -134,17 +134,6 @@ namespace ComponentEngine::Siv
 
         void Draw() const override
         {
-            // const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
-
-            // if (drawAt)
-            // {
-            //     pushed = s3d::SimpleGUI::ButtonAt(text, pos, width, isActive);
-            // }
-            // else
-            // {
-            //     pushed = s3d::SimpleGUI::Button(text, pos, width, isActive);
-            // }
-
             const auto t = s3d::Transformer2D(GetGameObject().lock()->transform().GetMatrix(), true);
 
             if (drawAt)
