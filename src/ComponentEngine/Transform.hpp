@@ -139,7 +139,7 @@ namespace ComponentEngine
         //     return CreateMatrix().inversed();
         // }
 
-        [[nodiscard]] const s3d::Mat3x2 GetMatrix() const
+        [[nodiscard]] const s3d::Mat3x2& GetMatrix() const
         {
             return matrix;
         }

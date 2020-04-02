@@ -9,6 +9,7 @@
 #include "Player/Player.hpp"
 #include "Player/PlayerBulletManager.hpp"
 #include "Player/PlayerManager.hpp"
+#include "UI/ReturnTitleBt.hpp"
 
 void Game::Setup()
 {
@@ -129,6 +130,13 @@ void Game::Setup()
     auto victoryUI = resultUI->CreateChild("victoryUI");
     auto defeatUI = resultUI->CreateChild("defeatUI");
     auto connectionError = resultUI->CreateChild("connectionError");
+
+    victoryUI->AddComponent<Siv::Text>()->SetText(U"勝利！").SetFont(s3d::Font(100, s3d::Typeface::Black)).SetColor(s3d::Palette::Red).SetDrawAt(true);
+    victoryUI->SetPosition(s3d::Scene::CenterF());
+
+    returnTitleBt->AddComponent<ReturnTitleBt>();
+    returnTitleBt->AddComponent<Siv::Button>()->SetText(U"タイトルへ戻る");
+    returnTitleBt->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 60});
 
     //依存関係
     uimanager->objects.playerManager = Playermanager;

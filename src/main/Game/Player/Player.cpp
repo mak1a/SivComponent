@@ -151,7 +151,6 @@ void Player::SendInstantiateMessage()
     auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
-
     networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerInit);
 }
 
