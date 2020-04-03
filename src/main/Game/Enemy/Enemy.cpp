@@ -34,13 +34,23 @@ void Enemy::SetTarget()
         //最短を更新
         if (d < distance)
         {
+            playerNr = p->GetComponent<Player>()->playerNr;
             fire.targetplayer = p;
             distance = d;
         }
     }
 
     //ターゲットプレイヤー番号を送信
+    SendSyncInfo(0, playerNr);
 
+    //再初期化
+    Reload();
+}
+
+//発射間隔などを再設定
+void Enemy::Reload()
+{
+    fire.interval = 0.5;
     fire.rapidnum = 3;
     fire.reloadtime = 3.3;
 }
@@ -58,8 +68,8 @@ void Enemy::Shot()
     fire.interval -= s3d::Scene::DeltaTime();
     fire.reloadtime -= s3d::Scene::DeltaTime();
 
-    //再ターゲットが可能になっていたら実行
-    if (fire.reloadtime < 0)
+    //自分自身かつ、再ターゲットが可能になっていたら実行
+    if (fire.reloadtime < 0 && isMine)
     {
         SetTarget();
     }
@@ -94,6 +104,7 @@ void Enemy::Move()
     {
         return;
     }
+
     auto g = GetGameObject().lock();
     const auto p = g->GetPosition() + diff.normalized() * spd * s3d::Scene::DeltaTime();
     g->SetPosition(p);
@@ -152,12 +163,33 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
     const int damage = *dic.getValue(DataName::Damage);
     Damage(damage);
 
-    //ターゲットの設定を行う
     const int target = *dic.getValue(DataName::Target);
+    // 0以上なら、ターゲットの設定を行う
     if (target < 0)
     {
         return;
     }
+
+    // 0がオブジェクトコアだが、これでは複数ターゲットに対応できないので要改善
+    if (target == 0)
+    {
+        fire.targetplayer = TargetObject;
+    }
+    else
+    {
+        const int len = playerManager->players.size();
+        for (int i = 0; i < len; ++i)
+        {
+            const auto& player = playerManager->players[i];
+            if (player->playerNr == target)
+            {
+                fire.targetplayer = player->GetGameObject().lock();
+                break;
+            }
+        }
+    }
+
+    Reload();
 }
 
 void Enemy::Damage(int damage)

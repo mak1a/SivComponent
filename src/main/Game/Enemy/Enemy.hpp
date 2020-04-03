@@ -31,7 +31,7 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
 
     std::shared_ptr<GameObject> NearestObject();
     void SetTarget();
-
+    void Reload();
     void Move();
     void Shot();
     void Damage(int damage);
