@@ -9,11 +9,11 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void Start2() override;
     void Update() override;
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
-    void OnWall();
-    void OnEnemy();
-    void OnEnemyBullet();
     void OnStayCollision(std::shared_ptr<GameObject>& other) override;
 
+    void OnWall();
+    void OnEnemy();
+    void OnEnemyBullet(std::shared_ptr<GameObject>& other);
     void Revive();
     void Move();
 
@@ -27,14 +27,14 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     s3d::Vec2 targetPos;
     s3d::Vec2 movehistory;
 
-    Utilities::IntervalCall syncpos;
+    Utilities::IntervalCall syncstatus;
     std::shared_ptr<GameObject> camera;
 
     std::shared_ptr<Siv::Rect> rect;
     s3d::Color defaultcolor;
 
 public:
-    enum class PlayerStates
+    enum PlayerStates
     {
         normal,   //基本状態
         reviving  //復活中
@@ -58,7 +58,7 @@ public:
     }
 
     void SendInstantiateMessage();
-    void SyncPos();
+    void SyncStatus();
 
     Player();
 
@@ -74,5 +74,6 @@ namespace DataName::Player
 {
     constexpr nByte posX = 1;
     constexpr nByte posY = 2;
-    constexpr nByte initalized = 4;
+    constexpr nByte Life = 3;
+    constexpr nByte CurrentState = 5;
 };  // namespace DataName::Player

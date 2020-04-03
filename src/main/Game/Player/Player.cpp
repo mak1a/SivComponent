@@ -4,12 +4,10 @@
 #include "../../CustomEventList.hpp"
 #include "../Bullet.hpp"
 
-using dictype = ExitGames::Common::Dictionary<nByte, double>;
-
-constexpr int PosSyncPerSecond = 5;
+constexpr int PosSyncPerSecond = 7;
 
 Player::Player()
-    : syncpos((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncPos(); })
+    : syncstatus((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncStatus(); })
 {
     isMine = false;
     spd = 90.0;
@@ -85,6 +83,18 @@ void Player::Revive()
 
 void Player::Update()
 {
+    //状態に合わせた色変更
+    switch (state)
+    {
+        case PlayerStates::normal:
+            rect->SetColor(defaultcolor);
+            break;
+
+        case PlayerStates::reviving:
+            rect->SetColor(defaultcolor.lerp(s3d::Palette::Black, 0.6));
+            break;
+    }
+
     //自分じゃなければ何もしない
     if (!isMine)
     {
@@ -93,7 +103,7 @@ void Player::Update()
     }
 
     //位置同期を行う
-    syncpos.Run();
+    syncstatus.Run();
 
     if (state == PlayerStates::reviving)
     {
@@ -134,37 +144,44 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
         return;
     }
 
-    ExitGames::Common::Dictionary<nByte, double> dic =
-        ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, double> >(eventContent).getDataCopy();
+    auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
+
+    life = *dic.getValue(DataName::Player::Life);
+    const int s = *dic.getValue(DataName::Player::CurrentState);
+    state = static_cast<PlayerStates>(s);
 
     //到着先を終点に設定
     targetPos = {x, y};
     // GetGameObject().lock()->SetPosition({x, y});
 }
 
+//プレイヤーの初期生成
 void Player::SendInstantiateMessage()
 {
-    // 自己位置の送信
-    dictype dic;
+    ExitGames::Common::Dictionary<nByte, int> dic;
 
     auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
-    networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerInit);
+    // PlayerManagerが受け取る
+    networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerInit);
 }
 
-void Player::SyncPos()
+void Player::SyncStatus()
 {
     // 自己位置の送信
-    dictype dic;
+    ExitGames::Common::Dictionary<nByte, int> dic;
 
     auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
+    dic.put(DataName::Player::Life, life);
+    dic.put(DataName::Player::CurrentState, static_cast<int>(state));
 
+    // Playerが受け取る
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerSync);
 }
 
@@ -178,7 +195,19 @@ void Player::OnWall()
 }
 
 void Player::OnEnemy() {}
-void Player::OnEnemyBullet() {}
+void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
+{
+    auto bullet = other->GetComponent<Bullet>();
+    life -= bullet->attack;
+
+    //ライフが尽きたら
+    if (life <= 0 && state != PlayerStates::reviving)
+    {
+        //状態を変更して色を黒くする
+        state = PlayerStates::reviving;
+        counttimer = 6.0;
+    }
+}
 
 void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
 {
@@ -194,16 +223,6 @@ void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
 
     if (other->GetTag() == UserDef::Tag::EnemyBullet)
     {
-        auto bullet = other->GetComponent<Bullet>();
-        life -= bullet->attack;
-
-        //ライフが尽きたら
-        if (life <= 0 && state != PlayerStates::reviving)
-        {
-            //状態を変更して色を黒くする
-            state = PlayerStates::reviving;
-            counttimer = 6.0;
-            rect->SetColor(defaultcolor.lerp(s3d::Palette::Black, 0.6));
-        }
+        OnEnemyBullet(other);
     }
 }

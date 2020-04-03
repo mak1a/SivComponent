@@ -45,10 +45,7 @@ void Enemy::SetTarget()
     fire.reloadtime = 3.3;
 }
 
-void Enemy::Start2()
-{
-    s3d::Print(U"CreateEnemy:", enemynumber);
-}
+void Enemy::Start2() {}
 
 void Enemy::Update()
 {
@@ -133,8 +130,6 @@ void Enemy::SendSyncInfo(int damage, int targetPlayer) const
     dic.put(DataName::ServerTime, networkSystem->GetServerTime());
 
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::EnemySync);
-
-    s3d::Print(U"send:", enemynumber);
 }
 
 void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -153,7 +148,6 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
     {
         return;
     }
-    s3d::Print(U"recive:", nr);
 
     const int damage = *dic.getValue(DataName::Damage);
     Damage(damage);
@@ -169,7 +163,6 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
 void Enemy::Damage(int damage)
 {
     life -= damage;
-    s3d::Print(U"life:", life);
 
     if (life <= 0)
     {

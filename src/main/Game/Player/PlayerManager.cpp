@@ -21,8 +21,8 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
         }
     }
 
-    ExitGames::Common::Dictionary<nByte, double> dic =
-        ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, double> >(eventContent).getDataCopy();
+    auto dic =
+        ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
