@@ -14,7 +14,7 @@ void Matching::Setup()
     auto list = CreateAndGetObject();
     list->SetPosition({200, 100});
     list->AddComponent<PlayerListDisplay>();
-    list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください");
+    list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください").SetDrawAt(false);
 
     auto bt = CreateAndGetObject();
     bt->AddComponent<TitleBt>();

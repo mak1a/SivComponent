@@ -18,7 +18,10 @@ void PlayerListDisplay::UpdateDisplay()
     for (int i = 0; i < plist.size(); ++i)
     {
         int num = Utilities::GetPlayerNumber(plist[i]->getName());
-        str += s3d::Format(i + 1, U" : Player", num, U"\n");
+
+        const s3d::String you = ((plist[i]->getNumber() == networkSystem->GetClient().getLocalPlayer().getNumber()) ? U" : you" : U"");
+
+        str += s3d::Format(i + 1, U" : Player", num, you, U"\n");
     }
     text->SetText(str);
 }

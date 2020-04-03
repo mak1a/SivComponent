@@ -1,12 +1,12 @@
 
 #include "Player.hpp"
-#include "../../CustomEventList.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
+#include "../../CustomEventList.hpp"
 #include "../Bullet.hpp"
 
 using dictype = ExitGames::Common::Dictionary<nByte, double>;
 
-constexpr int PosSyncPerSecond = 8;
+constexpr int PosSyncPerSecond = 5;
 
 Player::Player()
     : syncpos((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncPos(); })

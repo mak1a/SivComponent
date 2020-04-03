@@ -47,6 +47,9 @@ void TimerSetup::Start2()
         .SetColor(s3d::Palette::Black)
         .SetDrawAt(true);
     ;
+
+    s3d::Print(U"s:", Matching::GameStartTime);
+    s3d::Print(U"n:", networkSystem->GetServerTime());
 }
 
 void TimerSetup::Update()
@@ -59,9 +62,6 @@ void TimerSetup::Update()
     //ゲーム中タイマーを起動して自分は機能停止
     if (timediff < 0)
     {
-        s3d::Print(U"s:", Matching::GameStartTime);
-        s3d::Print(U"n:", networkSystem->GetClient().getServerTime());
-
         timerobject->SetActive(true);
         this->SetActive(false);
         GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>()->SetState(GameState::States::Playing);

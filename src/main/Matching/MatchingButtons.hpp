@@ -81,7 +81,7 @@ public:
 
 class ShowButtonOnlyMaster : public Photon::AttachableComponentPhotonCallbacks
 {
-    void Start2()
+    void Start2() override
     {
         bt = GetGameObject().lock()->GetComponent<Siv::Button>();
     }

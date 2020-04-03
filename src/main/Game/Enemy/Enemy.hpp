@@ -12,6 +12,9 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
 {
     int life = 30;
     int spd = 35;
+    //敵ごとの固有ID
+    int enemynumber;
+    bool isMine = false;
 
     struct
     {
@@ -21,17 +24,18 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
         std::shared_ptr<GameObject> targetplayer;
     } fire;
 
-    int enemynumber;
-
     void OnStayCollision(std::shared_ptr<GameObject>& obj) override;
-    // void Start2() override;
+    void Start2() override;
     void Update() override;
+    void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
     std::shared_ptr<GameObject> NearestObject();
     void SetTarget();
 
     void Move();
     void Shot();
+    void Damage(int damage);
+    void SendSyncInfo(int damage, int targetPlayer = -99) const;
 
 public:
     static EnemyManager* enemyManager;
@@ -41,6 +45,16 @@ public:
     void SetEnemyNumber(int n)
     {
         enemynumber = n;
+    }
+
+    void SetIsMine(bool ismine)
+    {
+        isMine = ismine;
+    }
+
+    bool GetIsMine() const
+    {
+        return isMine;
     }
 
     int GetEnemyNumber() const

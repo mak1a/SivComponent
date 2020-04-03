@@ -2,6 +2,8 @@
 #include "../../CustomEventList.hpp"
 #include "Player.hpp"
 
+constexpr double FireRate = 1.0 / 4;
+
 void PlayerBulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
@@ -93,6 +95,6 @@ void PlayerBulletManager::Update()
     if (s3d::MouseL.pressed() && fireInterval < 0)
     {
         CreateBullet();
-        fireInterval = 0.2;
+        fireInterval = FireRate;
     }
 }

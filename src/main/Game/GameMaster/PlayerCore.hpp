@@ -6,7 +6,7 @@ class UIManager;
 
 class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
 {
-    int life = 1000;
+    int life = 10000;
     int framethickness = 5;
     std::shared_ptr<Siv::RectFrame> frame;
     std::shared_ptr<Siv::Rect> rect;
