@@ -96,7 +96,7 @@ void TitleScene::Setup()
 
     //タイトル
     auto title = CreateAndGetObject();
-    title->SetPosition({0, 100});
+    title->SetPosition({s3d::Scene::CenterF().x, 100});
     title->AddComponent<Siv::Text>()->SetText(U"オンラインCoopゲーム(仮題 α版)").SetFont(s3d::Font(50)).SetColor(s3d::Palette::Black);
 }
 

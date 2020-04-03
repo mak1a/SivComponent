@@ -78,6 +78,7 @@
 		8A2628652434AC510011FCF2 /* PlayerLifeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628632434AC510011FCF2 /* PlayerLifeView.cpp */; };
 		8A2628682434C9300011FCF2 /* UIManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628662434C9300011FCF2 /* UIManager.cpp */; };
 		8A26286C2435C9390011FCF2 /* ReturnTitleBt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26286A2435C9390011FCF2 /* ReturnTitleBt.cpp */; };
+		8A3895B3243717CC00A1F6A1 /* MatchingButtons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3895B1243717CC00A1F6A1 /* MatchingButtons.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -203,6 +204,8 @@
 		8A26286A2435C9390011FCF2 /* ReturnTitleBt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReturnTitleBt.cpp; sourceTree = "<group>"; };
 		8A26286B2435C9390011FCF2 /* ReturnTitleBt.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ReturnTitleBt.hpp; sourceTree = "<group>"; };
 		8A33EC6B240AC415006118AB /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
+		8A3895B1243717CC00A1F6A1 /* MatchingButtons.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MatchingButtons.cpp; sourceTree = "<group>"; };
+		8A3895B2243717CC00A1F6A1 /* MatchingButtons.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MatchingButtons.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,11 +279,8 @@
 				8A14767C240FA71300389E76 /* Utilities */,
 				8A2071BB2400331400284059 /* ComponentEngine */,
 				2C1778991CE0AA7C00BB8AD0 /* Main.cpp */,
-				8A1476E72420924800389E76 /* Matching.cpp */,
-				8A1476CA2417C16000389E76 /* Matching.hpp */,
 				8A1476CC2418D9A700389E76 /* Title.cpp */,
 				8A1476CD2418D9A700389E76 /* Title.hpp */,
-				8A1476D9241BF22000389E76 /* CustomEventList.hpp */,
 				8A26283A242663780011FCF2 /* test.cpp */,
 				8A26283B242663780011FCF2 /* test.hpp */,
 			);
@@ -381,6 +381,8 @@
 		8A1476DB241C92DF00389E76 /* main */ = {
 			isa = PBXGroup;
 			children = (
+				8A1476D9241BF22000389E76 /* CustomEventList.hpp */,
+				8A26286D243701950011FCF2 /* Matching */,
 				8A1476EA24209A1D00389E76 /* InstantiateEntry.cpp */,
 				8A1476E924209A1D00389E76 /* InstantiateEntry.hpp */,
 				8A1476DC241C92E800389E76 /* Game */,
@@ -508,6 +510,17 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		8A26286D243701950011FCF2 /* Matching */ = {
+			isa = PBXGroup;
+			children = (
+				8A1476E72420924800389E76 /* Matching.cpp */,
+				8A1476CA2417C16000389E76 /* Matching.hpp */,
+				8A3895B1243717CC00A1F6A1 /* MatchingButtons.cpp */,
+				8A3895B2243717CC00A1F6A1 /* MatchingButtons.hpp */,
+			);
+			path = Matching;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -588,6 +601,7 @@
 				8A2071B7240017A300284059 /* Transform.cpp in Sources */,
 				8A26285C2433554E0011FCF2 /* PlayerBulletManager.cpp in Sources */,
 				8A26283F242674E80011FCF2 /* ShapeTransform.cpp in Sources */,
+				8A3895B3243717CC00A1F6A1 /* MatchingButtons.cpp in Sources */,
 				8A1476BB2416F25500389E76 /* PhotonInit.cpp in Sources */,
 				8A1476E2241F536A00389E76 /* Player.cpp in Sources */,
 				8A26284224289AAC0011FCF2 /* Enemy.cpp in Sources */,
@@ -744,7 +758,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../include,
 					../../include/ThirdParty,
-					/usr/local/Cellar/boost/1.72.0/include,
+					/usr/local/Cellar/boost/1.72.0_1/include,
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/",
 					./ComponentEngine,
 					/usr/local/opt/icu4c/include,
@@ -768,7 +782,7 @@
 					../../lib/macOS/libvorbis,
 					../../lib/macOS/opencv,
 					../../lib/macOS/zlib,
-					/usr/local/Cellar/boost/1.72.0/lib,
+					/usr/local/Cellar/boost/1.72.0_1/lib,
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Common-cpp/lib",
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Photon-cpp/lib",
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/LoadBalancing-cpp/lib",
@@ -842,7 +856,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../include,
 					../../include/ThirdParty,
-					/usr/local/Cellar/boost/1.72.0/include,
+					/usr/local/Cellar/boost/1.72.0_1/include,
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/",
 					./ComponentEngine,
 					/usr/local/opt/icu4c/include,
@@ -866,7 +880,7 @@
 					../../lib/macOS/libvorbis,
 					../../lib/macOS/opencv,
 					../../lib/macOS/zlib,
-					/usr/local/Cellar/boost/1.72.0/lib,
+					/usr/local/Cellar/boost/1.72.0_1/lib,
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Common-cpp/lib",
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/Photon-cpp/lib",
 					"/Users/para7/Documents/Photon-MacOSX-Sdk_v4-1-15-2/LoadBalancing-cpp/lib",

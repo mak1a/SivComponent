@@ -29,7 +29,7 @@ namespace ComponentEngine::Siv
             : color(s3d::Palette::White)
             , text(U"text")
             , font(30)
-            , drawAt(false)
+            , drawAt(true)
         {
         }
 

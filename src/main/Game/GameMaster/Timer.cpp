@@ -1,6 +1,6 @@
 
 #include "Timer.hpp"
-#include "../../../Matching.hpp"
+#include "../../Matching/Matching.hpp"
 #include "GameState.hpp"
 #include "UIManager.hpp"
 

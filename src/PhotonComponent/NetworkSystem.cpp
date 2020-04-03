@@ -3,6 +3,8 @@
 
 namespace ComponentEngine::Photon
 {
+    NetworkSystem* NetworkSystem::instance = nullptr;
+
     std::string NetworkObjectName()
     {
         return "PhotonSystem";
@@ -15,11 +17,16 @@ namespace ComponentEngine::Photon
 
         mLogger.setDebugOutputLevel(ExitGames::Common::DebugLevel::ALL);
         mLogger.setListener(*this);
+
+        //しっかりとしたシングルトンにしたい
+        instance = this;
     }
 
     NetworkSystem::~NetworkSystem()
     {
         Disconnect();
+
+        instance = nullptr;
     }
 
     void NetworkSystem::Connect(void)

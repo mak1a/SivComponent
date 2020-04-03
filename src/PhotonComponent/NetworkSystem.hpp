@@ -20,6 +20,8 @@ namespace ComponentEngine::Photon
 
     class NetworkSystem : public ComponentEngine::AttachableComponent, public IPhotonObservable, public ExitGames::LoadBalancing::Listener
     {
+        static NetworkSystem* instance;
+
         ExitGames::Common::JString playerName;
 
     public:
@@ -32,6 +34,11 @@ namespace ComponentEngine::Photon
         ExitGames::Common::JString GetPlayerName() const noexcept
         {
             return playerName;
+        }
+
+        static NetworkSystem* GetInstance()
+        {
+            return instance;
         }
 
         int GetServerTime() const

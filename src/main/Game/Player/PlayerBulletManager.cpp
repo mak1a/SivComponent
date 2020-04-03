@@ -1,5 +1,5 @@
 #include "PlayerBulletManager.hpp"
-#include "../../../CustomEventList.hpp"
+#include "../../CustomEventList.hpp"
 #include "Player.hpp"
 
 void PlayerBulletManager::Start2()
@@ -27,7 +27,7 @@ void PlayerBulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
 
     //    table.put<short, int>(static_cast<short>(99), servertime);
 
-    networkSystem->GetClient().opRaiseEvent(true, table, CustomEvent::PlayerShot);
+    networkSystem->GetClient().opRaiseEvent(false, table, CustomEvent::PlayerShot);
 }
 
 //弾を受信

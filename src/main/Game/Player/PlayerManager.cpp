@@ -1,7 +1,7 @@
 
 #include "PlayerManager.hpp"
-#include "../../../CustomEventList.hpp"
-#include "../../../Matching.hpp"
+#include "../../CustomEventList.hpp"
+#include "../../Matching/Matching.hpp"
 #include "Player.hpp"
 
 //プレイヤーを生成

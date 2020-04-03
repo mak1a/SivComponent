@@ -3,7 +3,7 @@
 
 #include "PhotonComponent/PhotonComponent.hpp"
 
-#include "Matching.hpp"
+#include "main/Matching/Matching.hpp"
 #include "PhotonComponent/PhotonInit.hpp"
 #include "Title.hpp"
 #include "main/Game/Game.hpp"
