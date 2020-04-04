@@ -47,9 +47,8 @@ void TimerSetup::Start2()
         .SetColor(s3d::Palette::Black)
         .SetDrawAt(true);
     ;
-
-    s3d::Print(U"s:", Matching::GameStartTime);
-    s3d::Print(U"n:", networkSystem->GetServerTime());
+    // s3d::Print(U"s:", Matching::GameStartTime);
+    // s3d::Print(U"n:", networkSystem->GetServerTime());
 }
 
 void TimerSetup::Update()
@@ -65,5 +64,11 @@ void TimerSetup::Update()
         timerobject->SetActive(true);
         this->SetActive(false);
         GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>()->SetState(GameState::States::Playing);
+    }
+
+    // HACK: これはサーバータイムバグに対するその場しのぎの対策
+    if (timediff > 10 * 1000)
+    {
+        Matching::GameStartTime = networkSystem->GetServerTime() + 5000;
     }
 }

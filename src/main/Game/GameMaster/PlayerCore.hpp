@@ -6,7 +6,8 @@ class UIManager;
 
 class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
 {
-    int life = 10000;
+    const int maxlife = 1000;
+    int life;
     int framethickness = 5;
     std::shared_ptr<Siv::RectFrame> frame;
     std::shared_ptr<Siv::Rect> rect;
@@ -16,6 +17,10 @@ class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
     void OnStayCollision(std::shared_ptr<GameObject>& other) override;
 
 public:
+    int GetMaxLife() const
+    {
+        return maxlife;
+    }
     void SetLife(int _life);
     int GetLife() const;
 

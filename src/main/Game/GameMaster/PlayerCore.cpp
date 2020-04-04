@@ -5,6 +5,8 @@
 
 void PlayerCore::Start2()
 {
+    life = maxlife;
+    
     frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();
     rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
 }

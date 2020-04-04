@@ -2,6 +2,7 @@
 #include "Game.hpp"
 #include "Enemy/Enemy.hpp"
 #include "Enemy/EnemyManager.hpp"
+#include "GameMaster/CoreInfoGUI.hpp"
 #include "GameMaster/GameState.hpp"
 #include "GameMaster/PlayerCore.hpp"
 #include "GameMaster/Timer.hpp"
@@ -13,8 +14,6 @@
 
 void Game::Setup()
 {
-    // system
-
     s3d::Scene::SetBackground(s3d::Palette::Whitesmoke);
 
     auto Altercamera = CreateAndGetObject();
@@ -111,7 +110,7 @@ void Game::Setup()
 
     //タイマー
     auto time = UI->CreateChild();
-    time->SetPosition({s3d::Scene::Width() / 2, 70});
+    time->SetPosition({s3d::Scene::Width() - 100, 100});
 
     time->SetName("Timer");
     time->AddComponent<Siv::Text>()->SetColor(s3d::Palette::Black).SetFont(s3d::Font(50, s3d::Typeface::Bold));
@@ -123,7 +122,30 @@ void Game::Setup()
     statetext.SetPosition({0, -40});
     statetext.AddComponent<Siv::Text>();
 
-    //コアのHP表示
+    {
+        //コアのHP表示
+        auto Corehpback = UI->CreateChild("CoreHPBack");
+        s3d::RectF rect(0, 0, s3d::Scene::Width() * 0.8, 35);
+        Corehpback->SetPosition({s3d::Scene::Width() * 0.1, 5});
+        Corehpback->AddComponent<Siv::Rect>()->SetShape(rect).SetColor(s3d::ColorF(0.7, 0.7, 0.7, 0.5));
+        //説明文字
+        Corehpback->CreateChild()
+            ->SetPosition({rect.w * 0.03, 1})
+            .AddComponent<Siv::Text>()
+            ->SetText(U"Defence Object HP")
+            .SetFont(s3d::Font(16))
+            .SetColor(s3d::Palette::Black)
+            .SetDrawAt(false);
+
+        auto Corehp = Corehpback->CreateChild("CoreHP");
+        Corehp->SetPosition({rect.w * 0.02, 21});
+        rect.w = rect.w * 0.94;
+        rect.h = 10;
+        auto coregui = Corehp->AddComponent<CoreInfoGUI>();
+        (coregui->redbar = Corehp->AddComponent<Siv::Rect>())->SetShape(rect).SetColor(s3d::Palette::Red);
+        (coregui->greenbar = Corehp->AddComponent<Siv::Rect>())->SetShape(rect).SetColor(s3d::Palette::Green);
+        coregui->core = playerCoreComp;
+    }
 
     //勝利・敗北UI
     auto resultUI = UI->CreateChild("ResultUI");
