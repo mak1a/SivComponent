@@ -2,9 +2,10 @@
 #include "Timer.hpp"
 #include "../../Matching/Matching.hpp"
 #include "GameState.hpp"
+#include "GameSync.hpp"
 #include "UIManager.hpp"
 
-void Timer::Start()
+void Timer::Start2()
 {
     text = GetGameObject().lock()->GetComponent<Siv::Text>();
 
@@ -24,12 +25,34 @@ void Timer::Start()
 void Timer::Update()
 {
     auto t = GAMETIME - watch.s();
+
     //ゲームクリア
-    if (t < 0)
+    if (t < 0 && networkSystem->IsMasterClient())
+    {
+        //信号を送信
+        SendVictorySignal();
+        uimanager->OnVictory();
+    }
+
+    text->SetText(s3d::ToString(std::max(0, t)));
+}
+
+void Timer::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
+{
+    //勝利信号
+    if (eventCode != CustomEvent::GameResult)
+    {
+        return;
+    }
+
+    auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
+
+    const auto result = *dic.getValue(DataName::GameSync::Result);
+
+    if (result == static_cast<int>(DataName::GameSync::ResultType::Victory))
     {
         uimanager->OnVictory();
     }
-    text->SetText(s3d::ToString(t));
 }
 
 void TimerSetup::Start2()

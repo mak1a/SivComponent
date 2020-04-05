@@ -6,7 +6,7 @@
 class EnemyManager;
 class UIManager;
 
-class Timer : public AttachableComponent
+class Timer : public Photon::AttachableComponentPhotonCallbacks
 {
 public:
     const int GAMETIME = 30;
@@ -17,8 +17,9 @@ public:
     std::shared_ptr<UIManager> uimanager;
 
 private:
-    void Start() override;
+    void Start2() override;
     void Update() override;
+    void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 };
 
 //タイマー起動用

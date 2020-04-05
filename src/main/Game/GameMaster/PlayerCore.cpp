@@ -2,6 +2,7 @@
 #include "PlayerCore.hpp"
 #include "../../CustomEventList.hpp"
 #include "../Bullet.hpp"
+#include "GameSync.hpp"
 #include "UIManager.hpp"
 
 namespace DataName
@@ -63,6 +64,7 @@ void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
     if (life <= 0)
     {
         //敗北信号を送る
+        SendDefeatSignal();
 
         OnDefeat();
     }
@@ -85,18 +87,29 @@ void PlayerCore::OnDefeat()
     uimanager->OnDefeat();
 }
 
-// HPを受け取る
 void PlayerCore::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
 {
-    if (eventCode != CustomEvent::PlayerCoreSync)
+    // HP同期
+    if (eventCode == CustomEvent::PlayerCoreSync)
     {
-        return;
+        auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
+
+        SetLife(*dic.getValue(DataName::HP));
+        lastsynclife = life;
     }
 
-    auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
+    //敗北信号
+    if (eventCode == CustomEvent::GameResult)
+    {
+        auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
-    SetLife(*dic.getValue(DataName::HP));
-    lastsynclife = life;
+        const auto result = *dic.getValue(DataName::GameSync::Result);
+
+        if (result == static_cast<int>(DataName::GameSync::ResultType::Defeat))
+        {
+            OnDefeat();
+        }
+    }
 }
 
 void PlayerCore::SetLife(int _life)
