@@ -3,73 +3,39 @@
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
 
-namespace DataName
-{
-    constexpr nByte posX = 0;
-    constexpr nByte posY = 1;
-    constexpr nByte Number = 2;
-    constexpr nByte Type = 9;
-    constexpr nByte ServerTime = 99;
-}  // namespace DataName
-
-int EnemyManager::GenerateEnemyNumber()
-{
-    return enemynumber++;
-}
-
 void EnemyManager::Start2()
 {
-    enemynumber = networkSystem->GetPlayerNumberInRoom() * 100000;
-
     for (int i = 0; i < 3; ++i)
     {
-        const double length = s3d::Random(600, 800);
-        const double rad = s3d::Random(2 * s3d::Math::Pi);
-
-        const s3d::Vec2 pos = s3d::Vec2(length, 0).rotate(rad);
-
-        CreateStandardEnemy(pos, true);
+        CreateStandardEnemy(nullptr);
     }
 
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
 }
 
-void EnemyManager::CreateStandardEnemy(const s3d::Vec2& position, bool isMine, int enemyNumber)
+void EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
 {
-    std::shared_ptr<GameObject> obj = GameObject::Create();
+    std::shared_ptr<GameObject> obj = GetGameObject().lock()->CreateChild();
     obj->SetName("standard enemy");
     constexpr s3d::Rect shape(-10, -10, 20, 20);
 
     auto enemy = obj->AddComponent<Enemy>();
     enemy->enemyManager = this;
     enemy->TargetObject = playercore;
+
     obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Enemy);
     obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
     obj->AddComponent<Siv::Rect>()->SetShape(shape).SetColor(s3d::Palette::Darkred);
 
-    GetGameObject().lock()->AddChild(obj)->SetPosition(position);
-
-    //番号が振られていなければユニークIDを生成
-    //判定的にはisMine == false　でもいい
-    int num = enemyNumber;
-    if (enemyNumber == -1)
+    if (dic == nullptr)
     {
-        num = GenerateEnemyNumber();
+        auto dic = enemy->CreateAndGetData();
+        networkSystem->GetClient().opRaiseEvent(true, *dic, CustomEvent::EnemyGenerate);
     }
-    enemy->SetEnemyNumber(num);
-    enemy->SetIsMine(isMine);
-
-    if (isMine)
+    else
     {
-        //敵の生成を同期
-        ExitGames::Common::Dictionary<nByte, int> dic;
-        dic.put(DataName::posX, position.x);
-        dic.put(DataName::posY, position.y);
-        dic.put(DataName::Number, num);
-        dic.put(DataName::Type, EnemyType::Standard);
-        dic.put(DataName::ServerTime, networkSystem->GetServerTime());
-        networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::EnemyGenerate);
+        enemy->SetDataFromDictionary(*dic);
     }
 }
 
@@ -82,20 +48,13 @@ void EnemyManager::customEventAction(int playerNr, nByte eventCode, const ExitGa
 
     auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
-    const int type = *dic.getValue(DataName::Type);
+    // typeだけ取る
+    const int type = *dic.getValue(DataName::Enemy::Type);
 
+    //辞書データを丸投げ
     if (type == EnemyType::Standard)
     {
-        s3d::Vec2 pos;
-        pos.x = *dic.getValue(DataName::posX);
-        pos.y = *dic.getValue(DataName::posY);
-
-        const int number = *dic.getValue(DataName::Number);
-        const int time = *dic.getValue(DataName::ServerTime);
-
-        // servertimeを元にposをずらす
-
-        CreateStandardEnemy(pos, false, number);
+        CreateStandardEnemy(&dic);
     }
 }
 

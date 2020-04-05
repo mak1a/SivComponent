@@ -15,6 +15,18 @@ namespace DataName
     constexpr nByte ServerTime = 99;
 };  // namespace DataName
 
+static int enemynumber;
+
+int GenerateEnemyNumber()
+{
+    return enemynumber++;
+}
+
+void ResetEnemyNumber()
+{
+    enemynumber = ComponentEngine::Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom() * 100000;
+}
+
 //速度60 * 生存時間4.5　より　距離250以下になったら優先的にコアを狙うようにする
 void Enemy::SetTarget()
 {
@@ -150,7 +162,7 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
         return;
     }
 
-    ExitGames::Common::Dictionary<nByte, int> dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
+    ExitGames::Common::Dictionary<nByte, int> dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int>>(eventContent).getDataCopy();
 
     const int nr = *dic.getValue(DataName::EnemyNumber);
 
@@ -221,11 +233,56 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
     }
 }
 
+//難易度から自動生成
+void Enemy::GenerateStatus()
+{
+    const double length = s3d::Random(600, 800);
+    const double rad = s3d::Random(2 * s3d::Math::Pi);
+
+    const s3d::Vec2 pos = s3d::Vec2(length, 0).rotate(rad);
+    GetGameObject().lock()->SetPosition(pos);
+
+    enemynumber = GenerateEnemyNumber();
+
+    //この関数を利用するのは自分のオブジェクト生成時のみなので、isMineをセット
+    isMine = true;
+}
+
 //受信データを元に数値を設定
-void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>*) {}
+void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>& dic)
+{
+    s3d::Vec2 pos;
+    pos.x = *dic.getValue(DataName::Enemy::posX);
+    pos.y = *dic.getValue(DataName::Enemy::posY);
+    GetGameObject().lock()->SetPosition(pos);
+
+    enemynumber = *dic.getValue(DataName::Enemy::Number);
+    const int time = *dic.getValue(DataName::Enemy::ServerTime);
+
+    // servertimeを元にposをずらす
+}
 
 //辞書データを作成
-void Enemy::CreateDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&) {}
+std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetData()
+{
+    //ステータスを生成
+    GenerateStatus();
+
+    //それを辞書データにして返す
+    auto dic = std::make_unique<ExitGames::Common::Dictionary<nByte, int>>();
+
+    const auto obj = GetGameObject().lock();
+    const auto pos = obj->GetPosition();
+
+    dic->put(DataName::Enemy::Type, EnemyType::Standard);
+
+    dic->put(DataName::Enemy::posX, pos.x);
+    dic->put(DataName::Enemy::posY, pos.y);
+    dic->put(DataName::Enemy::Number, enemynumber);
+    dic->put(DataName::Enemy::ServerTime, ComponentEngine::Photon::NetworkSystem::GetInstance()->GetServerTime());
+
+    return dic;
+}
 
 EnemyManager* Enemy::enemyManager;
 PlayerManager* Enemy::playerManager;

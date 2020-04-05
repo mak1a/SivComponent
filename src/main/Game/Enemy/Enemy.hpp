@@ -8,6 +8,17 @@ class EnemyManager;
 class PlayerManager;
 class PlayerCore;
 
+void ResetEnemyNumber();
+
+namespace DataName::Enemy
+{
+    constexpr nByte posX = 0;
+    constexpr nByte posY = 1;
+    constexpr nByte Number = 2;
+    constexpr nByte Type = 9;
+    constexpr nByte ServerTime = 99;
+}  // namespace DataName::Enemy
+
 class Enemy : public Photon::AttachableComponentPhotonCallbacks
 {
     int life = 30;
@@ -37,6 +48,8 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
     void Damage(int damage);
     void SendSyncInfo(int damage, int targetPlayer = -99) const;
 
+    void GenerateStatus();
+
 public:
     static EnemyManager* enemyManager;
     static PlayerManager* playerManager;
@@ -47,10 +60,10 @@ public:
         enemynumber = n;
     }
 
-    void SetIsMine(bool ismine)
-    {
-        isMine = ismine;
-    }
+    // void SetIsMine(bool ismine)
+    // {
+    //     isMine = ismine;
+    // }
 
     bool GetIsMine() const
     {
@@ -68,8 +81,8 @@ public:
     }
 
     //受信データを元に数値を設定
-    void SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>*);
+    void SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&);
 
     //辞書データを作成
-    void CreateDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&);
+    [[nodiscard]] std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> CreateAndGetData();
 };

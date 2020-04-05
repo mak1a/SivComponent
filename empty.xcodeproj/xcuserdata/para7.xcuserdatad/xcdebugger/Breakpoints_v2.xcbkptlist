@@ -736,7 +736,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
             endingLineNumber = "38"
-            landmarkName = "EnemyManager::CreateStandardEnemy(position, isMine, enemyNumber)"
+            landmarkName = "EnemyManager::CreateStandardEnemy(dic)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -752,7 +752,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
             endingLineNumber = "45"
-            landmarkName = "EnemyManager::CreateStandardEnemy(position, isMine, enemyNumber)"
+            landmarkName = "EnemyManager::customEventAction(playerNr, eventCode, eventContent)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
