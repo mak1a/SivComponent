@@ -66,4 +66,10 @@ public:
     {
         return life;
     }
+
+    //受信データを元に数値を設定
+    void SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>*);
+
+    //辞書データを作成
+    void CreateDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&);
 };

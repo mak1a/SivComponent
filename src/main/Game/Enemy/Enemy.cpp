@@ -221,5 +221,11 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
     }
 }
 
+//受信データを元に数値を設定
+void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>*) {}
+
+//辞書データを作成
+void Enemy::CreateDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&) {}
+
 EnemyManager* Enemy::enemyManager;
 PlayerManager* Enemy::playerManager;
