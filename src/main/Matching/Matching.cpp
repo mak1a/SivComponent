@@ -27,11 +27,13 @@ void Matching::Setup()
 
     //難易度調整機構
     auto ui = CreateAndGetObject();
-    ui->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 180});
+    ui->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 160});
 
+    //難易度の数字
     auto display = ui->CreateChild();
-    display->AddComponent<Siv::Text>()->SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black);
+    display->AddComponent<Siv::Text>()->SetFont(s3d::Font(30, s3d::Typeface::Bold)).SetColor(s3d::Palette::Black);
     display->AddComponent<DifficultyDisplay>();
+    display->CreateChild()->SetPosition({0, -40}).AddComponent<Siv::Text>()->SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black).SetText(U"難易度");
 
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});

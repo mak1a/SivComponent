@@ -128,7 +128,10 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
     //情報取得
     ExitGames::Common::Hashtable table = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContent).getDataCopy();
 
-    Matching::Difficulty = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy();
+    if (networkSystem->GetMasterClient()->getNumber() == playerNr)
+    {
+        Matching::Difficulty = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy();
+    }
 
     Matching::GameStartTime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(1))).getDataCopy();
 

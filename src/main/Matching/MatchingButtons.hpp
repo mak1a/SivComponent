@@ -88,12 +88,12 @@ class ShowButtonOnlyMaster : public Photon::AttachableComponentPhotonCallbacks
 
     void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
     {
-        bt->SetActive(networkSystem->GetIsMasterClient());
+        bt->SetActive(networkSystem->IsMasterClient());
     };
 
     void leaveRoomEventAction(int playerNr, bool isInactive) override
     {
-        bt->SetActive(networkSystem->GetIsMasterClient());
+        bt->SetActive(networkSystem->IsMasterClient());
     }
 
 public:
@@ -120,13 +120,17 @@ class GameBt : public Photon::AttachableComponentPhotonCallbacks
         bt = GetGameObject().lock()->AddComponent<Siv::Button>();
         bt->SetText(U"ゲームスタート");
         bt->SetDelegate([=]() { this->StartGame(); });
-        bt->SetActive(system->GetIsMasterClient());
+        bt->SetActive(system->IsMasterClient());
     }
 
     void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
     {
         // bt->SetActive(system->GetIsMasterClient());
-        match->SyncRoomInfo();
+        //自分がマスタークライアントなら難易度同期
+        if (networkSystem->IsMasterClient())
+        {
+            match->SyncRoomInfo();
+        }
     };
 
     void leaveRoomEventAction(int playerNr, bool isInactive) override

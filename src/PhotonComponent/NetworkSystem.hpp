@@ -432,7 +432,12 @@ namespace ComponentEngine::Photon
         // }
 
     public:
-        bool GetIsMasterClient()
+        ExitGames::LoadBalancing::Player* GetMasterClient()
+        {
+            return playerList[0];
+        }
+
+        bool IsMasterClient()
         {
             if (playerList.size() == 0)
             {
