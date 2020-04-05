@@ -2,6 +2,7 @@
 #include "Enemy.hpp"
 #include "../../../Utilities/Utilities.hpp"
 #include "../../CustomEventList.hpp"
+#include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "../Player/Player.hpp"
 #include "../Player/PlayerManager.hpp"
@@ -27,6 +28,37 @@ void ResetEnemyNumber()
     enemynumber = ComponentEngine::Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom() * 100000;
 }
 
+//難易度から自動生成
+void Enemy::GenerateStatus()
+{
+    //この関数を利用するのは自分のオブジェクト生成時のみなので、isMineをセット
+    isMine = true;
+    //座標生成
+
+    //新アルゴリズム
+    const auto frame = s3d::Rect(-600, -600, 600 * 2, 600 * 2).stretched(s3d::Random() * 120);
+    s3d::Circular3 c;
+    c.r = 10000000;
+    c.theta = s3d::Random(2 * s3d::Math::Pi);
+    const auto line = s3d::Line({0, 0}, c);
+
+    const s3d::Vec2 pos = frame.intersectsAt(line).value()[0];  // s3d::Vec2(length, 0).rotate(rad);
+    GetGameObject().lock()->SetPosition(pos);
+
+    //番号
+    enemynumber = GenerateEnemyNumber();
+
+    //バランス調整項目を設定
+    const int difficulty = Matching::GetDifficulty();
+
+    spd = 35 + difficulty * 2;
+    life = 20 + (difficulty * 2.3);
+    fire.spread = difficulty < 6 ? 1 : 3;
+    fire.attack = 10 + (difficulty * 1.2);
+    fire.speed = 50 + difficulty * 2.2;
+    fire.life = 4.5 + (difficulty * 0.1);
+}
+
 //速度60 * 生存時間4.5　より　距離250以下になったら優先的にコアを狙うようにする
 void Enemy::SetTarget()
 {
@@ -41,12 +73,18 @@ void Enemy::SetTarget()
     for (int i = 0; i < len; ++i)
     {
         const auto p = playerManager->players[i]->GetGameObject().lock();
-        const auto d = GetGameObject().lock()->GetPosition().distanceFrom(p->GetPosition());
+        const auto pl = p->GetComponent<Player>();
+        //死んでたらスキップ
+        if (pl->GetState() == Player::PlayerStates::reviving)
+        {
+            continue;
+        }
 
+        const auto d = GetGameObject().lock()->GetPosition().distanceFrom(p->GetPosition());
         //最短を更新
         if (d < distance)
         {
-            playerNr = p->GetComponent<Player>()->playerNr;
+            playerNr = pl->playerNr;
             fire.targetplayer = p;
             distance = d;
         }
@@ -101,9 +139,13 @@ void Enemy::Shot()
         auto target = fire.targetplayer->GetPosition();
         target = target - GetGameObject().lock()->GetPosition();
 
-        enemyManager->CreateBullet(*this, target, 60, 4.5);
-        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(20)), 60, 4.5);
-        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-20)), 60, 4.5);
+        enemyManager->CreateBullet(*this, target, fire.speed, fire.life, fire.attack);
+
+        if (3 <= fire.spread)
+        {
+            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(20)), fire.speed, fire.life, fire.attack);
+            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-20)), fire.speed, fire.life, fire.attack);
+        }
     }
 }
 
@@ -189,7 +231,7 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
     }
     else
     {
-        const int len = playerManager->players.size();
+        const auto len = playerManager->players.size();
         for (int i = 0; i < len; ++i)
         {
             const auto& player = playerManager->players[i];
@@ -233,31 +275,23 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
     }
 }
 
-//難易度から自動生成
-void Enemy::GenerateStatus()
-{
-    const double length = s3d::Random(600, 800);
-    const double rad = s3d::Random(2 * s3d::Math::Pi);
-
-    const s3d::Vec2 pos = s3d::Vec2(length, 0).rotate(rad);
-    GetGameObject().lock()->SetPosition(pos);
-
-    enemynumber = GenerateEnemyNumber();
-
-    //この関数を利用するのは自分のオブジェクト生成時のみなので、isMineをセット
-    isMine = true;
-}
-
 //受信データを元に数値を設定
 void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>& dic)
 {
-    s3d::Vec2 pos;
-    pos.x = *dic.getValue(DataName::Enemy::posX);
-    pos.y = *dic.getValue(DataName::Enemy::posY);
-    GetGameObject().lock()->SetPosition(pos);
-
+    const auto posx = *dic.getValue(DataName::Enemy::posX);
+    const auto posy = *dic.getValue(DataName::Enemy::posY);
     enemynumber = *dic.getValue(DataName::Enemy::Number);
+    spd = *dic.getValue(DataName::Enemy::MoveSpeed);
+    life = *dic.getValue(DataName::Enemy::Life);
+
+    fire.spread = *dic.getValue(DataName::Enemy::BulletSpread);
+    fire.attack = *dic.getValue(DataName::Enemy::BulletAttack);
+    fire.speed = *dic.getValue(DataName::Enemy::BulletSpeed);
+    fire.life = *dic.getValue(DataName::Enemy::BulletLife);
+
     const int time = *dic.getValue(DataName::Enemy::ServerTime);
+
+    GetGameObject().lock()->SetPosition({posx, posy});
 
     // servertimeを元にposをずらす
 }
@@ -279,8 +313,16 @@ std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetDa
     dic->put(DataName::Enemy::posX, pos.x);
     dic->put(DataName::Enemy::posY, pos.y);
     dic->put(DataName::Enemy::Number, enemynumber);
-    dic->put(DataName::Enemy::ServerTime, ComponentEngine::Photon::NetworkSystem::GetInstance()->GetServerTime());
+    dic->put(DataName::Enemy::MoveSpeed, spd);
+    dic->put(DataName::Enemy::Life, life);
 
+    dic->put(DataName::Enemy::BulletSpread, fire.spread);
+    dic->put(DataName::Enemy::BulletAttack, fire.attack);
+    dic->put(DataName::Enemy::BulletSpeed, fire.speed);
+    dic->put(DataName::Enemy::BulletSpeed, fire.life);
+    // dic->put(DataName::Enemy::Number, enemynumber);
+
+    dic->put(DataName::Enemy::ServerTime, ComponentEngine::Photon::NetworkSystem::GetInstance()->GetServerTime());
     return dic;
 }
 

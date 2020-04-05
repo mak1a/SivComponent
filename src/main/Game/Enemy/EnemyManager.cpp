@@ -1,5 +1,6 @@
 #include "EnemyManager.hpp"
 #include "../../CustomEventList.hpp"
+#include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
 
@@ -12,6 +13,24 @@ void EnemyManager::Start2()
 
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
+
+    ResetEnemyNumber();
+}
+
+//敵の生成頻度をコントロール
+void EnemyManager::Update()
+{
+    const int difficulty = Matching::GetDifficulty();
+    static double t = 1.0;
+    t += s3d::Random(-0.3, 0.3);
+    t = s3d::Clamp(t, 0.7, 10.0);
+    generateTime += s3d::Scene::DeltaTime() * difficulty * 0.1 * t;
+
+    if (generateTime > 1)
+    {
+        CreateStandardEnemy(nullptr);
+        generateTime -= 1;
+    }
 }
 
 void EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
@@ -76,5 +95,3 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
 
     bu->SetMove(target, spd);
 }
-
-void EnemyManager::Update() {}

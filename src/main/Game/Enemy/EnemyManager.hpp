@@ -13,7 +13,7 @@ enum EnemyType
 class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
 {
     //敵生成に使うための値
-    double borderValue;
+    double generateTime = 0;
 
     void Start2() override;
     void Update() override;

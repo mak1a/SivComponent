@@ -111,6 +111,17 @@ void Player::Update()
         return;
     }
 
+    //自動再生
+    if (life < maxlife)
+    {
+        regene += s3d::Scene::DeltaTime() * 0.8;
+        if (regene > 1)
+        {
+            regene -= 1.0;
+            life += 1;
+        }
+    }
+
     Move();
 }
 

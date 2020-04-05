@@ -15,4 +15,9 @@ public:
     static void SyncRoomInfo(bool gameStart = false);
     static int GameStartTime;
     static int Difficulty;
+
+    static int GetDifficulty()
+    {
+        return Difficulty;
+    }
 };

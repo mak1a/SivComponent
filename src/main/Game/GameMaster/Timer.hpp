@@ -9,7 +9,7 @@ class UIManager;
 class Timer : public Photon::AttachableComponentPhotonCallbacks
 {
 public:
-    const int GAMETIME = 30;
+    const int GAMETIME = 100;
     std::shared_ptr<Siv::Text> text;
     s3d::Stopwatch watch;
 
