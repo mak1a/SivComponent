@@ -6,6 +6,14 @@
 
 constexpr int PosSyncPerSecond = 7;
 
+/*
+プレイヤーの個性
+復活型 HPが低いが復活速度がとても早い　遊撃向き
+攻撃型 攻撃力が1.6倍ぐらいある　拠点防衛向き
+HP型　HPが3倍ぐらいあり、当たり判定が少し小さい　乱戦に強い
+速度型 移動速度と弾速が1.3倍ぐらいある　スナイパー処理向き
+*/
+
 Player::Player()
     : syncstatus((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncStatus(); })
 {

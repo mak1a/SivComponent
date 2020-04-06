@@ -15,6 +15,8 @@
 void Game::Setup()
 {
     s3d::Scene::SetBackground(s3d::Palette::Whitesmoke);
+    //敵の生成番号を初期化
+    ResetEnemyNumber();
 
     auto Altercamera = CreateAndGetObject();
     Altercamera->SetName("AlterCamera");

@@ -8,26 +8,6 @@
 #include "../Player/PlayerManager.hpp"
 #include "EnemyManager.hpp"
 
-namespace DataName
-{
-    constexpr nByte Damage = 1;
-    constexpr nByte Target = 2;
-    constexpr nByte EnemyNumber = 3;
-    constexpr nByte ServerTime = 99;
-};  // namespace DataName
-
-static int enemynumber;
-
-int GenerateEnemyNumber()
-{
-    return enemynumber++;
-}
-
-void ResetEnemyNumber()
-{
-    enemynumber = ComponentEngine::Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom() * 100000;
-}
-
 //難易度から自動生成
 void Enemy::GenerateStatus()
 {
@@ -57,6 +37,26 @@ void Enemy::GenerateStatus()
     fire.attack = 10 + (difficulty * 1.2);
     fire.speed = 50 + difficulty * 2.2;
     fire.life = 4.5 + (difficulty * 0.1);
+}
+
+namespace DataName
+{
+    constexpr nByte Damage = 1;
+    constexpr nByte Target = 2;
+    constexpr nByte EnemyNumber = 3;
+    constexpr nByte ServerTime = 99;
+};  // namespace DataName
+
+static int enemynumber;
+
+int GenerateEnemyNumber()
+{
+    return enemynumber++;
+}
+
+void ResetEnemyNumber()
+{
+    enemynumber = ComponentEngine::Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom() * 100000;
 }
 
 //速度60 * 生存時間4.5　より　距離250以下になったら優先的にコアを狙うようにする

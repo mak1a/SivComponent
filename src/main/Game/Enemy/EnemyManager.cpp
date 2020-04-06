@@ -13,8 +13,6 @@ void EnemyManager::Start2()
 
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
-
-    ResetEnemyNumber();
 }
 
 //敵の生成頻度をコントロール

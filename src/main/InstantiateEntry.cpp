@@ -17,7 +17,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         constexpr double size = 20;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
-        obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
+        obj->AddComponent<Collision::CircleCollider>()->SetShape(s3d::Circle(0, 0, size * 0.44));
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
 
         //ライフ表示

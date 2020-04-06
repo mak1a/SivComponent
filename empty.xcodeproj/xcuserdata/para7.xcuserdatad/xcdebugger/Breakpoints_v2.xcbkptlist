@@ -734,8 +734,8 @@
             filePath = "src/main/Game/Enemy/EnemyManager.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
             landmarkName = "EnemyManager::CreateStandardEnemy(dic)"
             landmarkType = "7">
          </BreakpointContent>
@@ -750,8 +750,8 @@
             filePath = "src/main/Game/Enemy/EnemyManager.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "EnemyManager::CreateStandardEnemy(dic)"
             landmarkType = "7">
          </BreakpointContent>
