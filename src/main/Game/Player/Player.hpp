@@ -16,6 +16,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void OnEnemyBullet(std::shared_ptr<GameObject>& other);
     void Revive();
     void Move();
+    void Regenerate();
 
     bool isMine;
     double spd;

@@ -81,6 +81,42 @@ void Player::Revive()
     }
 }
 
+//リジェネ回復
+void Player::Regenerate()
+{
+    //自動再生
+    if (life < maxlife)
+    {
+        regenespd += s3d::Scene::DeltaTime() * 0.3;
+
+        regene += s3d::Scene::DeltaTime();
+        if (regenespd > 1)
+        {
+            regene += s3d::Scene::DeltaTime();
+        }
+
+        if (regenespd > 2)
+        {
+            regene += s3d::Scene::DeltaTime();
+        }
+
+        if (regenespd > 5)
+        {
+            regene += s3d::Scene::DeltaTime();
+        }
+        if (regenespd > 7)
+        {
+            regene += s3d::Scene::DeltaTime() * 1.5;
+        }
+
+        if (regene > 1)
+        {
+            regene -= 1.0;
+            life += 1;
+        }
+    }
+}
+
 void Player::Update()
 {
     //状態に合わせた色変更
@@ -111,18 +147,9 @@ void Player::Update()
         return;
     }
 
-    //自動再生
-    if (life < maxlife)
-    {
-        regene += s3d::Scene::DeltaTime() * 0.8;
-        if (regene > 1)
-        {
-            regene -= 1.0;
-            life += 1;
-        }
-    }
-
     Move();
+
+    Regenerate();
 }
 
 void Player::SyncPosWithEasing()

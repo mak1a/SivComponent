@@ -84,6 +84,8 @@ void TitleScene::Setup()
     obj->SetPosition(s3d::Scene::Center());
     auto gen = genbt->AddComponent<NameGenerator>();
     gen->tbox = obj->AddComponent<ComponentEngine::Siv::TextBox>();
+    gen->tbox.lock()->SetIsEnabled(false);
+
     genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() { gen->Generate(); });
     genbt->SetPosition({0, 40});
 

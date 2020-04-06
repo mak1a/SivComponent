@@ -58,6 +58,9 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
     void OnDestory2() override;
 
     virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
+
+public:
+    std::shared_ptr<GameObject> difficultyUI;
 };
 
 class TitleBt : public ComponentEngine::AttachableComponent
@@ -84,6 +87,7 @@ class ShowButtonOnlyMaster : public Photon::AttachableComponentPhotonCallbacks
     void Start2() override
     {
         bt = GetGameObject().lock()->GetComponent<Siv::Button>();
+        bt->SetActive(networkSystem->IsMasterClient());
     }
 
     void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
@@ -156,6 +160,8 @@ class DifficultyDisplay : public AttachableComponent
 {
     std::shared_ptr<Siv::Text> text;
 
+    s3d::Array<s3d::String> s = {U"Easy", U"Normal", U"Hard", U"Extreme"};
+
     void Start()
     {
         text = GetGameObject().lock()->GetComponent<Siv::Text>();
@@ -163,6 +169,6 @@ class DifficultyDisplay : public AttachableComponent
 
     void Update()
     {
-        text->SetText(s3d::ToString(Matching::Difficulty));
+        text->SetText(s[Matching::Difficulty - 1]);
     }
 };

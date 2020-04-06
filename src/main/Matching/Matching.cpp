@@ -6,7 +6,7 @@
 using namespace ComponentEngine;
 
 int Matching::GameStartTime = 0;
-int Matching::Difficulty = 3;
+int Matching::Difficulty = 1;
 
 void Matching::Setup()
 {
@@ -27,7 +27,9 @@ void Matching::Setup()
 
     //難易度調整機構
     auto ui = CreateAndGetObject();
+    sys->difficultyUI = ui;
     ui->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 160});
+    ui->SetActive(false);
 
     //難易度の数字
     auto display = ui->CreateChild();
@@ -37,28 +39,20 @@ void Matching::Setup()
 
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});
-    plus->AddComponent<Siv::Button>()
-        ->SetText(U"+")
-        .SetWidth(50)
-        .SetDelegate([]() {
-            Matching::Difficulty = std::min(10, Matching::Difficulty + 1);
+    plus->AddComponent<Siv::Button>()->SetText(U"+").SetWidth(50).SetDelegate([]() {
+        Matching::Difficulty = std::min(4, Matching::Difficulty + 1);
 
-            Matching::SyncRoomInfo();
-        })
-        .SetActive(false);
+        Matching::SyncRoomInfo();
+    });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
     auto minus = ui->CreateChild();
     minus->SetPosition({-200, 0});
-    minus->AddComponent<Siv::Button>()
-        ->SetText(U"-")
-        .SetWidth(50)
-        .SetDelegate([]() {
-            Matching::Difficulty = std::max(1, Matching::Difficulty - 1);
+    minus->AddComponent<Siv::Button>()->SetText(U"-").SetWidth(50).SetDelegate([]() {
+        Matching::Difficulty = std::max(1, Matching::Difficulty - 1);
 
-            Matching::SyncRoomInfo();
-        })
-        .SetActive(false);
+        Matching::SyncRoomInfo();
+    });
     minus->AddComponent<ShowButtonOnlyMaster>();
 
     // photonの操作をできるように

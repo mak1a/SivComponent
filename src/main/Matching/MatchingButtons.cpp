@@ -82,6 +82,10 @@ void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
 
         s3d::Print(U"Create Room...");
     }
+
+    // UIを表示
+    difficultyUI->SetActive(true);
+
     s3d::Print(U"Connected Room!");
 }
 
@@ -99,6 +103,9 @@ void MatchSystem::joinRoomReturn(int localPlayerNr,
         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         return;
     }
+
+    // UIを表示
+    difficultyUI->SetActive(true);
 
     s3d::Print(U"Join Room!");
 }
