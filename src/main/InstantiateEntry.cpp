@@ -72,7 +72,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         obj->AddComponent<MapWall>();
         obj->SetTag(UserDef::Tag::Wall);
         obj->SetName("wall");
-        constexpr int width = 2000, height = 600;
+        constexpr int width = 2300, height = 600;
         constexpr s3d::RectF rect(-width / 2, -height / 2, width, height);
 
         obj->AddComponent<Siv::Rect>()->SetShape(rect).SetColor(s3d::Palette::Gray);

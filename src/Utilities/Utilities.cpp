@@ -1,6 +1,5 @@
-
+#define _USE_MATH_DEFINES
 #include "Utilities.hpp"
-
 #include <cmath>
 
 namespace Utilities

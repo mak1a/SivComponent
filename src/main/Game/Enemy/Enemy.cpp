@@ -20,6 +20,13 @@ void ResetEnemyNumber()
     enemynumber = ComponentEngine::Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom() * 100000;
 }
 
+int MakeSpeed();
+int MakeLife();
+int MakeFirespread();
+int MakeFireattack();
+int MakeFirespeed();
+int MakeFirelife();
+
 //難易度から自動生成
 void Enemy::GenerateStatus()
 {
@@ -28,7 +35,8 @@ void Enemy::GenerateStatus()
     //座標生成
 
     //新アルゴリズム
-    const auto frame = s3d::Rect(-600, -600, 600 * 2, 600 * 2).stretched(s3d::Random() * 120);
+    constexpr int size = 1150 - 300;
+    const auto frame = s3d::Rect(-size, -size, size * 2, size * 2).stretched(s3d::Random() * 80);
     s3d::Circular3 c;
     c.r = 10000000;
     c.theta = s3d::Random(2 * s3d::Math::Pi);
@@ -41,14 +49,12 @@ void Enemy::GenerateStatus()
     enemynumber = GenerateEnemyNumber();
 
     //バランス調整項目を設定
-    const int difficulty = Matching::GetDifficulty();
-
-    spd = 35 + difficulty * 2;
-    life = 20 + (difficulty * 2.3);
-    fire.spread = difficulty < 6 ? 1 : 3;
-    fire.attack = 10 + (difficulty * 1.2);
-    fire.speed = 50 + difficulty * 2.2;
-    fire.life = 4.5 + (difficulty * 0.1);
+    spd = MakeSpeed();
+    life = MakeLife();
+    fire.spread = MakeFirespread();
+    fire.attack = MakeFireattack();
+    fire.speed = MakeFirespeed();
+    fire.life = MakeFirelife();
 }
 
 namespace DataName
@@ -328,3 +334,40 @@ std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetDa
 
 EnemyManager* Enemy::enemyManager;
 PlayerManager* Enemy::playerManager;
+
+int MakeSpeed()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return 35;
+}
+
+int MakeLife()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return 20 + (difficulty * 2.3);
+}
+
+int MakeFirespread()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return difficulty < 6 ? 1 : 3;
+}
+
+int MakeFireattack()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return 10 + (difficulty * 1.2);
+}
+
+int MakeFirespeed()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return 50 + difficulty * 2.2;
+    ;
+}
+
+int MakeFirelife()
+{
+    const int difficulty = Matching::GetDifficulty();
+    return 4.5 + (difficulty * 0.1);
+}

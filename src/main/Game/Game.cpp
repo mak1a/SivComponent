@@ -73,7 +73,7 @@ void Game::Setup()
         // constexpr int fieldwidth = 400;
         // constexpr int wallwidth = 600 / 2;
 
-        constexpr int offset = 900;
+        constexpr int offset = 1150;
         auto top = wallmake();
         top->SetPosition({0, -offset});
 
