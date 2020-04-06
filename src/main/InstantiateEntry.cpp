@@ -16,9 +16,11 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         const auto player = obj->AddComponent<Player>();
         constexpr double size = 20;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
+        constexpr s3d::Circle cir(0, 0, size * 0.44);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
-        obj->AddComponent<Collision::CircleCollider>()->SetShape(s3d::Circle(0, 0, size * 0.44));
+        obj->AddComponent<Collision::CircleCollider>()->SetShape(cir);
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
+        obj->AddComponent<Siv::Circle>()->SetShape(cir);
 
         //ライフ表示
         auto txtobj = obj->CreateChild();

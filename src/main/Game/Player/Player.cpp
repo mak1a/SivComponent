@@ -34,7 +34,7 @@ void Player::Start2()
     constexpr auto playercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Lightblue, 0.5);
     constexpr auto othercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2);
 
-    rect->SetColor(isMine ? playercolor : othercolor);
+    rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.6));
 
     //移動前座標をセット
     movehistory = GetGameObject().lock()->GetPosition();
@@ -46,6 +46,18 @@ void Player::Start2()
     defaultcolor = rect->GetColor();
 
     state = PlayerStates::normal;
+
+    int nr = 0;
+    const auto lis = networkSystem->GetPlayerList();
+    for (; nr < 4; nr++)
+    {
+        if (lis[nr]->getNumber() == playerNr)
+        {
+            break;
+        }
+    }
+    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
+    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
 }
 
 void Player::Move()
