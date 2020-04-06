@@ -26,18 +26,19 @@ void Game::Setup()
     Gamesystem->SetName("GameSystem");
     Gamesystem->AddComponent<GameState>();
 
-    //描画順を最初にするため弾をここに
+    //描画順の管理
     auto Bulletmanager = Altercamera->CreateChild();
     Bulletmanager->SetName("BulletManager");
-
-    //敵管理システム
     auto Enemymanager = Altercamera->CreateChild();
     Enemymanager->SetName("EnemyManager");
-    auto enemyManagerComp = Enemymanager->AddComponent<EnemyManager>();
-    Enemymanager->SetActive(false);
-
+    auto walls = Altercamera->CreateChild();
+    walls->SetName("Walls");
     auto Playermanager = Altercamera->CreateChild();
     Playermanager->SetName("PlayerManager");
+
+    //敵管理システム
+    auto enemyManagerComp = Enemymanager->AddComponent<EnemyManager>();
+    Enemymanager->SetActive(false);
 
     //自分を作る
     auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
@@ -61,8 +62,6 @@ void Game::Setup()
     Enemy::playerManager = playerManagerComp.get();
     Enemy::enemyManager = enemyManagerComp.get();
 
-    auto walls = Altercamera->CreateChild();
-    walls->SetName("Walls");
     // wallscope
     {
         //壁を作る

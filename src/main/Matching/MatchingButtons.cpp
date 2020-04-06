@@ -5,6 +5,9 @@
 #include "../CustomEventList.hpp"
 #include "Matching.hpp"
 
+const ExitGames::Common::JString appVersion = L"0.2alpha";
+static ExitGames::Common::Hashtable CustomProperties;
+
 void PlayerListDisplay::Start2()
 {
     text = GetGameObject().lock()->GetComponent<Siv::Text>();
@@ -42,6 +45,10 @@ void MatchSystem::Start2()
 {
     auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
 
+    CustomProperties.put(L"version", appVersion);
+    // CustomProperties.put(L"aaaa", L"valuevaluevalue");
+
+    //サーバー接続開始
     networkSystem->Connect();
     s3d::Print(U"connecting...");
 
@@ -62,7 +69,7 @@ void MatchSystem::connectReturn(int errorCode,
     }
     s3d::Print(U"connected!");
 
-    networkSystem->GetClient().opJoinRandomRoom(ExitGames::Common::Hashtable(), 4);
+    networkSystem->GetClient().opJoinRandomRoom(CustomProperties, 4);
 
     s3d::Print(U"Search Room...");
 };
@@ -78,7 +85,7 @@ void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
     {
         s3d::Print(U"Room not found.");
 
-        networkSystem->GetClient().opCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(4));
+        networkSystem->GetClient().opCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(4).setCustomRoomProperties(CustomProperties));
 
         s3d::Print(U"Create Room...");
     }

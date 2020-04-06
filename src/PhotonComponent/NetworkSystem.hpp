@@ -437,7 +437,7 @@ namespace ComponentEngine::Photon
             return playerList[0];
         }
 
-        bool IsMasterClientナナ()
+        bool IsMasterClient()
         {
             if (playerList.size() == 0)
             {
