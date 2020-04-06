@@ -1,6 +1,7 @@
 
 #include "PlayerCore.hpp"
 #include "../../CustomEventList.hpp"
+#include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "GameSync.hpp"
 #include "UIManager.hpp"
@@ -12,6 +13,7 @@ namespace DataName
 
 void PlayerCore::Start2()
 {
+    maxlife = maxlife + Matching::Difficulty * 200;
     life = maxlife;
 
     frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();

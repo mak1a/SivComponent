@@ -7,7 +7,7 @@ class UIManager;
 
 class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
 {
-    const int maxlife = 1000;
+    int maxlife = 1000;
     int life;
     int framethickness = 5;
     int lastsynclife = -1;

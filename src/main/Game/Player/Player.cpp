@@ -10,7 +10,7 @@ Player::Player()
     : syncstatus((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncStatus(); })
 {
     isMine = false;
-    spd = 90.0;
+    spd = 115.0;
     // spd = 60.0 * 5;
 }
 
@@ -206,10 +206,13 @@ void Player::OnWall()
 }
 
 void Player::OnEnemy() {}
+
 void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
 {
     auto bullet = other->GetComponent<Bullet>();
     life -= bullet->attack;
+
+    regenespd = 0;
 
     //ライフが尽きたら
     if (life <= 0 && state != PlayerStates::reviving)

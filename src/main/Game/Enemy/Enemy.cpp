@@ -319,7 +319,7 @@ std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetDa
     dic->put(DataName::Enemy::BulletSpread, fire.spread);
     dic->put(DataName::Enemy::BulletAttack, fire.attack);
     dic->put(DataName::Enemy::BulletSpeed, fire.speed);
-    dic->put(DataName::Enemy::BulletSpeed, fire.life);
+    dic->put(DataName::Enemy::BulletLife, fire.life);
     // dic->put(DataName::Enemy::Number, enemynumber);
 
     dic->put(DataName::Enemy::ServerTime, ComponentEngine::Photon::NetworkSystem::GetInstance()->GetServerTime());

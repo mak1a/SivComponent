@@ -22,9 +22,9 @@ void EnemyManager::Update()
 {
     const int difficulty = Matching::GetDifficulty();
     static double t = 1.0;
-    t += s3d::Random(-0.3, 0.3);
-    t = s3d::Clamp(t, 0.7, 10.0);
-    generateTime += s3d::Scene::DeltaTime() * difficulty * 0.1 * t;
+    // t += s3d::Random(-0.3, 0.3);
+    // t = s3d::Clamp(t, 0.7, 10.0);
+    generateTime += s3d::Scene::DeltaTime() * 0.1 * t;
 
     if (generateTime > 1)
     {

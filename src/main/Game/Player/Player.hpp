@@ -21,6 +21,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     double spd;
     int life;
     double regene = 0;
+    double regenespd = 0;
     int maxlife = 100;
     double counttimer = 0;  //汎用的なカウントダウン変数 バグを引き起こしていけ
 
