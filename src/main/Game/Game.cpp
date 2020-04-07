@@ -18,6 +18,7 @@ void Game::Setup()
     //敵の生成番号を初期化
     ResetEnemyNumber();
 
+    //カメラ操作はPlayer.cppのMoveでやってる　要修正〜
     auto Altercamera = CreateAndGetObject();
     Altercamera->SetName("AlterCamera");
 
@@ -73,7 +74,7 @@ void Game::Setup()
         // constexpr int fieldwidth = 400;
         // constexpr int wallwidth = 600 / 2;
 
-        constexpr int offset = 1150;
+        constexpr int offset = 950;
         auto top = wallmake();
         top->SetPosition({0, -offset});
 
@@ -97,7 +98,7 @@ void Game::Setup()
     core->SetTag(UserDef::Tag::Wall);
     auto playerCoreComp = core->AddComponent<PlayerCore>();
     core->AddComponent<Collision::CollisionObject>(Collision::Layer::Field);
-    constexpr int coresize = 50;
+    constexpr int coresize = 35;
     constexpr s3d::RectF corerect(-coresize, -coresize, coresize * 2, coresize * 2);
     core->AddComponent<Collision::RectCollider>()->SetShape(corerect);
     core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Lightgreen);
@@ -127,8 +128,9 @@ void Game::Setup()
 
     //ゲーム開始前の説明
     auto explanation = UI->CreateChild();
-    explanation->SetPosition(s3d::Scene::CenterF().movedBy(0, -70));
+    explanation->SetPosition(s3d::Scene::CenterF().movedBy(0, -100));
     explanation->AddComponent<Siv::Text>()->SetText(U"中心にあるコアを守れ！").SetFont(s3d::Font(40, s3d::Typeface::Heavy)).SetColor(s3d::Palette::Black);
+    timerSetupComp->explanation = explanation;
 
     {
         //コアのHP表示

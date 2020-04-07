@@ -46,6 +46,7 @@ void Player::Start2()
 
     int nr = 0;
     const auto lis = networkSystem->GetPlayerList();
+
     for (; nr < 4; nr++)
     {
         if (lis[nr]->getNumber() == playerNr)
@@ -53,6 +54,7 @@ void Player::Start2()
             break;
         }
     }
+
     constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
     GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
 }
@@ -79,8 +81,9 @@ void Player::Move()
     //カメラ中央との距離を取る
     auto diff = obj->GetWorldPosition() - s3d::Scene::CenterF();
 
-    diff.x = diff.x - s3d::Clamp(diff.x, -100.0, 100.0);
-    diff.y = diff.y - s3d::Clamp(diff.y, -100.0, 100.0);
+    constexpr double frame = 50.0;
+    diff.x = diff.x - s3d::Clamp(diff.x, -frame, frame);
+    diff.y = diff.y - s3d::Clamp(diff.y, -frame, frame);
 
     const auto currentPos = camera->GetPosition();
     camera->SetPosition(currentPos - diff);

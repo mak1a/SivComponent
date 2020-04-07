@@ -6,9 +6,9 @@
 using namespace ComponentEngine;
 
 int Matching::GameStartTime = 0;
-int Matching::Difficulty = 1;
+int Matching::Difficulty = 0;
 
-constexpr int DifficultyMax = 5;
+constexpr int DifficultyMax = 5 - 1;
 
 void Matching::Setup()
 {
@@ -42,7 +42,7 @@ void Matching::Setup()
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});
     plus->AddComponent<Siv::Button>()->SetText(U"+").SetWidth(50).SetDelegate([]() {
-        Matching::Difficulty = std::min(DifficultyMax, Matching::Difficulty + 1);
+        Matching::Difficulty = std::min(static_cast<int>(Difficult::EXTREME), Matching::Difficulty + 1);
 
         Matching::SyncRoomInfo();
     });
@@ -51,7 +51,7 @@ void Matching::Setup()
     auto minus = ui->CreateChild();
     minus->SetPosition({-200, 0});
     minus->AddComponent<Siv::Button>()->SetText(U"-").SetWidth(50).SetDelegate([]() {
-        Matching::Difficulty = std::max(1, Matching::Difficulty - 1);
+        Matching::Difficulty = std::max(static_cast<int>(Difficult::EASY), Matching::Difficulty - 1);
 
         Matching::SyncRoomInfo();
     });

@@ -35,7 +35,7 @@ void Enemy::GenerateStatus()
     //座標生成
 
     //新アルゴリズム
-    constexpr int size = 1150 - 300;
+    constexpr int size = 950 - 300;
     const auto frame = s3d::Rect(-size, -size, size * 2, size * 2).stretched(s3d::Random() * 80);
     s3d::Circular3 c;
     c.r = 10000000;
@@ -65,7 +65,6 @@ namespace DataName
     constexpr nByte ServerTime = 99;
 };  // namespace DataName
 
-//速度60 * 生存時間4.5　より　距離250以下になったら優先的にコアを狙うようにする
 void Enemy::SetTarget()
 {
     const auto len = playerManager->players.size();
@@ -94,6 +93,15 @@ void Enemy::SetTarget()
             fire.targetplayer = p;
             distance = d;
         }
+    }
+
+    const auto range = fire.life * fire.speed * 1.2;
+    //射程内に敵がいなければスキップ
+    if (range < distance)
+    {
+        //毎フレームだとコストが大きいので0.1秒に1回確認
+        fire.reloadtime = 0.1;
+        return;
     }
 
     //ターゲットプレイヤー番号を送信
@@ -165,8 +173,9 @@ void Enemy::Move()
 {
     auto diff = TargetObject->GetPosition() - GetGameObject().lock()->GetPosition();
 
+    const auto range = fire.life * fire.speed;
     //接近の閾値以下なら移動はしない
-    if (diff.length() < 150)
+    if (diff.length() < range * 0.3)
     {
         return;
     }
@@ -348,13 +357,21 @@ PlayerManager* Enemy::playerManager;
 int MakeSpeed()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 35;
+
+    constexpr int basevalue[] = {35, 45, 47, 51, 55};
+    int ret = basevalue[difficulty];
+
+    return ret;
 }
 
 int MakeLife()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 20;
+
+    constexpr int basevalue[] = {20, 30, 40, 40, 20};
+    int ret = basevalue[difficulty];
+
+    return ret;
 }
 
 int MakeFirespread()
@@ -376,7 +393,11 @@ int MakeFirespread()
 int MakeFireattack()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 10 + (difficulty * 1.2);
+
+    constexpr int basevalue[] = {10, 15, 18, 22, 34};
+    int ret = basevalue[difficulty];
+
+    return ret;
 }
 
 int MakeFirespeed()

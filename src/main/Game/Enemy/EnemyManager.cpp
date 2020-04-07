@@ -10,7 +10,7 @@ void EnemyManager::Start2()
 {
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
-    generator.persecond = HPperSec[Matching::GetDifficulty() - 1];
+    generator.persecond = HPperSec[Matching::GetDifficulty()];
     // 4秒分の敵を最初に生成
     generator.generatableHP = generator.persecond * 4;
 }
@@ -34,15 +34,15 @@ void EnemyManager::Update()
     generator.generatableHP += s3d::Scene::DeltaTime() * generator.persecond;
 
     //残り時間が短くなってきたら難易度をあげる
-    if (timer->GetTime() < 60)
+    if (timer->GetTime() < 40)
     {
         //生成間隔を半分に
         generator.interval -= s3d::Scene::DeltaTime();
 
         //生成可能数も増やす
-        constexpr double d[] = {7.5, 4, 3, 3, 4};
+        constexpr double d[] = {17.5, 4, 3, 3, 4};
 
-        generator.generatableHP += s3d::Scene::DeltaTime() * d[Matching::GetDifficulty()];
+        generator.generatableHP += s3d::Scene::DeltaTime() * d[difficulty];
     }
 
     if (generator.interval < 0)
@@ -109,7 +109,7 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
     obj->AddComponent<Siv::Circle>()->SetShape(shape).SetColor(s3d::Palette::Red);
     auto bu = obj->AddComponent<Bullet>();
     obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::EnemyBullet);
-    obj->AddComponent<Collision::CircleCollider>()->SetShape(shape);
+    obj->AddComponent<Collision::CircleCollider>()->SetShape(shape.stretched(-2));
     //数値は仮設定
     bu->lifetime = lifetime;
     bu->attack = attack;

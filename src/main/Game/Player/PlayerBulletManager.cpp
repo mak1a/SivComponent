@@ -3,6 +3,7 @@
 #include "Player.hpp"
 
 constexpr double FireRate = 1.0 / 4;
+constexpr int bulletspd = 160;
 
 void PlayerBulletManager::Start2()
 {
@@ -76,7 +77,7 @@ void PlayerBulletManager::CreateBullet()
     bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
 
     auto b = bullet->GetComponent<Bullet>();
-    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), 150);
+    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), bulletspd);
     b->isMine = true;
 
     SendBulletInfo(b);

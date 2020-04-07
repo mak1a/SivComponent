@@ -20,12 +20,17 @@ class Matching : public ComponentEngine::IScene
 
     void Setup();
 
+    static int Difficulty;
+
 public:
     static void SyncRoomInfo(bool gameStart = false);
     static int GameStartTime;
-    static int Difficulty;
 
-    // 1 ~ 5
+    static void SetDifficulty(int difficult)
+    {
+        Difficulty = difficult;
+    }
+
     static int GetDifficulty()
     {
         return Difficulty;

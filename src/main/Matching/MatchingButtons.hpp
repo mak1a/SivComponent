@@ -169,6 +169,6 @@ class DifficultyDisplay : public AttachableComponent
 
     void Update()
     {
-        text->SetText(s[Matching::Difficulty - 1]);
+        text->SetText(s[Matching::GetDifficulty()]);
     }
 };

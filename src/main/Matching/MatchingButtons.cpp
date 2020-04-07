@@ -144,7 +144,7 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
 
     if (networkSystem->GetMasterClient()->getNumber() == playerNr)
     {
-        Matching::Difficulty = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy();
+        Matching::SetDifficulty( ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy());
     }
 
     Matching::GameStartTime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(1))).getDataCopy();

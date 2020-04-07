@@ -87,6 +87,8 @@ void TimerSetup::Update()
         timerobject->SetActive(true);
         this->SetActive(false);
         GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>()->SetState(GameState::States::Playing);
+
+        explanation->SetActive(false);
     }
 
     // HACK: これはサーバータイムバグに対するその場しのぎの対策

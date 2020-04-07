@@ -14,9 +14,10 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         //        auto obj = GameObject::Create();
         auto obj = std::make_shared<GameObject>();
         const auto player = obj->AddComponent<Player>();
-        constexpr double size = 20;
+        constexpr double size = 19;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
-        constexpr s3d::Circle cir(0, 0, size * 0.44);
+        constexpr auto r = size * 0.35;
+        constexpr s3d::Circle cir(0, 0, r);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
         obj->AddComponent<Collision::CircleCollider>()->SetShape(cir);
         obj->AddComponent<Siv::Rect>()->SetShape(shape);

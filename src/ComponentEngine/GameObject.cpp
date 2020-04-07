@@ -167,6 +167,7 @@ namespace ComponentEngine
     GameObject& GameObject::SetActive(bool _active)
     {
         active = _active;
+        // HACK: 子オブジェクトも連動して変化するようにしているが、このあたりは要検討。
         for (const auto& c : children)
         {
             c->SetActive(_active);
