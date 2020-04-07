@@ -736,7 +736,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
             endingLineNumber = "36"
-            landmarkName = "EnemyManager::CreateStandardEnemy(dic)"
+            landmarkName = "EnemyManager::Update()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -752,7 +752,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "EnemyManager::CreateStandardEnemy(dic)"
+            landmarkName = "EnemyManager::Update()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

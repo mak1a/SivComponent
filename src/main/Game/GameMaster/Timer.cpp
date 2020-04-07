@@ -24,7 +24,7 @@ void Timer::Start2()
 
 void Timer::Update()
 {
-    auto t = GAMETIME - watch.s();
+    auto t = GetTime();
 
     //ゲームクリア
     if (t < 0 && networkSystem->IsMasterClient())

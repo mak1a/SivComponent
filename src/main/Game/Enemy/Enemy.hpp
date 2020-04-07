@@ -96,9 +96,9 @@ public:
         return life;
     }
 
-    //受信データを元に数値を設定
-    void SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&);
+    //受信データを元に数値を設定 return:life
+    int SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>&);
 
     //辞書データを作成
-    [[nodiscard]] std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> CreateAndGetData();
+    [[nodiscard]] std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> GenerateAndGetData();
 };

@@ -152,6 +152,12 @@ void Enemy::Shot()
             enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(20)), fire.speed, fire.life, fire.attack);
             enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-20)), fire.speed, fire.life, fire.attack);
         }
+
+        if (5 <= fire.spread)
+        {
+            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(40)), fire.speed, fire.life, fire.attack);
+            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-40)), fire.speed, fire.life, fire.attack);
+        }
     }
 }
 
@@ -282,7 +288,7 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
 }
 
 //受信データを元に数値を設定
-void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>& dic)
+int Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>& dic)
 {
     const auto posx = *dic.getValue(DataName::Enemy::posX);
     const auto posy = *dic.getValue(DataName::Enemy::posY);
@@ -300,10 +306,12 @@ void Enemy::SetDataFromDictionary(ExitGames::Common::Dictionary<nByte, int>& dic
     GetGameObject().lock()->SetPosition({posx, posy});
 
     // servertimeを元にposをずらす
+
+    return life;
 }
 
 //辞書データを作成
-std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetData()
+std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::GenerateAndGetData()
 {
     //ステータスを生成
     GenerateStatus();
@@ -335,6 +343,8 @@ std::unique_ptr<ExitGames::Common::Dictionary<nByte, int>> Enemy::CreateAndGetDa
 EnemyManager* Enemy::enemyManager;
 PlayerManager* Enemy::playerManager;
 
+//プレイヤーの基礎火力は攻撃力10の弾を秒間4発なので、それを考慮して生成すること
+
 int MakeSpeed()
 {
     const int difficulty = Matching::GetDifficulty();
@@ -344,13 +354,23 @@ int MakeSpeed()
 int MakeLife()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 20 + (difficulty * 2.3);
+    return 20;
 }
 
 int MakeFirespread()
 {
     const int difficulty = Matching::GetDifficulty();
-    return difficulty < 6 ? 1 : 3;
+    int ret = 1;
+    if (static_cast<int>(Difficult::HARD) <= difficulty)
+    {
+        ret = 3;
+    }
+    if (static_cast<int>(Difficult::EXTREME) <= difficulty)
+    {
+        ret = 5;
+    }
+
+    return ret;
 }
 
 int MakeFireattack()
@@ -363,7 +383,6 @@ int MakeFirespeed()
 {
     const int difficulty = Matching::GetDifficulty();
     return 50 + difficulty * 2.2;
-    ;
 }
 
 int MakeFirelife()

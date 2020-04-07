@@ -31,9 +31,6 @@ void Player::Start2()
     rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
     camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
 
-    constexpr auto playercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Lightblue, 0.5);
-    constexpr auto othercolor = s3d::Palette::Limegreen.lerp(s3d::Palette::Black, 0.2);
-
     rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.6));
 
     //移動前座標をセット
@@ -147,7 +144,7 @@ void Player::Update()
             break;
 
         case PlayerStates::reviving:
-            rect->SetColor(defaultcolor.lerp(s3d::Palette::Black, 0.6));
+            rect->SetColor(defaultcolor.lerp(s3d::Palette::Black, 0.7));
             break;
     }
 

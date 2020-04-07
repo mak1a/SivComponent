@@ -160,7 +160,7 @@ class DifficultyDisplay : public AttachableComponent
 {
     std::shared_ptr<Siv::Text> text;
 
-    s3d::Array<s3d::String> s = {U"Easy", U"Normal", U"Hard", U"Extreme"};
+    s3d::Array<s3d::String> s = {U"Easy", U"Normal", U"Hard", U"Very Hard", U"Extreme"};
 
     void Start()
     {

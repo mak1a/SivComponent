@@ -8,6 +8,8 @@ using namespace ComponentEngine;
 int Matching::GameStartTime = 0;
 int Matching::Difficulty = 1;
 
+constexpr int DifficultyMax = 5;
+
 void Matching::Setup()
 {
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
@@ -40,7 +42,7 @@ void Matching::Setup()
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});
     plus->AddComponent<Siv::Button>()->SetText(U"+").SetWidth(50).SetDelegate([]() {
-        Matching::Difficulty = std::min(4, Matching::Difficulty + 1);
+        Matching::Difficulty = std::min(DifficultyMax, Matching::Difficulty + 1);
 
         Matching::SyncRoomInfo();
     });

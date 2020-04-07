@@ -4,15 +4,23 @@
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
 
+constexpr double HPperSec[] = {3.5, 6, 10, 15, 22};
+
 void EnemyManager::Start2()
 {
-    for (int i = 0; i < 3; ++i)
-    {
-        CreateStandardEnemy(nullptr);
-    }
-
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
+    generator.persecond = HPperSec[Matching::GetDifficulty() - 1];
+    // 4秒分の敵を最初に生成
+    generator.generatableHP = generator.persecond * 4;
+}
+
+void EnemyManager::EnemyGenerate()
+{
+    while (0 < generator.generatableHP)
+    {
+        generator.generatableHP -= CreateStandardEnemy(nullptr);
+    }
 }
 
 //敵の生成頻度をコントロール
@@ -22,18 +30,32 @@ void EnemyManager::Update()
     static double t = 1.0;
     // t += s3d::Random(-0.3, 0.3);
     // t = s3d::Clamp(t, 0.7, 10.0);
-    generateTime += s3d::Scene::DeltaTime() * 0.1 * t;
+    generator.interval -= s3d::Scene::DeltaTime();
+    generator.generatableHP += s3d::Scene::DeltaTime() * generator.persecond;
 
-    if (generateTime > 1)
+    //残り時間が短くなってきたら難易度をあげる
+    if (timer->GetTime() < 60)
     {
-        CreateStandardEnemy(nullptr);
-        generateTime -= 1;
+        //生成間隔を半分に
+        generator.interval -= s3d::Scene::DeltaTime();
+
+        //生成可能数も増やす
+        constexpr double d[] = {7.5, 4, 3, 3, 4};
+
+        generator.generatableHP += s3d::Scene::DeltaTime() * d[Matching::GetDifficulty()];
+    }
+
+    if (generator.interval < 0)
+    {
+        EnemyGenerate();
+        //次の生成まで1~5秒開ける
+        generator.interval = s3d::Random(1.0, 7.0);
     }
 }
 
-void EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
+int EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
 {
-    std::shared_ptr<GameObject> obj = GetGameObject().lock()->CreateChild();
+    std::shared_ptr<GameObject> obj = bullets->CreateChild();
     obj->SetName("standard enemy");
     constexpr s3d::Rect shape(-10, -10, 20, 20);
 
@@ -45,15 +67,18 @@ void EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>
     obj->AddComponent<Collision::RectCollider>()->SetShape(shape);
     obj->AddComponent<Siv::Rect>()->SetShape(shape).SetColor(s3d::Palette::Darkred);
 
+    int retHP = 0;
     if (dic == nullptr)
     {
-        auto dic = enemy->CreateAndGetData();
-        networkSystem->GetClient().opRaiseEvent(true, *dic, CustomEvent::EnemyGenerate);
+        auto d = enemy->GenerateAndGetData();
+        retHP = enemy->GetLife();
+        networkSystem->GetClient().opRaiseEvent(true, *d, CustomEvent::EnemyGenerate);
     }
     else
     {
-        enemy->SetDataFromDictionary(*dic);
+        retHP = enemy->SetDataFromDictionary(*dic);
     }
+    return retHP;
 }
 
 void EnemyManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
