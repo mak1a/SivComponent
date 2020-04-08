@@ -55,7 +55,7 @@ void Player::Start2()
         }
     }
 
-    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
+    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(255, 200, 200), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
     GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
 }
 

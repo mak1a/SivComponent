@@ -354,7 +354,7 @@ PlayerManager* Enemy::playerManager;
 
 //プレイヤーの基礎火力は攻撃力10の弾を秒間4発なので、それを考慮して生成すること
 
-constexpr int speed_basevalue[] = {35, 45, 47, 51, 55};
+constexpr int speed_basevalue[] = {35, 39, 43, 46, 49};
 
 int MakeSpeed()
 {

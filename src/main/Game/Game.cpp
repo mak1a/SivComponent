@@ -28,6 +28,8 @@ void Game::Setup()
     Gamesystem->AddComponent<GameState>();
 
     //描画順の管理
+    auto Bg = Altercamera->CreateChild();
+    Bg->SetName("BackGround");
     auto Bulletmanager = Altercamera->CreateChild();
     Bulletmanager->SetName("BulletManager");
     auto Enemymanager = Altercamera->CreateChild();
@@ -65,7 +67,10 @@ void Game::Setup()
 
     // wallscope
     {
+        constexpr s3d::Circle bgregion(0, 0, 300);
         //壁を作る
+        Bg->AddComponent<Siv::Circle>()->SetColor(s3d::Palette::Whitesmoke.lerp(s3d::Palette::Blue, 0.025)).SetShape(bgregion.scaled(1.3));
+        Bg->AddComponent<Siv::Circle>()->SetColor(s3d::Palette::Whitesmoke.lerp(s3d::Palette::Blue, 0.045)).SetShape(bgregion);
 
         //厚さは600
         //広さは1000

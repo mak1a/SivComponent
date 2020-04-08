@@ -19,7 +19,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         constexpr auto r = size * 0.35;
         constexpr s3d::Circle cir(0, 0, r);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
-        obj->AddComponent<Collision::CircleCollider>()->SetShape(cir);
+        obj->AddComponent<Collision::CircleCollider>()->SetShape(cir.stretched(-2));
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
         obj->AddComponent<Siv::Circle>()->SetShape(cir);
 
