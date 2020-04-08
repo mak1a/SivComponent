@@ -12,7 +12,7 @@ namespace DataName
     constexpr nByte PosY = 1;
     constexpr nByte SpdX = 3;
     constexpr nByte SpdY = 4;
-    // constexpr nByte Atk = 5;
+    constexpr nByte Life = 5;
 }  // namespace DataName
 
 void PlayerBulletManager::Start2()
@@ -31,16 +31,18 @@ void PlayerBulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
     //    const int servertime = networkSystem->GetServerTime();
 
     //座標と発生時刻を送る
-    ExitGames::Common::Hashtable table;
-    table.put<short, double>(static_cast<short>(0), pos.x);
-    table.put<short, double>(static_cast<short>(1), pos.y);
+    ExitGames::Common::Dictionary<nByte, double> dic;
+    dic.put(DataName::PosX, pos.x);
+    dic.put(DataName::PosY, pos.y);
 
-    table.put<short, double>(static_cast<short>(10), spd.x);
-    table.put<short, double>(static_cast<short>(11), spd.y);
+    dic.put(DataName::SpdX, spd.x);
+    dic.put(DataName::SpdY, spd.y);
+
+    dic.put(DataName::Life, bullet->lifetime);
 
     //    table.put<short, int>(static_cast<short>(99), servertime);
 
-    networkSystem->GetClient().opRaiseEvent(false, table, CustomEvent::PlayerShot);
+    networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerShot);
 }
 
 //弾を受信
@@ -51,30 +53,32 @@ void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const
         return;
     }
 
+    //オブジェクト生成
+    auto bullet = inst();
+    auto b = bullet->GetComponent<Bullet>();
+
     //情報取得
-    ExitGames::Common::Hashtable table = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContent).getDataCopy();
+    auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, double>>(eventContent).getDataCopy();
 
     s3d::Vec2 pos, spd;
-    pos.x = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(0))).getDataCopy();
-    pos.y = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(1))).getDataCopy();
-    spd.x = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(10))).getDataCopy();
-    spd.y = ExitGames::Common::ValueObject<double>(table.getValue(static_cast<short>(11))).getDataCopy();
+    pos.x = *dic.getValue(DataName::PosX);
+    pos.y = *dic.getValue(DataName::PosY);
+    spd.x = *dic.getValue(DataName::SpdX);
+    spd.y = *dic.getValue(DataName::SpdY);
+    const auto life = *dic.getValue(DataName::Life);
 
+    spd *= 1.1;
     //    int servertime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(99))).getDataCopy();
 
     //ラグ計算
-    // double lagtime = (networkSystem->GetServerTime() - servertime) / 1000.0;
-    double lagtime = networkSystem->GetClient().getRoundTripTime() / (1000.0 * 2.0);
-
+    double lagtime = networkSystem->GetClient().getRoundTripTime() * 0.3 / 1000.0;
     pos += spd * lagtime;
 
-    //オブジェクト生成
-    auto bullet = inst();
     GetGameObject().lock()->AddChild(bullet);
     bullet->SetPosition(pos);
-    auto b = bullet->GetComponent<Bullet>();
+
     b->moveValue = spd;
-    b->lifetime -= lagtime;
+    b->lifetime = life - lagtime;
 }
 
 void PlayerBulletManager::CreateBullet()
