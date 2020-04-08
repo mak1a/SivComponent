@@ -18,8 +18,6 @@ namespace DataName
 
 void PlayerBulletManager::CreateBullet()
 {
-    // const auto playerpos = player->GetGameObject().lock()->GetLocalPosition();
-
     auto bullet = inst();
     GetGameObject().lock()->AddChild(bullet);
 
@@ -38,8 +36,6 @@ void PlayerBulletManager::Start2()
 {
     inst = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetInstantiate("PlayerBullet");
     fireInterval = 1.0;
-
-    //    master = GetGameObject().lock()->GetScene().lock()->GetMasterObject();
 }
 
 //弾発射情報を送信

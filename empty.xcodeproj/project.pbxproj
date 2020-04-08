@@ -412,9 +412,9 @@
 				8A26284724289BA70011FCF2 /* Enemy */,
 				8A26284624289AD30011FCF2 /* Player */,
 				8A1476DD241C92FC00389E76 /* Game.cpp */,
+				8A1476DE241C92FC00389E76 /* Game.hpp */,
 				8A26284324289ACC0011FCF2 /* Bullet.cpp */,
 				8A26284424289ACC0011FCF2 /* Bullet.hpp */,
-				8A1476DE241C92FC00389E76 /* Game.hpp */,
 			);
 			path = Game;
 			sourceTree = "<group>";
