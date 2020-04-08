@@ -3,7 +3,17 @@
 #include "Player.hpp"
 
 constexpr double FireRate = 1.0 / 4;
-constexpr int bulletspd = 160;
+constexpr int bulletspd = 150;
+constexpr double range = 220;
+
+namespace DataName
+{
+    constexpr nByte PosX = 0;
+    constexpr nByte PosY = 1;
+    constexpr nByte SpdX = 3;
+    constexpr nByte SpdY = 4;
+    // constexpr nByte Atk = 5;
+}  // namespace DataName
 
 void PlayerBulletManager::Start2()
 {
@@ -78,6 +88,7 @@ void PlayerBulletManager::CreateBullet()
 
     auto b = bullet->GetComponent<Bullet>();
     b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), bulletspd);
+    b->lifetime = range / bulletspd;
     b->isMine = true;
 
     SendBulletInfo(b);

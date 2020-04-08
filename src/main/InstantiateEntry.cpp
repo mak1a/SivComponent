@@ -45,7 +45,7 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::PlayerBullet);
         obj->AddComponent<Collision::CircleCollider>()->SetShape(shape);
         //数値は仮設定
-        bu->lifetime = 1.5;
+        bu->lifetime = 1.2;
         bu->attack = 10;
         return obj;
     });
