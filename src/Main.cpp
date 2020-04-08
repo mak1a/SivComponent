@@ -3,11 +3,12 @@
 
 #include "PhotonComponent/PhotonComponent.hpp"
 
-#include "main/Matching/Matching.hpp"
 #include "PhotonComponent/PhotonInit.hpp"
 #include "Title.hpp"
 #include "main/Game/Game.hpp"
 #include "main/InstantiateEntry.hpp"
+#include "main/Matching/Matching.hpp"
+#include "main/PlayerCustom/PlayerCustom.hpp"
 
 #include "test.hpp"
 
@@ -24,6 +25,7 @@ void Main()
 
     // manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<TitleScene>("Title");
+    manager.RegisterScene<PlayerCustom>("Custom");
     manager.RegisterScene<Matching>("Matching");
     manager.RegisterScene<Game>("Game");
 

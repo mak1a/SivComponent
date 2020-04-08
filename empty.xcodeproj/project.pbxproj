@@ -81,6 +81,7 @@
 		8A3895B3243717CC00A1F6A1 /* MatchingButtons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3895B1243717CC00A1F6A1 /* MatchingButtons.cpp */; };
 		8A6625F52439C53E00DAC130 /* GameSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6625F32439C53E00DAC130 /* GameSync.cpp */; };
 		8A6625F9243B5CF100DAC130 /* PlayerCustom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6625F7243B5CF100DAC130 /* PlayerCustom.cpp */; };
+		8A9D9F78243DB951004C3CAD /* Buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9F76243DB951004C3CAD /* Buttons.cpp */; };
 		8AE97653243899D100D31482 /* PlayerInfoGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AE97651243899D100D31482 /* PlayerInfoGUI.cpp */; };
 		8AE97656243899E500D31482 /* CoreInfoGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AE97654243899E500D31482 /* CoreInfoGUI.cpp */; };
 /* End PBXBuildFile section */
@@ -214,6 +215,8 @@
 		8A6625F42439C53E00DAC130 /* GameSync.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameSync.hpp; sourceTree = "<group>"; };
 		8A6625F7243B5CF100DAC130 /* PlayerCustom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerCustom.cpp; sourceTree = "<group>"; };
 		8A6625F8243B5CF100DAC130 /* PlayerCustom.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerCustom.hpp; sourceTree = "<group>"; };
+		8A9D9F76243DB951004C3CAD /* Buttons.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Buttons.cpp; sourceTree = "<group>"; };
+		8A9D9F77243DB951004C3CAD /* Buttons.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Buttons.hpp; sourceTree = "<group>"; };
 		8AE97651243899D100D31482 /* PlayerInfoGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerInfoGUI.cpp; sourceTree = "<group>"; };
 		8AE97652243899D100D31482 /* PlayerInfoGUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerInfoGUI.hpp; sourceTree = "<group>"; };
 		8AE97654243899E500D31482 /* CoreInfoGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreInfoGUI.cpp; sourceTree = "<group>"; };
@@ -393,6 +396,7 @@
 		8A1476DB241C92DF00389E76 /* main */ = {
 			isa = PBXGroup;
 			children = (
+				8A9D9F75243DB7F1004C3CAD /* Common */,
 				8A6625F6243B5CD300DAC130 /* PlayerCustom */,
 				8A1476D9241BF22000389E76 /* CustomEventList.hpp */,
 				8A26286D243701950011FCF2 /* Matching */,
@@ -549,6 +553,15 @@
 			path = PlayerCustom;
 			sourceTree = "<group>";
 		};
+		8A9D9F75243DB7F1004C3CAD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8A9D9F76243DB951004C3CAD /* Buttons.cpp */,
+				8A9D9F77243DB951004C3CAD /* Buttons.hpp */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -642,6 +655,7 @@
 				2C17789A1CE0AA7C00BB8AD0 /* Main.cpp in Sources */,
 				8A26284524289ACC0011FCF2 /* Bullet.cpp in Sources */,
 				8A2628682434C9300011FCF2 /* UIManager.cpp in Sources */,
+				8A9D9F78243DB951004C3CAD /* Buttons.cpp in Sources */,
 				8A1476C12416FBB100389E76 /* AttachableComponentPhotonCallbacks.cpp in Sources */,
 				8A1476A8241164C400389E76 /* SimpleShape.cpp in Sources */,
 				8A262853242CCD0A0011FCF2 /* MapWall.cpp in Sources */,

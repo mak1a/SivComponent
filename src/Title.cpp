@@ -68,7 +68,7 @@ struct ChangeSceneBt : public ComponentEngine::AttachableComponent
             .GetCommonObject(ComponentEngine::Photon::NetworkObjectName())
             ->GetComponent<ComponentEngine::Photon::NetworkSystem>()
             ->SetPlayerName(generator->GetNamePhoton());
-        manager->ChangeScene("Matching");
+        manager->ChangeScene("Custom");
     }
 };
 
@@ -93,7 +93,7 @@ void TitleScene::Setup()
     auto bt = CreateAndGetObject();
     bt->SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 3});
     auto btscript = bt->AddComponent<ChangeSceneBt>();
-    bt->AddComponent<Siv::Button>()->SetText(U"マッチング開始").SetDelegate([=]() { btscript->ChangeToMatching(); });
+    bt->AddComponent<Siv::Button>()->SetText(U"設定・チュートリアルへ").SetDelegate([=]() { btscript->ChangeToMatching(); });
     btscript->generator = gen;
 
     //タイトル
