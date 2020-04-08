@@ -13,7 +13,9 @@ namespace DataName
 
 void PlayerCore::Start2()
 {
-    maxlife = maxlife + Matching::GetDifficulty() * 200;
+    constexpr int basevalue[] = {700, 800, 1500, 2000, 3000};
+
+    maxlife = basevalue[Matching::GetDifficulty()];
     life = maxlife;
 
     frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();

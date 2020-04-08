@@ -1,9 +1,10 @@
 #include "PlayerBulletManager.hpp"
 #include "../../CustomEventList.hpp"
+#include "../../Matching/Matching.hpp"
 #include "Player.hpp"
 
 constexpr double FireRate = 1.0 / 4;
-constexpr int bulletspd = 150;
+constexpr int bulletspd = 180;
 constexpr double range = 220;
 
 namespace DataName
@@ -14,6 +15,24 @@ namespace DataName
     constexpr nByte SpdY = 4;
     constexpr nByte Life = 5;
 }  // namespace DataName
+
+void PlayerBulletManager::CreateBullet()
+{
+    // const auto playerpos = player->GetGameObject().lock()->GetLocalPosition();
+
+    auto bullet = inst();
+    GetGameObject().lock()->AddChild(bullet);
+
+    bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
+
+    auto b = bullet->GetComponent<Bullet>();
+
+    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), bulletspd);
+    b->lifetime = range / bulletspd;
+    b->isMine = true;
+
+    SendBulletInfo(b);
+}
 
 void PlayerBulletManager::Start2()
 {
@@ -39,8 +58,6 @@ void PlayerBulletManager::SendBulletInfo(std::shared_ptr<Bullet>& bullet)
     dic.put(DataName::SpdY, spd.y);
 
     dic.put(DataName::Life, bullet->lifetime);
-
-    //    table.put<short, int>(static_cast<short>(99), servertime);
 
     networkSystem->GetClient().opRaiseEvent(false, dic, CustomEvent::PlayerShot);
 }
@@ -68,7 +85,6 @@ void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const
     const auto life = *dic.getValue(DataName::Life);
 
     spd *= 1.1;
-    //    int servertime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(99))).getDataCopy();
 
     //ラグ計算
     double lagtime = networkSystem->GetClient().getRoundTripTime() * 0.3 / 1000.0;
@@ -79,23 +95,6 @@ void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const
 
     b->moveValue = spd;
     b->lifetime = life - lagtime;
-}
-
-void PlayerBulletManager::CreateBullet()
-{
-    // const auto playerpos = player->GetGameObject().lock()->GetLocalPosition();
-
-    auto bullet = inst();
-    GetGameObject().lock()->AddChild(bullet);
-
-    bullet->SetPosition(player->GetGameObject().lock()->GetPosition());
-
-    auto b = bullet->GetComponent<Bullet>();
-    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), bulletspd);
-    b->lifetime = range / bulletspd;
-    b->isMine = true;
-
-    SendBulletInfo(b);
 }
 
 void PlayerBulletManager::Update()

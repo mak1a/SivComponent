@@ -266,7 +266,7 @@ void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
     {
         //状態を変更して色を黒くする
         state = PlayerStates::reviving;
-        counttimer = 6.0;
+        counttimer = 2.5;
     }
 }
 

@@ -4,7 +4,7 @@
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
 
-constexpr double HPperSec[] = {3.5, 6, 10, 15, 22};
+constexpr double HPperSec[] = {3.5, 6, 16, 22, 28};
 
 void EnemyManager::Start2()
 {

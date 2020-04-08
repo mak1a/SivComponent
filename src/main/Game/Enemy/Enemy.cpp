@@ -175,7 +175,7 @@ void Enemy::Move()
 
     const auto range = fire.life * fire.speed;
     //接近の閾値以下なら移動はしない
-    if (diff.length() < range * 0.3)
+    if (diff.length() < range * 0.5)
     {
         return;
     }
@@ -354,12 +354,13 @@ PlayerManager* Enemy::playerManager;
 
 //プレイヤーの基礎火力は攻撃力10の弾を秒間4発なので、それを考慮して生成すること
 
+constexpr int speed_basevalue[] = {35, 45, 47, 51, 55};
+
 int MakeSpeed()
 {
     const int difficulty = Matching::GetDifficulty();
 
-    constexpr int basevalue[] = {35, 45, 47, 51, 55};
-    int ret = basevalue[difficulty];
+    int ret = speed_basevalue[difficulty];
 
     return ret;
 }
@@ -394,7 +395,7 @@ int MakeFireattack()
 {
     const int difficulty = Matching::GetDifficulty();
 
-    constexpr int basevalue[] = {10, 15, 18, 22, 34};
+    constexpr int basevalue[] = {10, 12, 15, 20, 32};
     int ret = basevalue[difficulty];
 
     return ret;
@@ -403,11 +404,17 @@ int MakeFireattack()
 int MakeFirespeed()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 50 + difficulty * 2.2;
+
+    int ret = speed_basevalue[difficulty] * 2;
+
+    return ret;
 }
 
 int MakeFirelife()
 {
     const int difficulty = Matching::GetDifficulty();
-    return 4.5 + (difficulty * 0.1);
+
+    int ret = 2.5;
+
+    return ret;
 }

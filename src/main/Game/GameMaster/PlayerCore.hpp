@@ -7,8 +7,9 @@ class UIManager;
 
 class PlayerCore : public Photon::AttachableComponentPhotonCallbacks
 {
-    int maxlife = 1000;
-    int life;
+    //初期値ゼロにするとバグ起きそうなので予防
+    int maxlife = 10;
+    int life = 10;
     int framethickness = 5;
     int lastsynclife = -1;
     std::shared_ptr<Siv::RectFrame> frame;
