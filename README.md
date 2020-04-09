@@ -54,6 +54,9 @@ Copyright (c) 2016-2019 OpenSiv3D Project
 ~~ICU  
 Copyright © 1991-2020 Unicode, Inc.~~  
 
+# ご意見・ご感想
+<https://docs.google.com/forms/d/e/1FAIpQLSdV1MVUXTzXItOsQgxnE7dtvRE21YwIkWCQzmX6LoRa-X9hxA/viewform?usp=sf_link>
+
 # 開発用メモ
 
 RequireComponentが欲しい

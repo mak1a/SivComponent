@@ -26,7 +26,7 @@ Player::Player()
     reviveCost = 2.5;
 
     fire.attack = 10;
-    fire.lifetime = 1.25;
+    fire.lifetime = 1.35;
     fire.spread = 1;
     fire.speed = 180;
 
@@ -56,8 +56,9 @@ void Player::SetType(PlayerType _type)
         case PlayerType::Speed:
             maxlife = 70;
             life = maxlife;
-            spd *= 1.44;
+            spd *= 1.54;
             fire.speed *= 1.8;
+            fire.lifetime *= 0.4;
             break;
     }
 }
