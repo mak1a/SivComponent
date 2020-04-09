@@ -212,4 +212,54 @@ namespace ComponentEngine::Siv
             return drawAt;
         }
     };
+
+    class RadioButton : public ComponentEngine::AttachableComponent
+    {
+        s3d::Array<s3d::String> elements = {U"radiobutton"};
+        mutable size_t index = 0;
+
+        bool drawAt = false;
+        mutable bool changed = false;
+
+        void Draw() const override;
+
+    public:
+        RadioButton() {}
+        RadioButton(const s3d::Array<s3d::String>& _elements)
+            : elements(_elements)
+        {
+        }
+
+        RadioButton& SetElements(const s3d::Array<s3d::String>& _elements)
+        {
+            elements = _elements;
+            return *this;
+        }
+
+        [[nodiscard]] s3d::Array<s3d::String> GetElements() const
+        {
+            return elements;
+        }
+
+        RadioButton& SetDrawAt(bool _drawAt)
+        {
+            drawAt = _drawAt;
+            return *this;
+        }
+
+        [[nodiscard]] bool GetDrawAt() const noexcept
+        {
+            return drawAt;
+        }
+
+        [[nodiscard]] size_t GetIndex() const
+        {
+            return index;
+        }
+
+        [[nodiscard]] bool Changed() const
+        {
+            return changed;
+        }
+    };
 }  // namespace ComponentEngine::Siv
