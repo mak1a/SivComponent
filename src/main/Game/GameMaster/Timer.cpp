@@ -4,6 +4,7 @@
 #include "GameState.hpp"
 #include "GameSync.hpp"
 #include "UIManager.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 void Timer::Start2()
 {
@@ -76,7 +77,7 @@ void TimerSetup::Start2()
 
 void TimerSetup::Update()
 {
-    const auto timediff = (Matching::GameStartTime - networkSystem->GetClient().getServerTime());
+    const auto timediff = (CommonMemory::GetGameStartTime() - networkSystem->GetClient().getServerTime());
 
     const int t = 1 + (timediff / 1000);
     text->SetText(s3d::ToString(t));
@@ -94,6 +95,6 @@ void TimerSetup::Update()
     // HACK: これはサーバータイムバグに対するその場しのぎの対策
     if (timediff > 10 * 1000)
     {
-        Matching::GameStartTime = networkSystem->GetServerTime() + 5000;
+        CommonMemory::SetGameStartTime( networkSystem->GetServerTime() + 5000);
     }
 }

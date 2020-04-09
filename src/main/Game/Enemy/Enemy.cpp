@@ -7,6 +7,7 @@
 #include "../Player/Player.hpp"
 #include "../Player/PlayerManager.hpp"
 #include "EnemyManager.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 static int enemynumber;
 
@@ -358,7 +359,7 @@ constexpr int speed_basevalue[] = {35, 39, 43, 46, 49};
 
 int MakeSpeed()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
 
     int ret = speed_basevalue[difficulty];
 
@@ -367,7 +368,7 @@ int MakeSpeed()
 
 int MakeLife()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
 
     constexpr int basevalue[] = {20, 30, 40, 40, 20};
     int ret = basevalue[difficulty];
@@ -377,7 +378,7 @@ int MakeLife()
 
 int MakeFirespread()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
     int ret = 1;
     if (static_cast<int>(Difficult::HARD) <= difficulty)
     {
@@ -393,7 +394,7 @@ int MakeFirespread()
 
 int MakeFireattack()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
 
     constexpr int basevalue[] = {10, 12, 15, 20, 32};
     int ret = basevalue[difficulty];
@@ -403,7 +404,7 @@ int MakeFireattack()
 
 int MakeFirespeed()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
 
     int ret = speed_basevalue[difficulty] * 2;
 
@@ -412,7 +413,7 @@ int MakeFirespeed()
 
 int MakeFirelife()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
 
     int ret = 2.5;
 

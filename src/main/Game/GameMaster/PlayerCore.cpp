@@ -5,6 +5,7 @@
 #include "../Bullet.hpp"
 #include "GameSync.hpp"
 #include "UIManager.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 namespace DataName
 {
@@ -15,7 +16,7 @@ void PlayerCore::Start2()
 {
     constexpr int basevalue[] = {700, 800, 1500, 2000, 3000};
 
-    maxlife = basevalue[Matching::GetDifficulty()];
+    maxlife = basevalue[CommonMemory::GetDifficulty()];
     life = maxlife;
 
     frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();

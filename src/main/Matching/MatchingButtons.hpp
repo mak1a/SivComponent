@@ -6,6 +6,7 @@
 #include "../../Utilities/PhotonUtilities.hpp"
 #include "../CustomEventList.hpp"
 #include "Matching.hpp"
+#include "../Common/CommonMemory.hpp"
 
 class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPhotonCallbacks
 {
@@ -169,6 +170,6 @@ class DifficultyDisplay : public AttachableComponent
 
     void Update()
     {
-        text->SetText(s[Matching::GetDifficulty()]);
+        text->SetText(s[CommonMemory::GetDifficulty()]);
     }
 };

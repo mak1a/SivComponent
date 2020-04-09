@@ -3,6 +3,7 @@
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "Player.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 //プレイヤーを生成
 void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -82,7 +83,7 @@ void PlayerManager::Update()
         return;
     }
 
-    if (Matching::GameStartTime - networkSystem->GetClient().getServerTime() < 0)
+    if (CommonMemory::GetGameStartTime() - networkSystem->GetClient().getServerTime() < 0)
     {
         initsync.Stop();
     }

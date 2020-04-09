@@ -55,10 +55,7 @@ void MatchSystem::Start2()
     networkSystem->GetClient().fetchServerTimestamp();
 }
 
-void MatchSystem::connectReturn(int errorCode,
-                                const ExitGames::Common::JString& errorString,
-                                const ExitGames::Common::JString& region,
-                                const ExitGames::Common::JString& cluster)
+void MatchSystem::connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster)
 {
     if (errorCode)
     {
@@ -144,10 +141,10 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
 
     if (networkSystem->GetMasterClient()->getNumber() == playerNr)
     {
-        Matching::SetDifficulty( ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy());
+        CommonMemory::SetDifficulty(ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy());
     }
 
-    Matching::GameStartTime = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(1))).getDataCopy();
+    CommonMemory::SetGameStartTime(ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(1))).getDataCopy());
 
     bool gameStart = ExitGames::Common::ValueObject<bool>(table.getValue(static_cast<short>(90))).getDataCopy();
 

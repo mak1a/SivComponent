@@ -3,6 +3,7 @@
 #include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 constexpr double HPperSec[] = {3.5, 6, 16, 22, 28};
 
@@ -10,7 +11,7 @@ void EnemyManager::Start2()
 {
     bullets = GetGameObject().lock()->CreateChild();
     bullets->SetName("bullets");
-    generator.persecond = HPperSec[Matching::GetDifficulty()];
+    generator.persecond = HPperSec[CommonMemory::GetDifficulty()];
     // 4秒分の敵を最初に生成
     generator.generatableHP = generator.persecond * 4;
 }
@@ -26,7 +27,7 @@ void EnemyManager::EnemyGenerate()
 //敵の生成頻度をコントロール
 void EnemyManager::Update()
 {
-    const int difficulty = Matching::GetDifficulty();
+    const int difficulty = CommonMemory::GetDifficulty();
     static double t = 1.0;
     // t += s3d::Random(-0.3, 0.3);
     // t = s3d::Clamp(t, 0.7, 10.0);

@@ -5,9 +5,6 @@
 
 using namespace ComponentEngine;
 
-int Matching::GameStartTime = 0;
-int Matching::Difficulty = 0;
-
 constexpr int DifficultyMax = 5 - 1;
 
 void Matching::Setup()
@@ -42,7 +39,7 @@ void Matching::Setup()
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});
     plus->AddComponent<Siv::Button>()->SetText(U"+").SetWidth(50).SetDelegate([]() {
-        Matching::Difficulty = std::min(static_cast<int>(Difficult::EXTREME), Matching::Difficulty + 1);
+        CommonMemory::SetDifficulty( std::min(static_cast<int>(Difficult::EXTREME), CommonMemory::GetDifficulty() + 1));
 
         Matching::SyncRoomInfo();
     });
@@ -51,7 +48,7 @@ void Matching::Setup()
     auto minus = ui->CreateChild();
     minus->SetPosition({-200, 0});
     minus->AddComponent<Siv::Button>()->SetText(U"-").SetWidth(50).SetDelegate([]() {
-        Matching::Difficulty = std::max(static_cast<int>(Difficult::EASY), Matching::Difficulty - 1);
+        CommonMemory::SetDifficulty( std::max(static_cast<int>(Difficult::EASY), CommonMemory::GetDifficulty() - 1));
 
         Matching::SyncRoomInfo();
     });
@@ -64,13 +61,13 @@ void Matching::Setup()
 void Matching::SyncRoomInfo(bool gameStart)
 {
     ExitGames::Common::Hashtable table;
-    table.put<short, int>(static_cast<short>(0), Difficulty);
+    table.put<short, int>(static_cast<short>(0), CommonMemory::GetDifficulty());
 
     table.put<short, bool>(static_cast<short>(90), gameStart);
 
     const int starttime = Photon::NetworkSystem::GetInstance()->GetClient().getServerTime() + 5000;
     table.put<short, int>(static_cast<short>(1), starttime);
-    Matching::GameStartTime = starttime;
+    CommonMemory::SetGameStartTime(starttime);
 
     Photon::NetworkSystem::GetInstance()->GetClient().opRaiseEvent(true, table, CustomEvent::MatchingSync);
 }
