@@ -1,9 +1,28 @@
 ﻿#pragma once
+#include <stddef.h>
+
+enum class Difficult
+{
+    EASY,
+    NORMAL,
+    HARD,
+    VERYHARD,
+    EXTREME,
+};  // namespace Difficult
+
+enum class PlayerType
+{
+    Standard,
+    Attack,
+    Defence,
+    Speed,
+};
 
 class CommonMemory
 {
-    static int Difficulty;
+    static int difficulty;
     static int GameStartTime;
+    static int playerType;
 
 public:
     static int GetGameStartTime()
@@ -18,11 +37,31 @@ public:
 
     static int GetDifficulty()
     {
-        return Difficulty;
+        return difficulty;
     }
 
-    static void SetDifficulty(int difficult)
+    static void SetDifficulty(int _difficulty)
     {
-        Difficulty = difficult;
+        difficulty = _difficulty;
+    }
+
+    static void SetDifficulty(Difficult _difficulty)
+    {
+        difficulty = static_cast<int>(_difficulty);
+    }
+
+    static size_t GetPlayerType()
+    {
+        return playerType;
+    }
+
+    static void SetPlayerType(int type)
+    {
+        playerType = type;
+    }
+
+    static void SetPlayerType(PlayerType type)
+    {
+        playerType = static_cast<int>(type);
     }
 };

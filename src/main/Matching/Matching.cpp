@@ -5,10 +5,12 @@
 
 using namespace ComponentEngine;
 
-constexpr int DifficultyMax = 5 - 1;
+// constexpr int DifficultyMax = 5 - 1;
 
 void Matching::Setup()
 {
+    s3d::Print(CommonMemory::GetPlayerType());
+
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
     auto list = CreateAndGetObject();
     list->SetPosition({200, 100});
@@ -39,7 +41,7 @@ void Matching::Setup()
     auto plus = ui->CreateChild();
     plus->SetPosition({200, 0});
     plus->AddComponent<Siv::Button>()->SetText(U"+").SetWidth(50).SetDelegate([]() {
-        CommonMemory::SetDifficulty( std::min(static_cast<int>(Difficult::EXTREME), CommonMemory::GetDifficulty() + 1));
+        CommonMemory::SetDifficulty(std::min(static_cast<int>(Difficult::EXTREME), CommonMemory::GetDifficulty() + 1));
 
         Matching::SyncRoomInfo();
     });
@@ -48,7 +50,7 @@ void Matching::Setup()
     auto minus = ui->CreateChild();
     minus->SetPosition({-200, 0});
     minus->AddComponent<Siv::Button>()->SetText(U"-").SetWidth(50).SetDelegate([]() {
-        CommonMemory::SetDifficulty( std::max(static_cast<int>(Difficult::EASY), CommonMemory::GetDifficulty() - 1));
+        CommonMemory::SetDifficulty(std::max(static_cast<int>(Difficult::EASY), CommonMemory::GetDifficulty() - 1));
 
         Matching::SyncRoomInfo();
     });

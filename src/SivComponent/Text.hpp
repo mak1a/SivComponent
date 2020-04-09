@@ -28,7 +28,7 @@ namespace ComponentEngine::Siv
         Text()
             : color(s3d::Palette::White)
             , text(U"text")
-            , font(30)
+            , font(25)
             , drawAt(true)
         {
         }

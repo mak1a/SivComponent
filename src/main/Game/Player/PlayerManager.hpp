@@ -2,6 +2,7 @@
 #pragma once
 
 #include "../../../PhotonComponent/PhotonComponent.hpp"
+#include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../Utilities/IntervalCall.hpp"
 
 class Player;
@@ -17,6 +18,8 @@ class PlayerManager : public ComponentEngine::Photon::AttachableComponentPhotonC
     Utilities::IntervalCall initsync;
 
 public:
+    std::shared_ptr<GameObject> CreateMyPlayer();
+
     PlayerManager();
     std::vector<std::shared_ptr<Player>> players;
 };

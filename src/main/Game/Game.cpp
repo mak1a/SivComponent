@@ -44,20 +44,20 @@ void Game::Setup()
     Enemymanager->SetActive(false);
 
     //自分を作る
-    auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
-    mainplayerobj->SetName("MyPlayer");
-    auto system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
+    // auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
+    // mainplayerobj->SetName("MyPlayer");
+    // auto system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
 
-    mainplayerobj->SetPosition(Player::playerInitpos[system->GetPlayerNumberInRoom()]);
-
-    auto player = mainplayerobj->GetComponent<Player>();
-    player->SetMine(true);
-    player->playerNr = system->GetClient().getLocalPlayer().getNumber();
+    // mainplayerobj->SetPosition(Player::playerInitpos[Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom()]);
 
     auto playerManagerComp = Playermanager->AddComponent<PlayerManager>();
-    playerManagerComp->players.push_back(player);
+    auto player = playerManagerComp->CreateMyPlayer()->GetComponent<Player>();
+    // player->SetMine(true);
+    // player->playerNr = Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber();
 
-    Playermanager->AddChild(mainplayerobj);
+    // playerManagerComp->players.push_back(player);
+
+    // Playermanager->AddChild(mainplayerobj);
 
     Bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
 
@@ -174,27 +174,13 @@ void Game::Setup()
     defeatUI->SetActive(false);
     connectionError->SetActive(false);
 
-    victoryUI->AddComponent<Siv::Text>()
-        ->SetText(U"勝利！")
-        .SetFont(s3d::Font(100, s3d::Typeface::Black))
-        .SetColor(s3d::Palette::Red)
-        .SetDrawAt(true)
-        .SetShadowEnable(true);
+    victoryUI->AddComponent<Siv::Text>()->SetText(U"勝利！").SetFont(s3d::Font(100, s3d::Typeface::Black)).SetColor(s3d::Palette::Red).SetDrawAt(true).SetShadowEnable(true);
     victoryUI->SetPosition(s3d::Scene::CenterF());
 
-    defeatUI->AddComponent<Siv::Text>()
-        ->SetText(U"敗北…")
-        .SetFont(s3d::Font(100, s3d::Typeface::Black))
-        .SetColor(s3d::Palette::Blue)
-        .SetDrawAt(true)
-        .SetShadowEnable(true);
+    defeatUI->AddComponent<Siv::Text>()->SetText(U"敗北…").SetFont(s3d::Font(100, s3d::Typeface::Black)).SetColor(s3d::Palette::Blue).SetDrawAt(true).SetShadowEnable(true);
     defeatUI->SetPosition(s3d::Scene::CenterF());
 
-    connectionError->AddComponent<Siv::Text>()
-        ->SetText(U"通信が切断されました")
-        .SetFont(s3d::Font(40, s3d::Typeface::Medium))
-        .SetColor(s3d::Palette::Black)
-        .SetDrawAt(true);
+    connectionError->AddComponent<Siv::Text>()->SetText(U"通信が切断されました").SetFont(s3d::Font(40, s3d::Typeface::Medium)).SetColor(s3d::Palette::Black).SetDrawAt(true);
     connectionError->SetPosition(s3d::Scene::CenterF());
 
     returnTitleBt->AddComponent<ReturnTitleBt>();

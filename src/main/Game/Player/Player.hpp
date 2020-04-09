@@ -19,6 +19,7 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void Regenerate();
 
     bool isMine;
+
     double spd;
     int life;
     double regene = 0;

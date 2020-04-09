@@ -1,11 +1,11 @@
 ﻿#include "EnemyManager.hpp"
+#include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "Enemy.hpp"
-#include "../../Common/CommonMemory.hpp"
 
-constexpr double HPperSec[] = {3.5, 6, 16, 22, 28};
+constexpr double HPperSec[] = {4.0, 7.5, 15, 20, 24};
 
 void EnemyManager::Start2()
 {
@@ -28,7 +28,7 @@ void EnemyManager::EnemyGenerate()
 void EnemyManager::Update()
 {
     const int difficulty = CommonMemory::GetDifficulty();
-    static double t = 1.0;
+    //    static double t = 1.0;
     // t += s3d::Random(-0.3, 0.3);
     // t = s3d::Clamp(t, 0.7, 10.0);
     generator.interval -= s3d::Scene::DeltaTime();
@@ -41,7 +41,7 @@ void EnemyManager::Update()
         generator.interval -= s3d::Scene::DeltaTime();
 
         //生成可能数も増やす
-        constexpr double d[] = {17.5, 4, 3, 3, 4};
+        constexpr double d[] = {3.5, 4, 4, 7, 8};
 
         generator.generatableHP += s3d::Scene::DeltaTime() * d[difficulty];
     }

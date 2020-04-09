@@ -1,9 +1,9 @@
 ﻿
 #include "PlayerManager.hpp"
+#include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "Player.hpp"
-#include "../../Common/CommonMemory.hpp"
 
 //プレイヤーを生成
 void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -22,8 +22,7 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
         }
     }
 
-    auto dic =
-        ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
+    auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
     double x = *dic.getValue(DataName::Player::posX);
     double y = *dic.getValue(DataName::Player::posY);
@@ -38,6 +37,25 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     auto player = otherplayer->GetComponent<Player>();
     player->playerNr = playerNr;
     players.push_back(player);
+}
+
+std::shared_ptr<GameObject> PlayerManager::CreateMyPlayer()
+{
+    //自分を作る
+    auto mainplayerobj = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player");
+    mainplayerobj->SetName("MyPlayer");
+
+    mainplayerobj->SetPosition(Player::playerInitpos[Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom()]);
+
+    auto player = mainplayerobj->GetComponent<Player>();
+    player->SetMine(true);
+    player->playerNr = Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber();
+
+    this->players.push_back(player);
+
+    GetGameObject().lock()->AddChild(mainplayerobj);
+
+    return mainplayerobj;
 }
 
 //部屋から退場したら消す
