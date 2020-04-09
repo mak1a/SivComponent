@@ -257,6 +257,12 @@ namespace ComponentEngine::Siv
             return index;
         }
 
+        RadioButton& SetIndex(size_t _index)
+        {
+            index = std::min(elements.size(), _index);
+            return *this;
+        }
+
         [[nodiscard]] bool Changed() const
         {
             return changed;

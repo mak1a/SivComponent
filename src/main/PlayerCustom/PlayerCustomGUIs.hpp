@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../../ComponentEngine/ComponentEngine.hpp"
 
@@ -83,10 +83,7 @@ class PlayerTypeSave : public AttachableComponent
 {
     std::shared_ptr<Siv::RadioButton> radio;
 
-    void Start()
-    {
-        radio = GetGameObject().lock()->GetComponent<Siv::RadioButton>();
-    }
+    void Start();
 
     void Update();
 };

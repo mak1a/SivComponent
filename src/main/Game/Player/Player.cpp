@@ -17,13 +17,55 @@ HP型　HPが3倍ぐらいあり、当たり判定が少し小さい　乱戦に
 Player::Player()
     : syncstatus((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncStatus(); })
 {
-    isMine = false;
+    //ベース数値を設定する
+
     spd = 115.0;
+    maxlife = 100;
+    life = maxlife;
+    regenespd = 0;
+    reviveCost = 2.5;
+
+    fire.attack = 10;
+    fire.lifetime = 1.25;
+    fire.spread = 1;
+    fire.speed = 180;
+
+    rivivetimer = 0;
+
     // spd = 60.0 * 5;
+}
+
+void Player::SetType(PlayerType _type)
+{
+    type = _type;
+
+    switch (type)
+    {
+        case PlayerType::Standard:
+            reviveCost = 1.0;
+            break;
+        case PlayerType::Attack:
+            fire.attack = 18;
+            fire.speed * 0.85;
+            break;
+        case PlayerType::Defence:
+            maxlife = 800;
+            life = maxlife;
+            spd *= 0.9;
+            break;
+        case PlayerType::Speed:
+            maxlife = 70;
+            life = maxlife;
+            spd *= 1.44;
+            fire.speed *= 1.8;
+            break;
+    }
 }
 
 void Player::Start2()
 {
+    //モードに応じた
+
     //移動先を自分の現座標に
     targetPos = GetGameObject().lock()->GetPosition();
 
@@ -91,8 +133,8 @@ void Player::Move()
 
 void Player::Revive()
 {
-    counttimer -= s3d::Scene::DeltaTime();
-    if (counttimer < 0)
+    rivivetimer -= s3d::Scene::DeltaTime();
+    if (rivivetimer < 0)
     {
         //ライフ回復、状態変更、色を戻す
         life = maxlife;
@@ -224,7 +266,10 @@ void Player::SendInstantiateMessage()
     auto pos = GetGameObject().lock()->GetPosition();
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
-    // PlayerManagerが受け取る
+    dic.put(DataName::Player::Spd, spd);
+    dic.put(DataName::Player::Type, static_cast<int>(type));
+
+    // PlayerManagerが受け取り、Playerにそのまま流し込む
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerInit);
 }
 
@@ -266,7 +311,7 @@ void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
     {
         //状態を変更して色を黒くする
         state = PlayerStates::reviving;
-        counttimer = 2.5;
+        rivivetimer = reviveCost;
     }
 }
 

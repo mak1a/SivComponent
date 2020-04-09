@@ -1,13 +1,13 @@
 ﻿
 #include "Enemy.hpp"
 #include "../../../Utilities/Utilities.hpp"
+#include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "../Player/Player.hpp"
 #include "../Player/PlayerManager.hpp"
 #include "EnemyManager.hpp"
-#include "../../Common/CommonMemory.hpp"
 
 static int enemynumber;
 
@@ -370,7 +370,7 @@ int MakeLife()
 {
     const int difficulty = CommonMemory::GetDifficulty();
 
-    constexpr int basevalue[] = {20, 30, 40, 40, 20};
+    constexpr int basevalue[] = {18, 30, 40, 40, 25};
     int ret = basevalue[difficulty];
 
     return ret;

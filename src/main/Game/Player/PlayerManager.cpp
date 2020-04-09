@@ -24,8 +24,9 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
 
     auto dic = ExitGames::Common::ValueObject<ExitGames::Common::Dictionary<nByte, int> >(eventContent).getDataCopy();
 
-    double x = *dic.getValue(DataName::Player::posX);
-    double y = *dic.getValue(DataName::Player::posY);
+    const double x = *dic.getValue(DataName::Player::posX);
+    const double y = *dic.getValue(DataName::Player::posY);
+    const int type = *dic.getValue(DataName::Player::Type);
 
     //プレイヤーを生成
     auto otherplayer = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().Instantiate("Player");
@@ -34,8 +35,13 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
 
     otherplayer->SetPosition({x, y});
 
+    //数値を流し込む
     auto player = otherplayer->GetComponent<Player>();
+
     player->playerNr = playerNr;
+    player->SetType(static_cast<PlayerType>(type));
+
+    //配列管理に追加
     players.push_back(player);
 }
 
@@ -50,6 +56,7 @@ std::shared_ptr<GameObject> PlayerManager::CreateMyPlayer()
     auto player = mainplayerobj->GetComponent<Player>();
     player->SetMine(true);
     player->playerNr = Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber();
+    player->SetType(static_cast<PlayerType>(CommonMemory::GetPlayerType()));
 
     this->players.push_back(player);
 
@@ -90,8 +97,8 @@ void PlayerManager::Start2()
     // altercamera
     GetGameObject().lock()->GetScene().lock()->GetMasterObject()->FindChildByName("AlterCamera")->SetPosition(diff);
 
-    // 送り続ける 1秒に8回
-    initsync = Utilities::IntervalCall(1000 / 8, [&]() { players[0]->SendInstantiateMessage(); });
+    // 送り続ける 1秒に4回
+    initsync = Utilities::IntervalCall(1000 / 4, [&]() { players[0]->SendInstantiateMessage(); });
 }
 
 void PlayerManager::Update()

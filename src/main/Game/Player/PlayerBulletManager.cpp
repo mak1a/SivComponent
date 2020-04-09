@@ -4,8 +4,8 @@
 #include "Player.hpp"
 
 constexpr double FireRate = 1.0 / 4;
-constexpr int bulletspd = 180;
-constexpr double range = 220;
+// constexpr int bulletspd = 180;
+// constexpr double range = 220;
 
 namespace DataName
 {
@@ -18,6 +18,8 @@ namespace DataName
 
 void PlayerBulletManager::CreateBullet()
 {
+    const auto& info = player->GetFireInfo();
+
     auto bullet = inst();
     GetGameObject().lock()->AddChild(bullet);
 
@@ -25,8 +27,9 @@ void PlayerBulletManager::CreateBullet()
 
     auto b = bullet->GetComponent<Bullet>();
 
-    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), bulletspd);
-    b->lifetime = range / bulletspd;
+    b->SetMove(s3d::Cursor::PosF() - player->GetGameObject().lock()->GetWorldPosition(), info.speed);
+    b->lifetime = info.lifetime;
+    b->attack = info.attack;
     b->isMine = true;
 
     SendBulletInfo(b);

@@ -50,7 +50,7 @@ public:
         difficulty = static_cast<int>(_difficulty);
     }
 
-    static size_t GetPlayerType()
+    static int GetPlayerType()
     {
         return playerType;
     }

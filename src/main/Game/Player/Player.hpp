@@ -3,6 +3,7 @@
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../../../Utilities/IntervalCall.hpp"
+#include "../../Common/CommonMemory.hpp"
 
 class Player : public Photon::AttachableComponentPhotonCallbacks
 {
@@ -18,14 +19,30 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     void Move();
     void Regenerate();
 
-    bool isMine;
+    bool isMine = false;
 
     double spd;
+    int maxlife;
     int life;
+
+    //リジェネの回復実数値
     double regene = 0;
+    //リジェネの回復加速度
     double regenespd = 0;
-    int maxlife = 100;
-    double counttimer = 0;  //汎用的なカウントダウン変数 バグを引き起こしていけ
+
+    struct FireInfo
+    {
+        int attack;
+        double lifetime;
+        int speed;
+        int spread = 1;
+    } fire;
+
+    //蘇生にかかる時間
+    double reviveCost;
+    //蘇生状況
+    double rivivetimer = 0;
+    PlayerType type;
 
     //線形補間用
     s3d::Vec2 targetPos;
@@ -66,6 +83,14 @@ public:
         return life;
     }
 
+    const FireInfo& GetFireInfo()
+    {
+        return fire;
+    }
+
+    //タイプを設定し、それにより数値を変更
+    void SetType(PlayerType _type);
+
     void SendInstantiateMessage();
     void SyncStatus();
 
@@ -84,5 +109,7 @@ namespace DataName::Player
     constexpr nByte posX = 1;
     constexpr nByte posY = 2;
     constexpr nByte Life = 3;
+    constexpr nByte Spd = 4;
     constexpr nByte CurrentState = 5;
+    constexpr nByte Type = 6;
 };  // namespace DataName::Player
