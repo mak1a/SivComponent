@@ -1,4 +1,4 @@
-#include "SceneCommon.hpp"
+﻿#include "SceneCommon.hpp"
 
 namespace ComponentEngine
 {

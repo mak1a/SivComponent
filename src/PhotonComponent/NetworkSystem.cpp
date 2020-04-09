@@ -1,4 +1,4 @@
-#define NO_S3D_USING
+﻿#define NO_S3D_USING
 #include "NetworkSystem.hpp"
 
 namespace ComponentEngine::Photon

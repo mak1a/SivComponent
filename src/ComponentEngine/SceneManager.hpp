@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IScene.hpp"
 #include "SceneCommon.hpp"

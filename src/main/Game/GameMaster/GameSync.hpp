@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Common-cpp/inc/Common.h>
 #include "../../CustomEventList.hpp"

@@ -1,4 +1,4 @@
-
+﻿
 #include "PlayerLifeView.hpp"
 #include "Player.hpp"
 
@@ -17,7 +17,7 @@ void PlayerLifeView::Update()
         case Player::PlayerStates::reviving:
             text->SetText(U"revive...");
             break;
-            
+
         default:
             break;
     }

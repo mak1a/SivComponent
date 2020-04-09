@@ -1,4 +1,4 @@
-#include "test.hpp"
+﻿#include "test.hpp"
 #include "PhotonComponent/PhotonComponent.hpp"
 
 class PrintServerTime : public Photon::AttachableComponentPhotonCallbacks

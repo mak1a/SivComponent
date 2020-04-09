@@ -1,4 +1,4 @@
-
+﻿
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../../../Utilities/IntervalCall.hpp"

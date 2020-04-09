@@ -1,4 +1,4 @@
-
+﻿
 #include "InstantiateEntry.hpp"
 #include "../SivComponent/SivComponent.hpp"
 #include "Game/Bullet.hpp"

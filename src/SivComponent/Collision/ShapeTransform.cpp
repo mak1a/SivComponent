@@ -1,4 +1,4 @@
-
+﻿
 #include "ShapeTransform.hpp"
 
 namespace ComponentEngine::Collision

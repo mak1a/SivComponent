@@ -1,4 +1,4 @@
-#include "CoreInfoGUI.hpp"
+﻿#include "CoreInfoGUI.hpp"
 #include "PlayerCore.hpp"
 
 void CoreInfoGUI::Start()

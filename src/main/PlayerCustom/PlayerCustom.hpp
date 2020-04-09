@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../ComponentEngine/IScene.hpp"
 #include "../../PhotonComponent/PhotonComponent.hpp"
