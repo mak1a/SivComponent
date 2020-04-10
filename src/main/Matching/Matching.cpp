@@ -46,6 +46,8 @@ void Matching::Setup()
         Matching::SyncRoomInfo();
 
         s3d::AudioAsset(U"Menu").playOneShot();
+
+        s3d::AudioAsset(U"NG").playOneShot();
     });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
@@ -57,11 +59,15 @@ void Matching::Setup()
         Matching::SyncRoomInfo();
 
         s3d::AudioAsset(U"Menu").playOneShot();
+
+        s3d::AudioAsset(U"OK").playOneShot();
     });
     minus->AddComponent<ShowButtonOnlyMaster>();
 
     // photonの操作をできるように
     system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
+
+    CreateAndGetObject()->AddComponent<Siv::BGM>(U"BGM_Matching");
 }
 
 void Matching::SyncRoomInfo(bool gameStart)
