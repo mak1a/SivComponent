@@ -198,4 +198,5 @@ void Game::Setup()
     uimanager->objects.timeUI = time;
     uimanager->objects.returnTitleBt = returnTitleBt;
     uimanager->objects.playerBulletManager = Bulletmanager;
+    uimanager->objects.connectError = connectionError;
 }
