@@ -139,9 +139,17 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
     //情報取得
     ExitGames::Common::Hashtable table = ExitGames::Common::ValueObject<ExitGames::Common::Hashtable>(eventContent).getDataCopy();
 
+    //難易度同期
     if (networkSystem->GetMasterClient()->getNumber() == playerNr)
     {
-        CommonMemory::SetDifficulty(ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy());
+        const int d = ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(0))).getDataCopy();
+
+        if (CommonMemory::GetDifficulty() != d)
+        {
+            s3d::AudioAsset(U"Menu").playOneShot();
+
+            CommonMemory::SetDifficulty(d);
+        }
     }
 
     CommonMemory::SetGameStartTime(ExitGames::Common::ValueObject<int>(table.getValue(static_cast<short>(1))).getDataCopy());
@@ -150,6 +158,8 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
 
     if (gameStart)
     {
+        s3d::AudioAsset(U"OK").playOneShot();
+
         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Game");
     }
 

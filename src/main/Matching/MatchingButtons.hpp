@@ -4,9 +4,9 @@
 #include "../../PhotonComponent/PhotonComponent.hpp"
 
 #include "../../Utilities/PhotonUtilities.hpp"
+#include "../Common/CommonMemory.hpp"
 #include "../CustomEventList.hpp"
 #include "Matching.hpp"
-#include "../Common/CommonMemory.hpp"
 
 class PlayerListDisplay : public ComponentEngine::Photon::AttachableComponentPhotonCallbacks
 {
@@ -29,10 +29,7 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
 
     void Start2() override;
 
-    void connectReturn(int errorCode,
-                       const ExitGames::Common::JString& errorString,
-                       const ExitGames::Common::JString& region,
-                       const ExitGames::Common::JString& cluster) override;
+    void connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster) override;
 
     void joinRandomRoomReturn(int localPlayerNr,
                               const ExitGames::Common::Hashtable& roomProperties,
@@ -80,6 +77,8 @@ public:
         auto system = manager->GetCommon().GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
         system->Disconnect();
         manager->ChangeScene("Title");
+
+        s3d::AudioAsset(U"NG").play();
     }
 };
 
@@ -112,14 +111,7 @@ class GameBt : public Photon::AttachableComponentPhotonCallbacks
 
     void Start2() override
     {
-        system = GetGameObject()
-                     .lock()
-                     ->GetScene()
-                     .lock()
-                     ->GetSceneManager()
-                     ->GetCommon()
-                     .GetCommonObject("PhotonSystem")
-                     ->GetComponent<ComponentEngine::Photon::NetworkSystem>();
+        system = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem")->GetComponent<ComponentEngine::Photon::NetworkSystem>();
 
         //ボタンコンポーネント追加
         bt = GetGameObject().lock()->AddComponent<Siv::Button>();
@@ -152,6 +144,8 @@ public:
 
         system->GetClient().getCurrentlyJoinedRoom().setIsOpen(false);
         manager->ChangeScene("Game");
+
+        s3d::AudioAsset(U"OK").play();
     }
 
     Matching* match;

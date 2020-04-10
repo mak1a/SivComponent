@@ -74,7 +74,7 @@ struct ChangeSceneBt : public ComponentEngine::AttachableComponent
 
 void TitleScene::Setup()
 {
-    s3d::Scene::SetBackground(s3d::Palette::Skyblue);
+    s3d::Scene::SetBackground(s3d::Palette::Lightskyblue);
 
     //名前生成
     auto obj = CreateAndGetObject();

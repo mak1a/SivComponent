@@ -9,6 +9,8 @@ using namespace ComponentEngine;
 
 void Matching::Setup()
 {
+    s3d::Scene::SetBackground(s3d::Palette::Lightskyblue);
+
     s3d::Print(CommonMemory::GetPlayerType());
 
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
@@ -46,8 +48,6 @@ void Matching::Setup()
         Matching::SyncRoomInfo();
 
         s3d::AudioAsset(U"Menu").playOneShot();
-
-        s3d::AudioAsset(U"NG").playOneShot();
     });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
@@ -59,8 +59,6 @@ void Matching::Setup()
         Matching::SyncRoomInfo();
 
         s3d::AudioAsset(U"Menu").playOneShot();
-
-        s3d::AudioAsset(U"OK").playOneShot();
     });
     minus->AddComponent<ShowButtonOnlyMaster>();
 
