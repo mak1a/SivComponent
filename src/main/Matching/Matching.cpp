@@ -44,6 +44,8 @@ void Matching::Setup()
         CommonMemory::SetDifficulty(std::min(static_cast<int>(Difficult::EXTREME), CommonMemory::GetDifficulty() + 1));
 
         Matching::SyncRoomInfo();
+
+        s3d::AudioAsset(U"Menu").playOneShot();
     });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
@@ -53,6 +55,8 @@ void Matching::Setup()
         CommonMemory::SetDifficulty(std::max(static_cast<int>(Difficult::EASY), CommonMemory::GetDifficulty() - 1));
 
         Matching::SyncRoomInfo();
+
+        s3d::AudioAsset(U"Menu").playOneShot();
     });
     minus->AddComponent<ShowButtonOnlyMaster>();
 

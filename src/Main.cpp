@@ -5,6 +5,7 @@
 
 #include "PhotonComponent/PhotonInit.hpp"
 #include "Title.hpp"
+#include "main/AssetLoad.hpp"
 #include "main/Game/Game.hpp"
 #include "main/InstantiateEntry.hpp"
 #include "main/Matching/Matching.hpp"
@@ -31,6 +32,7 @@ void Main()
 
     //はやくこれを消したい
     InstantiateEntry_Game(manager.GetCommon());
+    LoadAssets();
 
     while (s3d::System::Update())
     {

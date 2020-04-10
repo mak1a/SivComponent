@@ -86,20 +86,28 @@ void TitleScene::Setup()
     gen->tbox = obj->AddComponent<ComponentEngine::Siv::TextBox>();
     gen->tbox.lock()->SetIsEnabled(false);
 
-    genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() { gen->Generate(); });
+    genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() {
+        gen->Generate();
+        s3d::AudioAsset(U"OK").playOneShot();
+    });
     genbt->SetPosition({0, 40});
 
     //マッチングボタン
     auto bt = CreateAndGetObject();
     bt->SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 3});
     auto btscript = bt->AddComponent<ChangeSceneBt>();
-    bt->AddComponent<Siv::Button>()->SetText(U"設定・チュートリアルへ").SetDelegate([=]() { btscript->ChangeToMatching(); });
+    bt->AddComponent<Siv::Button>()->SetText(U"プレイヤー選択へ").SetDelegate([=]() {
+        btscript->ChangeToMatching();
+        s3d::AudioAsset(U"OK").playOneShot();
+    });
     btscript->generator = gen;
 
     //タイトル
     auto title = CreateAndGetObject();
     title->SetPosition({s3d::Scene::CenterF().x, 100});
-    title->AddComponent<Siv::Text>()->SetText(U"オンラインCoopゲーム(仮題 α版)").SetFont(s3d::Font(50)).SetColor(s3d::Palette::Black);
+    title->AddComponent<Siv::Text>()->SetText(U"Barrage Storm").SetFont(s3d::Font(65, s3d::Typeface::Heavy)).SetColor(s3d::Palette::Black);
+
+    CreateAndGetObject()->AddComponent<Siv::BGM>(U"BGM_Title");
 }
 
 int NameGenerator::n = -1;

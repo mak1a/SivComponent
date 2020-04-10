@@ -29,10 +29,24 @@ void PlayerCustom::Setup()
     auto bt = CreateAndGetObject();
     bt->SetPosition({200, s3d::Scene::Height() - 60});
     auto csb = bt->AddComponent<ChangeSceneButton>("Title");
-    bt->AddComponent<Siv::Button>()->SetDelegate([=]() { csb->OnClick(); }).SetText(U"タイトルへ");
+    bt->AddComponent<Siv::Button>()
+        ->SetDelegate([=]() {
+            csb->OnClick();
+            s3d::AudioAsset(U"NG").playOneShot();
+        })
+        .SetText(U"タイトルへ");
 
     auto toMatchBt = CreateAndGetObject();
     toMatchBt->SetPosition({s3d::Scene::Width() - 200, s3d::Scene::Height() - 60});
     auto csb2 = toMatchBt->AddComponent<ChangeSceneButton>("Matching");
-    toMatchBt->AddComponent<Siv::Button>()->SetDelegate([=]() { csb2->OnClick(); }).SetText(U"マッチング");
+    toMatchBt->AddComponent<Siv::Button>()
+        ->SetDelegate([=]() {
+            csb2->OnClick();
+            s3d::AudioAsset(U"OK").playOneShot();
+        })
+        .SetText(U"マッチング");
+
+    // BGM
+    auto bgm = CreateAndGetObject();
+    bgm->AddComponent<Siv::BGM>(U"BGM_Custom");
 }
