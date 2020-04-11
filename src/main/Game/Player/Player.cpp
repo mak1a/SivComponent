@@ -74,7 +74,7 @@ void Player::Start2()
     rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
     camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
 
-    rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.6));
+    rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.3));
 
     //移動前座標をセット
     movehistory = GetGameObject().lock()->GetPosition();
@@ -97,8 +97,13 @@ void Player::Start2()
         }
     }
 
-    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(255, 200, 200), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
-    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
+    //中心の色
+    // constexpr std::array<s3d::Color, 4> colors = {s3d::Color(255, 200, 200), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
+    // GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
+
+    // Standard, Attack, Defence, Speed,
+    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(255, 0, 0), s3d::Color(0, 0, 255), s3d::Color(255, 255, 0)};
+    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[static_cast<int>(GetType())]);
 }
 
 void Player::Move()

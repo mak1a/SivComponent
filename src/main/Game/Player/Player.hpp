@@ -94,6 +94,11 @@ public:
         return fire;
     }
 
+    PlayerType GetType() const
+    {
+        return type;
+    }
+
     //タイプを設定し、それにより数値を変更
     void SetType(PlayerType _type);
 
