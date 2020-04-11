@@ -17,14 +17,24 @@ void PlayerCustom::Setup()
     const s3d::Array<s3d::String> sssssssssssss = {U"標準型", U"攻撃型", U"耐久型", U"速度型"};
     const auto radioComp = radio->AddComponent<Siv::RadioButton>(sssssssssssss);
     radio->AddComponent<PlayerTypeSave>();
-    radio->SetPosition({20, 80});
+    radio->SetPosition({20, 70});
 
     //説明文
     auto explanation = CreateAndGetObject();
     explanation->AddComponent<Siv::Rect>()->SetColor(s3d::Palette::White).SetShape(s3d::RectF(-10, -10, 800 - 160 - 20, 300));
     explanation->AddComponent<Siv::Text>()->SetDrawAt(false).SetColor(s3d::Palette::Black).SetFont(s3d::Font(25));
     explanation->AddComponent<PlayerExplanation>()->radio = radioComp;
-    explanation->SetPosition({160, 90});
+    explanation->SetPosition({160, 80});
+
+    //操作説明
+    auto controlexp = CreateAndGetObject();
+    controlexp->SetPosition({20 + 10, 400});
+    controlexp->AddComponent<Siv::Rect>()->SetColor(s3d::Palette::White).SetShape(s3d::RectF(-10, -10, 800 - 20 * 2, 100 + 20));
+    controlexp->AddComponent<Siv::Text>()
+        ->SetFont(s3d::Font(23, s3d::Typeface::Medium))
+        .SetColor(s3d::Palette::Black)
+        .SetText(U"操作\n移動：WASD　　攻撃：左クリック　　ボム：スペース")
+        .SetDrawAt(false);
 
     auto bt = CreateAndGetObject();
     bt->SetPosition({200, s3d::Scene::Height() - 60});
