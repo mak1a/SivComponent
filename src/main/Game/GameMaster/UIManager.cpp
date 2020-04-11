@@ -20,6 +20,7 @@ void UIManager::disconnectReturn()
 void UIManager::OnVictory()
 {
     GetGameObject().lock()->DeleteComponent<Siv::BGM>();
+    s3d::AudioAsset(U"BGM_Victory").play();
 
     //タイマーを消す
     objects.timeUI->SetActive(false);
@@ -36,6 +37,7 @@ void UIManager::OnVictory()
 void UIManager::OnDefeat()
 {
     GetGameObject().lock()->DeleteComponent<Siv::BGM>();
+    s3d::AudioAsset(U"BGM_Defeat").play();
 
     //タイマーを消す
     objects.timeUI->SetActive(false);

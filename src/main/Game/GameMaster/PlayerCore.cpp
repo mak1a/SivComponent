@@ -1,11 +1,11 @@
 ﻿
 #include "PlayerCore.hpp"
+#include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
 #include "GameSync.hpp"
 #include "UIManager.hpp"
-#include "../../Common/CommonMemory.hpp"
 
 namespace DataName
 {
@@ -44,6 +44,12 @@ void PlayerCore::Update()
 
 void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
 {
+    if (other->GetTag() == UserDef::Tag::EnemyBullet || other->GetTag() == UserDef::Tag::PlayerBullet)
+    {
+        //被弾音
+        s3d::AudioAsset(U"CoreDamage").playOneShot(0.3);
+    }
+
     // MasterClientでなければスルー
     if (!networkSystem->IsMasterClient())
     {

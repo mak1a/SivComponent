@@ -1,4 +1,4 @@
-﻿#include "PlayerBulletManager.hpp"
+#include "PlayerBulletManager.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "Player.hpp"
@@ -94,6 +94,9 @@ void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const
 
     b->moveValue = spd;
     b->lifetime = life - lagtime;
+
+    //他人の発射音
+    s3d::AudioAsset(U"PlayerShot").playOneShot(0.12);
 }
 
 void PlayerBulletManager::Update()
@@ -101,7 +104,7 @@ void PlayerBulletManager::Update()
     fireInterval -= s3d::Scene::DeltaTime();
 
     //死んでたら発射できない
-    if (player->state == Player::PlayerStates::reviving)
+    if (player->GetState() == Player::PlayerStates::reviving)
     {
         return;
     }
@@ -110,5 +113,8 @@ void PlayerBulletManager::Update()
     {
         CreateBullet();
         fireInterval = FireRate;
+
+        //自分の発射音
+        s3d::AudioAsset(U"PlayerShot").playOneShot(0.3);
     }
 }

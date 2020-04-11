@@ -61,6 +61,7 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
     void Reload();
     void Move();
     void Shot();
+    void Fire();
     void Damage(int damage);
     void SendSyncInfo(int damage, int targetPlayer = -99) const;
 

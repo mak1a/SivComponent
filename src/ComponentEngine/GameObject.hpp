@@ -115,8 +115,9 @@ namespace ComponentEngine
 
             for (auto c = components.begin(); c != end; ++c)
             {
-                if (auto n = std::dynamic_pointer_cast<Component>(*c))
+                if (std::dynamic_pointer_cast<Component>(*c))
                 {
+                    (*c)->OnDestroy();
                     components.erase(c);
                     return true;
                 }

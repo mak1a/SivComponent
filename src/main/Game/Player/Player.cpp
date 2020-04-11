@@ -1,4 +1,4 @@
-﻿
+
 #include "Player.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
 #include "../../CustomEventList.hpp"
@@ -84,8 +84,7 @@ void Player::Start2()
 
     //今の色を保存
     defaultcolor = rect->GetColor();
-
-    state = PlayerStates::normal;
+    SetState(PlayerStates::normal);
 
     int nr = 0;
     const auto lis = networkSystem->GetPlayerList();
@@ -139,7 +138,7 @@ void Player::Revive()
     {
         //ライフ回復、状態変更、色を戻す
         life = maxlife;
-        state = PlayerStates::normal;
+        SetState(PlayerStates::normal);
         rect->SetColor(defaultcolor);
     }
 }
@@ -183,7 +182,7 @@ void Player::Regenerate()
 void Player::Update()
 {
     //状態に合わせた色変更
-    switch (state)
+    switch (GetState())
     {
         case PlayerStates::normal:
             rect->SetColor(defaultcolor);
@@ -204,7 +203,7 @@ void Player::Update()
     //位置同期を行う
     syncstatus.Run();
 
-    if (state == PlayerStates::reviving)
+    if (GetState() == PlayerStates::reviving)
     {
         Revive();
         return;
@@ -252,7 +251,8 @@ void Player::customEventAction(int playerNr, nByte eventCode, const ExitGames::C
 
     life = *dic.getValue(DataName::Player::Life);
     const int s = *dic.getValue(DataName::Player::CurrentState);
-    state = static_cast<PlayerStates>(s);
+
+    SetState(static_cast<PlayerStates>(s));
 
     //到着先を終点に設定
     targetPos = {x, y};
@@ -283,7 +283,7 @@ void Player::SyncStatus()
     dic.put(DataName::Player::posX, pos.x);
     dic.put(DataName::Player::posY, pos.y);
     dic.put(DataName::Player::Life, life);
-    dic.put(DataName::Player::CurrentState, static_cast<int>(state));
+    dic.put(DataName::Player::CurrentState, static_cast<int>(GetState()));
 
     // Playerが受け取る
     networkSystem->GetClient().opRaiseEvent(true, dic, CustomEvent::PlayerSync);
@@ -308,12 +308,18 @@ void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
     regenespd = 0;
 
     //ライフが尽きたら
-    if (life <= 0 && state != PlayerStates::reviving)
+    if (life <= 0 && GetState() != PlayerStates::reviving)
     {
         //状態を変更して色を黒くする
-        state = PlayerStates::reviving;
+        SetState(PlayerStates::reviving);
         rivivetimer = reviveCost;
+
+        s3d::AudioAsset(U"PlayerDeath").playOneShot((IsMine() ? 0.3 : 0.15));
+
+        return;
     }
+
+    s3d::AudioAsset(U"PlayerDamage").playOneShot((IsMine() ? 0.3 : 0.15));
 }
 
 void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
@@ -332,4 +338,21 @@ void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
     {
         OnEnemyBullet(other);
     }
+}
+
+void Player::SetState(PlayerStates _state)
+{
+    //しんだとき
+    if (m_state != PlayerStates::reviving && _state == PlayerStates::reviving)
+    {
+        s3d::AudioAsset(U"PlayerDeath").playOneShot(0.3);
+    }
+
+    //復活した時
+    if (m_state == PlayerStates::reviving && _state != PlayerStates::reviving)
+    {
+        s3d::AudioAsset(U"PlayerRevive").playOneShot(0.3);
+    }
+
+    m_state = _state;
 }

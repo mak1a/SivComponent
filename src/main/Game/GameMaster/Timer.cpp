@@ -28,7 +28,7 @@ void Timer::Update()
     auto t = GetTime();
 
     //残り10秒は音を鳴らす
-    if (beforetime != t)
+    if (beforetime != t && t <= 10)
     {
         s3d::AudioAsset(U"Countdown").play();
         beforetime = t;

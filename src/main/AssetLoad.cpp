@@ -39,13 +39,14 @@ void LoadAssets()
     AudioAsset::Register(U"EnemyDeath", U"Assets/Audio/SE/enemyDestroy.mp3");
     AudioAsset::Register(U"PlayerDeath", U"Assets/Audio/SE/playerDeath.mp3");
     AudioAsset::Register(U"GenerateEnemy", U"Assets/Audio/SE/enemyEntry.mp3");
+    AudioAsset::Register(U"PlayerRevive", U"Assets/Audio/SE/playerRevive.mp3");
 
     AudioAsset(U"OK").setVolume(masterVolume * 0.001);
 
     AudioAsset(U"NG").setVolume(masterVolume);
     AudioAsset(U"Menu").setVolume(masterVolume);
     AudioAsset(U"Countdown").setVolume(masterVolume);
-    AudioAsset(U"GameStart").setVolume(masterVolume);
+    AudioAsset(U"GameStart").setVolume(masterVolume * 2);
     AudioAsset(U"CoreDamage").setVolume(masterVolume);
     AudioAsset(U"PlayerDamage").setVolume(masterVolume);
     AudioAsset(U"PlayerShot").setVolume(masterVolume);
@@ -54,4 +55,5 @@ void LoadAssets()
     AudioAsset(U"EnemyDeath").setVolume(masterVolume);
     AudioAsset(U"PlayerDeath").setVolume(masterVolume);
     AudioAsset(U"GenerateEnemy").setVolume(masterVolume);
+    AudioAsset(U"PlayerRevive").setVolume(masterVolume);
 }

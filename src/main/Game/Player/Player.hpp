@@ -7,6 +7,14 @@
 
 class Player : public Photon::AttachableComponentPhotonCallbacks
 {
+public:
+    enum PlayerStates
+    {
+        normal,   //基本状態
+        reviving  //復活中
+    };
+
+private:
     void Start2() override;
     void Update() override;
     void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
@@ -54,17 +62,15 @@ class Player : public Photon::AttachableComponentPhotonCallbacks
     std::shared_ptr<Siv::Rect> rect;
     s3d::Color defaultcolor;
 
-public:
-    enum PlayerStates
-    {
-        normal,   //基本状態
-        reviving  //復活中
-    } state;
+    PlayerStates m_state;
 
+public:
     PlayerStates GetState() const
     {
-        return state;
+        return m_state;
     }
+
+    void SetState(PlayerStates _state);
 
     int playerNr;
 

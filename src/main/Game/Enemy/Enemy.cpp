@@ -40,7 +40,8 @@ void Enemy::GenerateStatus()
     const auto frame = s3d::Rect(-size, -size, size * 2, size * 2).stretched(s3d::Random() * 80);
     s3d::Circular3 c;
     c.r = 10000000;
-    c.theta = s3d::Random(2 * s3d::Math::Pi);
+    //ある程度固めて生成する
+    c.theta = s3d::Scene::Time() * 3 + s3d::Random(0.1 * s3d::Math::Pi);
     const auto line = s3d::Line({0, 0}, c);
 
     const s3d::Vec2 pos = frame.intersectsAt(line).value()[0];  // s3d::Vec2(length, 0).rotate(rad);
@@ -120,6 +121,32 @@ void Enemy::Reload()
     fire.reloadtime = 3.3;
 }
 
+void Enemy::Fire()
+{
+    fire.interval = 0.5;
+    fire.rapidnum--;
+
+    //攻撃ベクトルを計算
+    auto target = fire.targetplayer->GetPosition();
+    target = target - GetGameObject().lock()->GetPosition();
+
+    enemyManager->CreateBullet(*this, target, fire.speed, fire.life, fire.attack);
+
+    if (3 <= fire.spread)
+    {
+        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(20)), fire.speed, fire.life, fire.attack);
+        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-20)), fire.speed, fire.life, fire.attack);
+    }
+
+    if (5 <= fire.spread)
+    {
+        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(40)), fire.speed, fire.life, fire.attack);
+        enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-40)), fire.speed, fire.life, fire.attack);
+    }
+
+    s3d::AudioAsset(U"EnemyShot").playOneShot(0.3);
+}
+
 void Enemy::Start2() {}
 
 void Enemy::Update()
@@ -147,26 +174,7 @@ void Enemy::Shot()
 
     if (fire.interval < 0)
     {
-        fire.interval = 0.5;
-        fire.rapidnum--;
-
-        //攻撃ベクトルを計算
-        auto target = fire.targetplayer->GetPosition();
-        target = target - GetGameObject().lock()->GetPosition();
-
-        enemyManager->CreateBullet(*this, target, fire.speed, fire.life, fire.attack);
-
-        if (3 <= fire.spread)
-        {
-            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(20)), fire.speed, fire.life, fire.attack);
-            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-20)), fire.speed, fire.life, fire.attack);
-        }
-
-        if (5 <= fire.spread)
-        {
-            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(40)), fire.speed, fire.life, fire.attack);
-            enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-40)), fire.speed, fire.life, fire.attack);
-        }
+        Fire();
     }
 }
 
@@ -276,6 +284,8 @@ void Enemy::Damage(int damage)
     {
         // TODO: 消滅エフェクト
         GetGameObject().lock()->GetScene().lock()->Destroy(this->GetGameObject().lock());
+
+        s3d::AudioAsset(U"EnemyDeath").playOneShot(0.3);
     }
 }
 
@@ -289,11 +299,17 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
         //自分のプレイヤーが発射した弾でなければ何もしない
         if (!bullet->isMine)
         {
+            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.12);
             return;
         }
 
         Damage(bullet->attack);
         SendSyncInfo(bullet->attack);
+
+        if (life > 0)
+        {
+            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.3);
+        }
     }
 }
 

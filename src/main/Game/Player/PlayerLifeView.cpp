@@ -1,4 +1,4 @@
-﻿
+
 #include "PlayerLifeView.hpp"
 #include "Player.hpp"
 
@@ -8,7 +8,7 @@ void PlayerLifeView::Update()
 {
     const int life = player->GetLife();
 
-    switch (player->state)
+    switch (player->GetState())
     {
         case Player::PlayerStates::normal:
             text->SetText(s3d::Format(U"❤", life));
