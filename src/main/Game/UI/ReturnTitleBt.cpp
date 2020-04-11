@@ -11,7 +11,7 @@ void ReturnTitleBt::OnClick()
     //切断
     networkSystem->Disconnect();
 
-    s3d::AudioAsset(U"OK").playOneShot();
+    s3d::AudioAsset(U"OK").playOneShot(0.3);
 
     //シーン変更
     GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");

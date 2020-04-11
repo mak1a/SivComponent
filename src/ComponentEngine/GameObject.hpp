@@ -67,7 +67,7 @@ namespace ComponentEngine
         std::shared_ptr<GameObject> FindChildByName(const std::string&) const;
 
         void DeleteChild(const std::shared_ptr<GameObject>& child);
-        //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
+        //デストラクタに任せるとポインタが無効になって死ぬので先に呼べ
         //すべての子オブジェクトを破壊する
         void DestroyAll();
 
@@ -115,7 +115,7 @@ namespace ComponentEngine
 
             for (auto c = components.begin(); c != end; ++c)
             {
-                if (std::dynamic_pointer_cast<Component>(c))
+                if (auto n = std::dynamic_pointer_cast<Component>(*c))
                 {
                     components.erase(c);
                     return true;

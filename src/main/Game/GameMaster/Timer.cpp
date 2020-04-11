@@ -1,10 +1,10 @@
 ﻿
 #include "Timer.hpp"
+#include "../../Common/CommonMemory.hpp"
 #include "../../Matching/Matching.hpp"
 #include "GameState.hpp"
 #include "GameSync.hpp"
 #include "UIManager.hpp"
-#include "../../Common/CommonMemory.hpp"
 
 void Timer::Start2()
 {
@@ -26,6 +26,13 @@ void Timer::Start2()
 void Timer::Update()
 {
     auto t = GetTime();
+
+    //残り10秒は音を鳴らす
+    if (beforetime != t)
+    {
+        s3d::AudioAsset(U"Countdown").play();
+        beforetime = t;
+    }
 
     //ゲームクリア
     if (t < 0 && networkSystem->IsMasterClient())
@@ -90,11 +97,21 @@ void TimerSetup::Update()
         GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>()->SetState(GameState::States::Playing);
 
         explanation->SetActive(false);
+
+        s3d::AudioAsset(U"GameStart").play();
+        return;
+    }
+
+    //カウントダウンの音を鳴らす
+    if (beforetime != t)
+    {
+        s3d::AudioAsset(U"Countdown").play();
+        beforetime = t;
     }
 
     // HACK: これはサーバータイムバグに対するその場しのぎの対策
     if (timediff > 10 * 1000)
     {
-        CommonMemory::SetGameStartTime( networkSystem->GetServerTime() + 5000);
+        CommonMemory::SetGameStartTime(networkSystem->GetServerTime() + 5000);
     }
 }

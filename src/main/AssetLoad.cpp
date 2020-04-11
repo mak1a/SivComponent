@@ -14,8 +14,8 @@ void LoadAssets()
     AudioAsset::Register(U"BGM_Defeat", U"Assets/Audio/BGM/defeatBGM.mp3");
 
     AudioAsset(U"BGM_Title").setVolume(masterVolume);
-    AudioAsset(U"BGM_Custom").setVolume(masterVolume);
-    AudioAsset(U"BGM_Matching").setVolume(masterVolume);
+    AudioAsset(U"BGM_Custom").setVolume(masterVolume * 2.8);
+    AudioAsset(U"BGM_Matching").setVolume(masterVolume * 1.8);
     AudioAsset(U"BGM_Battle").setVolume(masterVolume);
     AudioAsset(U"BGM_Victory").setVolume(masterVolume);
     AudioAsset(U"BGM_Defeat").setVolume(masterVolume);
@@ -29,7 +29,7 @@ void LoadAssets()
     AudioAsset::Register(U"OK", U"Assets/Audio/SE/OK.mp3");
     AudioAsset::Register(U"NG", U"Assets/Audio/SE/NG.mp3");
     AudioAsset::Register(U"Menu", U"Assets/Audio/SE/Menu.mp3");
-    AudioAsset::Register(U"CoundDown", U"Assets/Audio/SE/countdown.mp3");
+    AudioAsset::Register(U"Countdown", U"Assets/Audio/SE/countdown.mp3");
     AudioAsset::Register(U"GameStart", U"Assets/Audio/SE/gamestart.mp3");
     AudioAsset::Register(U"CoreDamage", U"Assets/Audio/SE/coreDamage.mp3");
     AudioAsset::Register(U"PlayerDamage", U"Assets/Audio/SE/playerDamage.mp3");
@@ -40,10 +40,11 @@ void LoadAssets()
     AudioAsset::Register(U"PlayerDeath", U"Assets/Audio/SE/playerDeath.mp3");
     AudioAsset::Register(U"GenerateEnemy", U"Assets/Audio/SE/enemyEntry.mp3");
 
-    AudioAsset(U"OK").setVolume(masterVolume);
+    AudioAsset(U"OK").setVolume(masterVolume * 0.001);
+
     AudioAsset(U"NG").setVolume(masterVolume);
     AudioAsset(U"Menu").setVolume(masterVolume);
-    AudioAsset(U"CoundDown").setVolume(masterVolume);
+    AudioAsset(U"Countdown").setVolume(masterVolume);
     AudioAsset(U"GameStart").setVolume(masterVolume);
     AudioAsset(U"CoreDamage").setVolume(masterVolume);
     AudioAsset(U"PlayerDamage").setVolume(masterVolume);

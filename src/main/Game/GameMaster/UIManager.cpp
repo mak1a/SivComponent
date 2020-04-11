@@ -1,8 +1,26 @@
 ﻿
 #include "UIManager.hpp"
 
+void UIManager::Start2()
+{
+    GetGameObject().lock()->AddComponent<Siv::BGM>(U"BGM_Battle");
+}
+
+void UIManager::disconnectReturn()
+{
+    objects.playerManager->SetActive(false);
+    objects.playerBulletManager->SetActive(false);
+    objects.timeUI->SetActive(false);
+    objects.enemyManager->SetActive(false);
+
+    objects.connectError->SetActive(true);
+    objects.returnTitleBt->SetActive(true);
+}
+
 void UIManager::OnVictory()
 {
+    GetGameObject().lock()->DeleteComponent<Siv::BGM>();
+
     //タイマーを消す
     objects.timeUI->SetActive(false);
     //敵を全部消す
@@ -17,6 +35,8 @@ void UIManager::OnVictory()
 
 void UIManager::OnDefeat()
 {
+    GetGameObject().lock()->DeleteComponent<Siv::BGM>();
+
     //タイマーを消す
     objects.timeUI->SetActive(false);
     //プレイヤーを全部消す

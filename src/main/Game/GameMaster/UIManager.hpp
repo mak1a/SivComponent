@@ -5,16 +5,8 @@
 
 class UIManager : public Photon::AttachableComponentPhotonCallbacks
 {
-    void disconnectReturn() override
-    {
-        objects.playerManager->SetActive(false);
-        objects.playerBulletManager->SetActive(false);
-        objects.timeUI->SetActive(false);
-        objects.enemyManager->SetActive(false);
-
-        objects.connectError->SetActive(true);
-        objects.returnTitleBt->SetActive(true);
-    }
+    void disconnectReturn() override;
+    void Start2() override;
 
 public:
     void OnVictory();

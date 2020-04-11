@@ -10,6 +10,7 @@ class Timer : public Photon::AttachableComponentPhotonCallbacks
 {
 public:
     const int GAMETIME = 100;
+    int beforetime = -1;
 
     std::shared_ptr<EnemyManager> enemyManager;
     std::shared_ptr<UIManager> uimanager;
@@ -31,6 +32,8 @@ private:
 //タイマー起動用
 class TimerSetup : public Photon::AttachableComponentPhotonCallbacks
 {
+    int beforetime = -1;
+
     void Start2() override;
     void Update() override;
 

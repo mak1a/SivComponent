@@ -11,13 +11,15 @@ void Matching::Setup()
 {
     s3d::Scene::SetBackground(s3d::Palette::Lightskyblue);
 
-    s3d::Print(CommonMemory::GetPlayerType());
-
     auto sys = CreateAndGetObject()->AddComponent<MatchSystem>();
+
+    // Back
+    CreateAndGetObject()->AddComponent<Siv::Rect>()->SetColor(s3d::Palette::White).SetShape(s3d::RectF(90, 20, s3d::Scene::Width() - 90 * 2, s3d::Scene::Height() - 300));
+
     auto list = CreateAndGetObject();
-    list->SetPosition({200, 100});
+    list->SetPosition({200, 50});
     list->AddComponent<PlayerListDisplay>();
-    list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください").SetDrawAt(false);
+    list->AddComponent<Siv::Text>()->SetText(U"しばらくお待ちください").SetDrawAt(false).SetColor(s3d::Palette::Black);
 
     auto bt = CreateAndGetObject();
     bt->AddComponent<TitleBt>();
@@ -47,7 +49,7 @@ void Matching::Setup()
 
         Matching::SyncRoomInfo();
 
-        s3d::AudioAsset(U"Menu").playOneShot();
+        s3d::AudioAsset(U"Menu").playOneShot(0.3);
     });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
@@ -58,7 +60,7 @@ void Matching::Setup()
 
         Matching::SyncRoomInfo();
 
-        s3d::AudioAsset(U"Menu").playOneShot();
+        s3d::AudioAsset(U"Menu").playOneShot(0.3);
     });
     minus->AddComponent<ShowButtonOnlyMaster>();
 

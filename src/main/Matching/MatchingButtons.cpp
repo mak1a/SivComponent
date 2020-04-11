@@ -146,7 +146,7 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
 
         if (CommonMemory::GetDifficulty() != d)
         {
-            s3d::AudioAsset(U"Menu").playOneShot();
+            s3d::AudioAsset(U"Menu").playOneShot(0.3);
 
             CommonMemory::SetDifficulty(d);
         }
@@ -158,7 +158,7 @@ void MatchSystem::customEventAction(int playerNr, nByte eventCode, const ExitGam
 
     if (gameStart)
     {
-        s3d::AudioAsset(U"OK").playOneShot();
+        s3d::AudioAsset(U"OK").playOneShot(0.3);
 
         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Game");
     }
