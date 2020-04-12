@@ -3,8 +3,12 @@
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
 
+class GameState;
+
 class UIManager : public Photon::AttachableComponentPhotonCallbacks
 {
+    std::shared_ptr<GameState> state;
+
     void disconnectReturn() override;
     void Start2() override;
 

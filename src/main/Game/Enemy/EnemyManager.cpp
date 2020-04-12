@@ -1,8 +1,8 @@
 ﻿#include "EnemyManager.hpp"
 #include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
-#include "../../Matching/Matching.hpp"
 #include "../Bullet.hpp"
+#include "../GameMaster/GameState.hpp"
 #include "Enemy.hpp"
 
 constexpr double HPperSec[] = {4.0, 7.5, 15, 20, 24};
@@ -14,6 +14,8 @@ void EnemyManager::Start2()
 
     enemys = GetGameObject().lock()->CreateChild();
     enemys->SetName("Enemys");
+
+    gameState = GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>();
 
     generator.persecond = HPperSec[CommonMemory::GetDifficulty()];
     // 4秒分の敵を最初に生成
@@ -107,6 +109,11 @@ void EnemyManager::customEventAction(int playerNr, nByte eventCode, const ExitGa
 
 void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack)
 {
+    if (gameState->GetState() != GameState::Playing)
+    {
+        return;
+    }
+
     auto obj = bullets->CreateChild();
     constexpr s3d::Circle shape(0, 0, 6);
 
@@ -138,12 +145,4 @@ unsigned long EnemyManager::DestroyAllBullets()
     }
 
     return len;
-}
-
-void EnemyManager::AllEnemysDamage(int damage)
-{
-    for (auto& e : enemys->GetChildren())
-    {
-        e->GetComponent<Enemy>()->Damage(damage);
-    }
 }

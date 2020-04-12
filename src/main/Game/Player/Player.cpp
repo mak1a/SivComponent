@@ -13,9 +13,11 @@ void PlayerAnimation::Start()
 
 void PlayerAnimation::Update()
 {
-    if(time > 2)
-    {return;}
-    
+    if (time > 2)
+    {
+        return;
+    }
+
     if (anime)
     {
         time += s3d::Scene::DeltaTime();
@@ -49,7 +51,7 @@ Player::Player()
     fire.spread = 1;
     fire.speed = 180;
 
-    rivivetimer = 0;
+    revivetimer = 0;
 
     // spd = 60.0 * 5;
 }
@@ -68,16 +70,16 @@ void Player::SetType(PlayerType _type)
             fire.speed * 0.85;
             break;
         case PlayerType::Defence:
-            maxlife = 800;
+            maxlife = 400;
             life = maxlife;
-            spd *= 0.9;
+            spd *= 0.82;
             break;
         case PlayerType::Speed:
             maxlife = 70;
             life = maxlife;
             spd *= 1.54;
             fire.speed *= 1.8;
-            fire.lifetime *= 0.4;
+            fire.lifetime *= 0.38;
             break;
     }
 }
@@ -128,8 +130,18 @@ void Player::Start2()
         case PlayerType::Standard:
             specialAttack = GetGameObject().lock()->AddComponent<SpyBomb>();
             break;
-            
-            //TODO:
+
+        case PlayerType::Attack:
+            specialAttack = GetGameObject().lock()->AddComponent<AttackSpecial>();
+            break;
+
+        case PlayerType::Defence:
+            specialAttack = GetGameObject().lock()->AddComponent<DefenceSpecial>();
+            break;
+
+        case PlayerType::Speed:
+            specialAttack = GetGameObject().lock()->AddComponent<SpeedSpecial>();
+            break;
     }
 }
 
@@ -163,16 +175,26 @@ void Player::Move()
     camera->SetPosition(currentPos - diff);
 }
 
-void Player::Revive()
+void Player::Reviveing()
 {
-    rivivetimer -= s3d::Scene::DeltaTime();
-    if (rivivetimer < 0)
+    revivetimer -= s3d::Scene::DeltaTime();
+    if (revivetimer < 0)
     {
-        //ライフ回復、状態変更、色を戻す
-        life = maxlife;
-        SetState(PlayerStates::normal);
-        rect->SetColor(defaultcolor);
+        OnRevive();
     }
+}
+
+void Player::OnRevive()
+{
+    if (GetState() != PlayerStates::reviving)
+    {
+        return;
+    }
+    //ライフ回復、状態変更、色を戻す
+    revivetimer = -1;
+    life = maxlife;
+    SetState(PlayerStates::normal);
+    rect->SetColor(defaultcolor);
 }
 
 //リジェネ回復
@@ -235,9 +257,10 @@ void Player::Update()
     //位置同期を行う
     syncstatus.Run();
 
+    //死んでたら蘇生カウントを進める
     if (GetState() == PlayerStates::reviving)
     {
-        Revive();
+        Reviveing();
         return;
     }
 
@@ -246,6 +269,7 @@ void Player::Update()
     Regenerate();
 }
 
+// TODO: 移動機構を別コンポーネントとして分離すべき
 void Player::SyncPosWithEasing()
 {
     auto pos = GetGameObject().lock()->GetPosition();
@@ -344,7 +368,7 @@ void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
     {
         //状態を変更して色を黒くする
         SetState(PlayerStates::reviving);
-        rivivetimer = reviveCost;
+        revivetimer = reviveCost;
 
         s3d::AudioAsset(U"PlayerDeath").playOneShot((IsMine() ? 0.3 : 0.15));
 

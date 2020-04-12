@@ -100,6 +100,7 @@ void Game::Setup()
 
     //プレイヤーコアを生成
     auto core = Altercamera->CreateChild();
+    core->SetName("PlayerCore");
     core->SetTag(UserDef::Tag::Wall);
     auto playerCoreComp = core->AddComponent<PlayerCore>();
     core->AddComponent<Collision::CollisionObject>(Collision::Layer::Field);

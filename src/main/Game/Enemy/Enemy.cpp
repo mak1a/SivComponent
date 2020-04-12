@@ -288,6 +288,11 @@ void Enemy::Damage(int damage)
         s3d::AudioAsset(U"EnemyDeath").playOneShot(0.3);
     }
 }
+void Enemy::DamageAndSend(int damage)
+{
+    Damage(damage);
+    SendSyncInfo(damage);
+}
 
 void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
 {
@@ -303,8 +308,7 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
             return;
         }
 
-        Damage(bullet->attack);
-        SendSyncInfo(bullet->attack);
+        DamageAndSend(bullet->attack);
 
         if (life > 0)
         {
@@ -431,7 +435,7 @@ int MakeFirelife()
 {
     const int difficulty = CommonMemory::GetDifficulty();
 
-    int ret = 2.5;
+    int ret = 3;
 
     return ret;
 }

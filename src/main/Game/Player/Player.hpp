@@ -30,6 +30,14 @@ public:
         reviving  //復活中
     };
 
+    struct FireInfo
+    {
+        int attack;
+        double lifetime;
+        int speed;
+        int spread = 1;
+    };
+
 private:
     void Start2() override;
     void Update() override;
@@ -39,9 +47,9 @@ private:
     void OnWall();
     void OnEnemy();
     void OnEnemyBullet(std::shared_ptr<GameObject>& other);
-    void Revive();
     void Move();
     void Regenerate();
+    void Reviveing();
 
     bool isMine = false;
 
@@ -49,23 +57,17 @@ private:
     int maxlife;
     int life;
 
+    FireInfo fire;
+
     //リジェネの回復実数値
     double regene = 0;
     //リジェネの回復加速度
     double regenespd = 0;
 
-    struct FireInfo
-    {
-        int attack;
-        double lifetime;
-        int speed;
-        int spread = 1;
-    } fire;
-
     //蘇生にかかる時間
     double reviveCost;
     //蘇生状況
-    double rivivetimer = 0;
+    double revivetimer = 0;
     PlayerType type;
 
     //線形補間用
@@ -83,6 +85,26 @@ private:
     int playerNr;
 
 public:
+    void SetFireInfo(const FireInfo& info)
+    {
+        fire = info;
+    }
+
+    const FireInfo& GetFireInfo()
+    {
+        return fire;
+    }
+
+    void SetSpeed(double speed)
+    {
+        spd = speed;
+    }
+
+    double GetSpeed()
+    {
+        return spd;
+    }
+
     std::shared_ptr<ISpecialAttack> specialAttack;
     std::shared_ptr<Siv::Circle> centerCircle;
 
@@ -118,15 +140,23 @@ public:
         return life;
     }
 
-    const FireInfo& GetFireInfo()
+    //限界突破用
+    void SetLife(int hp)
     {
-        return fire;
+        life = hp;
+    }
+
+    int GetMaxLife()
+    {
+        return maxlife;
     }
 
     PlayerType GetType() const
     {
         return type;
     }
+    //強制的に蘇生も可能
+    void OnRevive();
 
     //タイプを設定し、それにより数値を変更
     void SetType(PlayerType _type);

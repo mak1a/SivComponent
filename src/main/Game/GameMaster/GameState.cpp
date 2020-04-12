@@ -38,15 +38,15 @@ void GameState::SetState(GameState::States _state)
 void GameState::ToSetup() {}
 void GameState::ToPlaying()
 {
-    refs.enemymanager->SetActive(true);
+    // refs.enemymanager->SetActive(true);
 }
 void GameState::ToWin()
 {
-    refs.enemymanager->SetActive(false);
-    refs.timer->SetActive(false);
+    // refs.enemymanager->SetActive(false);
+    // refs.timer->SetActive(false);
 }
 void GameState::ToLose()
 {
-    refs.enemymanager->SetActive(false);
-    refs.timer->SetActive(false);
+    // refs.enemymanager->SetActive(false);
+    // refs.timer->SetActive(false);
 }

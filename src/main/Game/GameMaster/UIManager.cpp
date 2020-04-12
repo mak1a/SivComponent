@@ -1,9 +1,11 @@
 ﻿
 #include "UIManager.hpp"
+#include "GameState.hpp"
 
 void UIManager::Start2()
 {
     GetGameObject().lock()->AddComponent<Siv::BGM>(U"BGM_Battle");
+    state = GetGameObject().lock()->GetScene().lock()->FindObject("GameSystem")->GetComponent<GameState>();
 }
 
 void UIManager::disconnectReturn()
@@ -19,6 +21,8 @@ void UIManager::disconnectReturn()
 
 void UIManager::OnVictory()
 {
+    state->SetState(GameState::Win);
+
     GetGameObject().lock()->DeleteComponent<Siv::BGM>();
     s3d::AudioAsset(U"BGM_Victory").play();
 
@@ -36,8 +40,11 @@ void UIManager::OnVictory()
 
 void UIManager::OnDefeat()
 {
+    state->SetState(GameState::Lose);
+
     GetGameObject().lock()->DeleteComponent<Siv::BGM>();
-    s3d::AudioAsset(U"BGM_Defeat").play();
+
+    GetGameObject().lock()->AddComponent<Siv::BGM>(U"BGM_Defeat");
 
     //タイマーを消す
     objects.timeUI->SetActive(false);

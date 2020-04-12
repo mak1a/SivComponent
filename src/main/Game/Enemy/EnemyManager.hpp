@@ -11,6 +11,7 @@ enum EnemyType
     Killer,
 };
 
+class GameState;
 class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
 {
     //敵生成に使うための値
@@ -27,6 +28,7 @@ class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
 
     std::shared_ptr<GameObject> bullets;
     std::shared_ptr<GameObject> enemys;
+    std::shared_ptr<GameState> gameState;
 
     void EnemyGenerate();
 
@@ -40,5 +42,9 @@ public:
     void CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack = 10);
 
     unsigned long DestroyAllBullets();
-    void AllEnemysDamage(int damage);
+
+    std::shared_ptr<GameObject> GetAllEnemyMaster()
+    {
+        return enemys;
+    };
 };
