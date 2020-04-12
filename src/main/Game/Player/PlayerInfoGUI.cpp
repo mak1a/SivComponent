@@ -12,7 +12,7 @@ void PlayerLifeView::Update()
     switch (player->GetState())
     {
         case Player::PlayerStates::normal:
-            text->SetText(s3d::Format(U"â¤", life));
+            text->SetText(s3d::Format(U"❤", life));
             break;
 
         case Player::PlayerStates::reviving:

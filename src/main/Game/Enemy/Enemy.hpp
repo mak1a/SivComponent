@@ -62,12 +62,12 @@ class Enemy : public Photon::AttachableComponentPhotonCallbacks
     void Move();
     void Shot();
     void Fire();
-    void Damage(int damage);
     void SendSyncInfo(int damage, int targetPlayer = -99) const;
 
     void GenerateStatus();
 
 public:
+    void Damage(int damage);
     static EnemyManager* enemyManager;
     static PlayerManager* playerManager;
     std::shared_ptr<GameObject> TargetObject;

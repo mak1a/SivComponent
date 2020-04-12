@@ -80,10 +80,21 @@ private:
 
     PlayerStates m_state;
 
-public:
     int playerNr;
+
+public:
     std::shared_ptr<ISpecialAttack> specialAttack;
     std::shared_ptr<Siv::Circle> centerCircle;
+
+    void SetPlayerNr(int number)
+    {
+        playerNr = number;
+    }
+
+    int GetPlayerNr()
+    {
+        return playerNr;
+    }
 
     PlayerStates GetState() const
     {

@@ -1,4 +1,4 @@
-﻿
+
 #include "Enemy.hpp"
 #include "../../../Utilities/Utilities.hpp"
 #include "../../Common/CommonMemory.hpp"
@@ -91,7 +91,7 @@ void Enemy::SetTarget()
         //最短を更新
         if (d < distance)
         {
-            playerNr = pl->playerNr;
+            playerNr = pl->GetPlayerNr();
             fire.targetplayer = p;
             distance = d;
         }
@@ -265,7 +265,7 @@ void Enemy::customEventAction(int playerNr, nByte eventCode, const ExitGames::Co
         for (int i = 0; i < len; ++i)
         {
             const auto& player = playerManager->players[i];
-            if (player->playerNr == target)
+            if (player->GetPlayerNr() == target)
             {
                 fire.targetplayer = player->GetGameObject().lock();
                 break;

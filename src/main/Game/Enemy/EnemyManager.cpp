@@ -1,4 +1,4 @@
-﻿#include "EnemyManager.hpp"
+#include "EnemyManager.hpp"
 #include "../../Common/CommonMemory.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
@@ -124,7 +124,7 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
     bu->SetMove(target, spd);
 }
 
-int EnemyManager::DestroyAllBullets()
+unsigned long EnemyManager::DestroyAllBullets()
 {
     const auto& bu = bullets->GetChildren();
 
@@ -138,4 +138,12 @@ int EnemyManager::DestroyAllBullets()
     }
 
     return len;
+}
+
+void EnemyManager::AllEnemysDamage(int damage)
+{
+    for (auto& e : enemys->GetChildren())
+    {
+        e->GetComponent<Enemy>()->Damage(damage);
+    }
 }

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../../../ComponentEngine/ComponentEngine.hpp"
 #include "../../../PhotonComponent/PhotonComponent.hpp"
@@ -39,5 +39,6 @@ public:
 
     void CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack = 10);
 
-    int DestroyAllBullets();
+    unsigned long DestroyAllBullets();
+    void AllEnemysDamage(int damage);
 };

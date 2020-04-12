@@ -1,4 +1,4 @@
-﻿
+
 #include "Player.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
 #include "../../CustomEventList.hpp"
@@ -130,6 +130,8 @@ void Player::Start2()
         case PlayerType::Standard:
             specialAttack = GetGameObject().lock()->AddComponent<SpyBomb>();
             break;
+            
+            //TODO:
     }
 }
 

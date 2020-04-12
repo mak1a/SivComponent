@@ -9,6 +9,7 @@ namespace CustomEvent
     constexpr nByte PlayerSync = 11;
     constexpr nByte PlayerShot = 12;
     constexpr nByte PlayerBulletHit = 13;
+    constexpr nByte PlayerSpecial = 14;
 
     constexpr nByte EnemyGenerate = 20;
     constexpr nByte EnemySync = 21;

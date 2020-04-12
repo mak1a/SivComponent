@@ -16,7 +16,7 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     //初期化済みなら弾く
     for (const auto& n : players)
     {
-        if (n->playerNr == playerNr)
+        if (n->GetPlayerNr() == playerNr)
         {
             return;
         }
@@ -38,7 +38,7 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     //数値を流し込む
     auto player = otherplayer->GetComponent<Player>();
 
-    player->playerNr = playerNr;
+    player->SetPlayerNr (playerNr);
     player->SetType(static_cast<PlayerType>(type));
 
     //配列管理に追加
@@ -55,7 +55,7 @@ std::shared_ptr<GameObject> PlayerManager::CreateMyPlayer()
 
     auto player = mainplayerobj->GetComponent<Player>();
     player->SetMine(true);
-    player->playerNr = Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber();
+    player->SetPlayerNr( Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber());
     player->SetType(static_cast<PlayerType>(CommonMemory::GetPlayerType()));
 
     this->players.push_back(player);
@@ -71,7 +71,7 @@ void PlayerManager::leaveRoomEventAction(int playerNr, bool isInactive)
     auto end = players.end();
     for (auto player = players.begin(); player != end; ++player)
     {
-        if ((*player)->playerNr == playerNr)
+        if ((*player)->GetPlayerNr() == playerNr)
         {
             GetGameObject().lock()->GetScene().lock()->Destroy((*player)->GetGameObject().lock());
 
