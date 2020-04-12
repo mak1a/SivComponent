@@ -10,7 +10,11 @@ constexpr double HPperSec[] = {4.0, 7.5, 15, 20, 24};
 void EnemyManager::Start2()
 {
     bullets = GetGameObject().lock()->CreateChild();
-    bullets->SetName("bullets");
+    bullets->SetName("Bullets");
+
+    enemys = GetGameObject().lock()->CreateChild();
+    enemys->SetName("Enemys");
+
     generator.persecond = HPperSec[CommonMemory::GetDifficulty()];
     // 4秒分の敵を最初に生成
     generator.generatableHP = generator.persecond * 4;
@@ -56,7 +60,7 @@ void EnemyManager::Update()
 
 int EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
 {
-    std::shared_ptr<GameObject> obj = bullets->CreateChild();
+    std::shared_ptr<GameObject> obj = enemys->CreateChild();
     obj->SetName("standard enemy");
     constexpr s3d::Rect shape(-10, -10, 20, 20);
 
@@ -103,7 +107,7 @@ void EnemyManager::customEventAction(int playerNr, nByte eventCode, const ExitGa
 
 void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack)
 {
-    auto obj = GetGameObject().lock()->CreateChild();
+    auto obj = bullets->CreateChild();
     constexpr s3d::Circle shape(0, 0, 6);
 
     obj->SetTag(UserDef::Tag::EnemyBullet);
@@ -118,4 +122,20 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
     obj->SetPosition(enemy.GetGameObject().lock()->GetPosition());
 
     bu->SetMove(target, spd);
+}
+
+int EnemyManager::DestroyAllBullets()
+{
+    const auto& bu = bullets->GetChildren();
+
+    const auto len = bu.size();
+
+    auto scene = GetGameObject().lock()->GetScene().lock();
+
+    for (auto& b : bu)
+    {
+        scene->Destroy(b);
+    }
+
+    return len;
 }

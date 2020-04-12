@@ -75,7 +75,6 @@
 		8A262859243307510011FCF2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A262857243307510011FCF2 /* GameState.cpp */; };
 		8A26285C2433554E0011FCF2 /* PlayerBulletManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26285A2433554E0011FCF2 /* PlayerBulletManager.cpp */; };
 		8A2628622433B1300011FCF2 /* PlayerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628602433B1300011FCF2 /* PlayerManager.cpp */; };
-		8A2628652434AC510011FCF2 /* PlayerLifeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628632434AC510011FCF2 /* PlayerLifeView.cpp */; };
 		8A2628682434C9300011FCF2 /* UIManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2628662434C9300011FCF2 /* UIManager.cpp */; };
 		8A26286C2435C9390011FCF2 /* ReturnTitleBt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A26286A2435C9390011FCF2 /* ReturnTitleBt.cpp */; };
 		8A3895B3243717CC00A1F6A1 /* MatchingButtons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A3895B1243717CC00A1F6A1 /* MatchingButtons.cpp */; };
@@ -86,6 +85,7 @@
 		8A9D9F7E243ED647004C3CAD /* CommonMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9F7C243ED647004C3CAD /* CommonMemory.cpp */; };
 		8A9D9F942440D96C004C3CAD /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9F922440D96C004C3CAD /* Assets.cpp */; };
 		8A9D9F972440D990004C3CAD /* AssetLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9F962440D990004C3CAD /* AssetLoad.cpp */; };
+		8A9D9F9B2442C27B004C3CAD /* SpecialAttack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9F992442C27B004C3CAD /* SpecialAttack.cpp */; };
 		8AE97653243899D100D31482 /* PlayerInfoGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AE97651243899D100D31482 /* PlayerInfoGUI.cpp */; };
 		8AE97656243899E500D31482 /* CoreInfoGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AE97654243899E500D31482 /* CoreInfoGUI.cpp */; };
 /* End PBXBuildFile section */
@@ -206,8 +206,6 @@
 		8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerBulletManager.hpp; sourceTree = "<group>"; };
 		8A2628602433B1300011FCF2 /* PlayerManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerManager.cpp; sourceTree = "<group>"; };
 		8A2628612433B1300011FCF2 /* PlayerManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerManager.hpp; sourceTree = "<group>"; };
-		8A2628632434AC510011FCF2 /* PlayerLifeView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerLifeView.cpp; sourceTree = "<group>"; };
-		8A2628642434AC510011FCF2 /* PlayerLifeView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerLifeView.hpp; sourceTree = "<group>"; };
 		8A2628662434C9300011FCF2 /* UIManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIManager.cpp; sourceTree = "<group>"; };
 		8A2628672434C9300011FCF2 /* UIManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIManager.hpp; sourceTree = "<group>"; };
 		8A26286A2435C9390011FCF2 /* ReturnTitleBt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReturnTitleBt.cpp; sourceTree = "<group>"; };
@@ -229,6 +227,8 @@
 		8A9D9F932440D96C004C3CAD /* Assets.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Assets.hpp; path = Assets/Assets.hpp; sourceTree = "<group>"; };
 		8A9D9F952440D990004C3CAD /* AssetLoad.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AssetLoad.hpp; sourceTree = "<group>"; };
 		8A9D9F962440D990004C3CAD /* AssetLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetLoad.cpp; sourceTree = "<group>"; };
+		8A9D9F992442C27B004C3CAD /* SpecialAttack.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialAttack.cpp; sourceTree = "<group>"; };
+		8A9D9F9A2442C27B004C3CAD /* SpecialAttack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SpecialAttack.hpp; sourceTree = "<group>"; };
 		8AE97651243899D100D31482 /* PlayerInfoGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerInfoGUI.cpp; sourceTree = "<group>"; };
 		8AE97652243899D100D31482 /* PlayerInfoGUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerInfoGUI.hpp; sourceTree = "<group>"; };
 		8AE97654243899E500D31482 /* CoreInfoGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreInfoGUI.cpp; sourceTree = "<group>"; };
@@ -492,10 +492,10 @@
 				8A26285B2433554E0011FCF2 /* PlayerBulletManager.hpp */,
 				8A2628602433B1300011FCF2 /* PlayerManager.cpp */,
 				8A2628612433B1300011FCF2 /* PlayerManager.hpp */,
-				8A2628632434AC510011FCF2 /* PlayerLifeView.cpp */,
-				8A2628642434AC510011FCF2 /* PlayerLifeView.hpp */,
 				8AE97651243899D100D31482 /* PlayerInfoGUI.cpp */,
 				8AE97652243899D100D31482 /* PlayerInfoGUI.hpp */,
+				8A9D9F992442C27B004C3CAD /* SpecialAttack.cpp */,
+				8A9D9F9A2442C27B004C3CAD /* SpecialAttack.hpp */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -666,6 +666,7 @@
 				8A26286C2435C9390011FCF2 /* ReturnTitleBt.cpp in Sources */,
 				8A26283C242663780011FCF2 /* test.cpp in Sources */,
 				8AE97653243899D100D31482 /* PlayerInfoGUI.cpp in Sources */,
+				8A9D9F9B2442C27B004C3CAD /* SpecialAttack.cpp in Sources */,
 				8A9D9F942440D96C004C3CAD /* Assets.cpp in Sources */,
 				8A2071BA2400321000284059 /* IScene.cpp in Sources */,
 				8A1476DF241C92FC00389E76 /* Game.cpp in Sources */,
@@ -700,7 +701,6 @@
 				8A1476EB24209A1D00389E76 /* InstantiateEntry.cpp in Sources */,
 				8A1476D42419F02F00389E76 /* TextConvert.cpp in Sources */,
 				8A2628392423B9350011FCF2 /* CollisionObject.cpp in Sources */,
-				8A2628652434AC510011FCF2 /* PlayerLifeView.cpp in Sources */,
 				8A1476E82420924800389E76 /* Matching.cpp in Sources */,
 				8A14767F240FA72800389E76 /* Utilities.cpp in Sources */,
 				8A2628622433B1300011FCF2 /* PlayerManager.cpp in Sources */,

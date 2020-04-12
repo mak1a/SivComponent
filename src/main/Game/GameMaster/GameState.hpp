@@ -32,10 +32,6 @@ private:
     void Start();
     void Update()
     {
-        if (s3d::KeySpace.down())
-        {
-            SetState(States::Win);
-        }
     }
 
     void ToSetup();

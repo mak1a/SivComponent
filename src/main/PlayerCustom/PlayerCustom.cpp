@@ -33,7 +33,7 @@ void PlayerCustom::Setup()
     controlexp->AddComponent<Siv::Text>()
         ->SetFont(s3d::Font(23, s3d::Typeface::Medium))
         .SetColor(s3d::Palette::Black)
-        .SetText(U"操作\n移動：WASD　　攻撃：左クリック　　ボム：スペース")
+        .SetText(U"操作\n移動：WASD　　攻撃：左クリック長押し　　ボム：スペースキー")
         .SetDrawAt(false);
 
     auto bt = CreateAndGetObject();
@@ -54,7 +54,7 @@ void PlayerCustom::Setup()
             csb2->OnClick();
             s3d::AudioAsset(U"OK").playOneShot(0.3);
         })
-        .SetText(U"マッチング");
+        .SetText(U"オンラインマッチングへ");
 
     // BGM
     auto bgm = CreateAndGetObject();

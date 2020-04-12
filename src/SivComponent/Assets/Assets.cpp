@@ -1,4 +1,4 @@
-
+﻿
 #include "Assets.hpp"
 using namespace s3d;
 

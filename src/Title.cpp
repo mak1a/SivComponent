@@ -98,7 +98,7 @@ void TitleScene::Setup()
     auto btscript = bt->AddComponent<ChangeSceneBt>();
     bt->AddComponent<Siv::Button>()->SetText(U"プレイヤー選択へ").SetDelegate([=]() {
         btscript->ChangeToMatching();
-        s3d::AudioAsset(U"OK").playOneShot();
+        s3d::AudioAsset(U"OK").playOneShot(0.3);
     });
     btscript->generator = gen;
 

@@ -1,7 +1,8 @@
-#include "PlayerBulletManager.hpp"
+﻿#include "PlayerBulletManager.hpp"
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "Player.hpp"
+#include "SpecialAttack.hpp"
 
 constexpr double FireRate = 1.0 / 4;
 // constexpr int bulletspd = 180;
@@ -109,6 +110,7 @@ void PlayerBulletManager::Update()
         return;
     }
 
+    //射撃
     if (s3d::MouseL.pressed() && fireInterval < 0)
     {
         CreateBullet();
@@ -116,5 +118,10 @@ void PlayerBulletManager::Update()
 
         //自分の発射音
         s3d::AudioAsset(U"PlayerShot").playOneShot(0.3);
+    }
+
+    if (s3d::KeySpace.down())
+    {
+        player->specialAttack->Special();
     }
 }

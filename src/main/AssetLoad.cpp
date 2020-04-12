@@ -1,4 +1,4 @@
-
+﻿
 #include "AssetLoad.hpp"
 #include <Siv3D.hpp>
 

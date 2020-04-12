@@ -5,7 +5,7 @@
 #include "Game/Enemy/Enemy.hpp"
 #include "Game/Field/MapWall.hpp"
 #include "Game/Player/Player.hpp"
-#include "Game/Player/PlayerLifeView.hpp"
+#include "Game/Player/PlayerInfoGUI.hpp"
 
 void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
 {
@@ -16,12 +16,23 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         const auto player = obj->AddComponent<Player>();
         constexpr double size = 19;
         constexpr s3d::RectF shape(-size / 2, -size / 2, size, size);
-        constexpr auto r = size * 0.35;
+        constexpr auto r = size * 0.38;
         constexpr s3d::Circle cir(0, 0, r);
         obj->AddComponent<Collision::CollisionObject>(UserDef::CollisionLayer::Player);
         obj->AddComponent<Collision::CircleCollider>()->SetShape(cir.stretched(-2));
+
+        //枠
         obj->AddComponent<Siv::Rect>()->SetShape(shape);
-        obj->AddComponent<Siv::Circle>()->SetShape(cir);
+
+        //周りの円
+        obj->AddComponent<Siv::Circle>()->SetShape(cir).SetColor(s3d::Palette::Black);
+
+        //中心の円
+        (player->centerCircle = obj->AddComponent<Siv::Circle>())->SetShape(cir.stretched(-0.5));
+
+        //ボムフレーム
+        obj->AddComponent<Siv::RectFrame>()->SetShape(shape).SetColor(s3d::Palette::Blue).SetInnerThickness(1).SetOuterThickness(0);
+        obj->AddComponent<PlayerAnimation>();
 
         //ライフ表示
         auto txtobj = obj->CreateChild();

@@ -26,6 +26,7 @@ class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
     void customEventAction(int øplayerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) override;
 
     std::shared_ptr<GameObject> bullets;
+    std::shared_ptr<GameObject> enemys;
 
     void EnemyGenerate();
 
@@ -37,4 +38,6 @@ public:
     int CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic);
 
     void CreateBullet(Enemy& enemy, const s3d::Vec2& target, double spd, double lifetime, int attack = 10);
+
+    int DestroyAllBullets();
 };

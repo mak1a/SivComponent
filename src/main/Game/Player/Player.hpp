@@ -5,6 +5,22 @@
 #include "../../../Utilities/IntervalCall.hpp"
 #include "../../Common/CommonMemory.hpp"
 
+class PlayerAnimation : public AttachableComponent
+{
+    std::shared_ptr<Siv::RectFrame> frame;
+    s3d::ColorF basecolor;
+    double time = 0;
+    bool anime = false;
+
+    void Start() override;
+    void Update() override;
+
+public:
+    void OnBomb();
+};
+
+class ISpecialAttack;
+
 class Player : public Photon::AttachableComponentPhotonCallbacks
 {
 public:
@@ -65,14 +81,16 @@ private:
     PlayerStates m_state;
 
 public:
+    int playerNr;
+    std::shared_ptr<ISpecialAttack> specialAttack;
+    std::shared_ptr<Siv::Circle> centerCircle;
+
     PlayerStates GetState() const
     {
         return m_state;
     }
 
     void SetState(PlayerStates _state);
-
-    int playerNr;
 
     bool IsMine() const noexcept
     {

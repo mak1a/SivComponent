@@ -1,18 +1,39 @@
-
+﻿
 #include "Player.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
 #include "../../CustomEventList.hpp"
 #include "../Bullet.hpp"
+#include "SpecialAttack.hpp"
+
+void PlayerAnimation::Start()
+{
+    frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();
+    basecolor = frame->GetColor();
+}
+
+void PlayerAnimation::Update()
+{
+    if (anime)
+    {
+        time += s3d::Scene::DeltaTime();
+        const auto alpha = basecolor.setA(1.0 - time * 1.3);
+        frame->SetOuterThickness(time * 20).SetColor(alpha);
+    }
+
+    if (s3d::KeySpace.down())
+    {
+        OnBomb();
+    }
+}
+
+void PlayerAnimation::OnBomb()
+{
+    anime = true;
+}
+
+///------------------
 
 constexpr int PosSyncPerSecond = 7;
-
-/*
-プレイヤーの個性
-復活型 HPが低いが復活速度がとても早い　遊撃向き
-攻撃型 攻撃力が1.6倍ぐらいある　拠点防衛向き
-HP型　HPが3倍ぐらいあり、当たり判定が少し小さい　乱戦に強い
-速度型 移動速度と弾速が1.3倍ぐらいある　スナイパー処理向き
-*/
 
 Player::Player()
     : syncstatus((int32_t)(1000 / PosSyncPerSecond), [&]() { SyncStatus(); })
@@ -74,7 +95,8 @@ void Player::Start2()
     rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
     camera = GetGameObject().lock()->GetParent().lock()->GetParent().lock();
 
-    rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.3));
+    //周りのうすい緑色
+    rect->SetColor(s3d::ColorF(0.1, 0.9, 0.2, 0.7));
 
     //移動前座標をセット
     movehistory = GetGameObject().lock()->GetPosition();
@@ -97,13 +119,18 @@ void Player::Start2()
         }
     }
 
-    //中心の色
-    // constexpr std::array<s3d::Color, 4> colors = {s3d::Color(255, 200, 200), s3d::Color(70, 70, 140), s3d::Color(120, 0, 240), s3d::Color(0, 170, 230)};
-    // GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[nr]);
-
     // Standard, Attack, Defence, Speed,
     constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(255, 0, 0), s3d::Color(0, 0, 255), s3d::Color(255, 255, 0)};
-    GetGameObject().lock()->GetComponent<Siv::Circle>()->SetColor(colors[static_cast<int>(GetType())]);
+
+    centerCircle->SetColor(colors[static_cast<int>(GetType())]);
+
+    //ボムをくっつける
+    switch (GetType())
+    {
+        case PlayerType::Standard:
+            specialAttack = GetGameObject().lock()->AddComponent<SpyBomb>();
+            break;
+    }
 }
 
 void Player::Move()
