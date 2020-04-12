@@ -1,4 +1,4 @@
-
+﻿
 #include "Player.hpp"
 #include "../../../SivComponent/SivComponent.hpp"
 #include "../../CustomEventList.hpp"
@@ -13,16 +13,14 @@ void PlayerAnimation::Start()
 
 void PlayerAnimation::Update()
 {
+    if(time > 2)
+    {return;}
+    
     if (anime)
     {
         time += s3d::Scene::DeltaTime();
         const auto alpha = basecolor.setA(1.0 - time * 1.3);
         frame->SetOuterThickness(time * 20).SetColor(alpha);
-    }
-
-    if (s3d::KeySpace.down())
-    {
-        OnBomb();
     }
 }
 
