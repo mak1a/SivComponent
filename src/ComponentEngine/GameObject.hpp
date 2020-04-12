@@ -1,16 +1,15 @@
-#pragma once
+﻿#pragma once
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
 #include <boost/noncopyable.hpp>
+
 #include <list>
 #include <memory>
 
 #include "../UserDefinition/ObjectTag.hpp"
 #include "IComponent.hpp"
 #include "Transform.hpp"
-
-// #include "../SivComponent/Collision/CollisionSystem.hpp"
 
 namespace ComponentEngine
 {
@@ -23,126 +22,71 @@ namespace ComponentEngine
         friend class IScene;
         friend class CollisionSystem;
 
-        // public:
-        //     using DrawCallStack = std::map<int, std::vector<std::shared_ptr<GameObject>>>;
-
     public:
-        // GameObjectは必ずtransformを持つ
-        Transform _transform;
-        std::weak_ptr<IScene> scene;
+        [[nodiscard]] std::weak_ptr<GameObject>& GetParent();
+        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren();
 
-        Transform& SetWorldPosition(const s3d::Vec2& _position)
-        {
-            return _transform.SetWorldPosition(_position, parent.lock()->transform().matrix.inversed());
-        }
+        bool IsInitializedAll();
 
-    private:
-        std::string name = "unnamed";
-        UserDef::Tag objecttag;
+        GameObject& SetPosition(const s3d::Vec2& _position);
+        s3d::Vec2 GetPosition() const;
+        GameObject& SetWorldPosition(const s3d::Vec2& _position);
+        s3d::Vec2 GetWorldPosition() const;
+        GameObject& SetLocalPosition(const s3d::Vec2& _position);
+        s3d::Vec2 GetLocalPosition() const;
+        GameObject& SetRotateByRadian(double _rotate);
+        GameObject& SetRotateByAngle(double angle);
+        double GetRotate() const noexcept;
+        GameObject& SetScale(double _scale);
+        double GetScale() const noexcept;
 
-    public:
-        GameObject& SetName(const std::string& _name)
-        {
-            name = _name;
-            return *this;
-        }
+        s3d::Vec2 LookAt(const std::shared_ptr<GameObject>& target) const;
+        s3d::Vec2 LookAt(const s3d::Vec2& targetWorldPos) const;
 
-        std::string GetName() const noexcept
-        {
-            return name;
-        }
+        GameObject& SetName(const std::string& _name);
+        std::string GetName() const noexcept;
+        GameObject& SetTag(UserDef::Tag _tag);
+        UserDef::Tag GetTag() const;
 
-        GameObject& SetTag(UserDef::Tag _tag)
-        {
-            objecttag = _tag;
-            return *this;
-        }
+        std::weak_ptr<IScene> GetScene();
 
-        UserDef::Tag GetTag() const
-        {
-            return objecttag;
-        }
+        GameObject& SetActive(bool _active);
+        bool GetActive() const noexcept;
+        Transform& transform();
 
-        std::weak_ptr<IScene> GetScene()
-        {
-            // sceneの参照を持ってなかったら親から回収する
-            if (scene.expired())
-            {
-                scene = parent.lock()->GetScene();
-            }
+        [[nodiscard]] std::shared_ptr<GameObject> CreateChild();
+        [[nodiscard]] std::shared_ptr<GameObject> CreateChild(const std::string& objectName);
 
-            return scene;
-        }
+        const std::shared_ptr<GameObject>& AddChild(const std::shared_ptr<GameObject>& child, bool pushfront = false);
+        //子オブジェクトを新しく生成
+        // [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild();
+        void SetParent(const std::weak_ptr<GameObject>& newParent, bool pushfront = false);
+        std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const;
+        std::shared_ptr<GameObject> FindChild(const std::string& name) const;
 
-    private:
-        bool active;
+        std::shared_ptr<GameObject> FindChildByName(const std::string&) const;
 
-    public:
-        GameObject& SetActive(bool _active)
-        {
-            active = _active;
-            for (const auto& c : children)
-            {
-                c->SetActive(_active);
-            }
-            return *this;
-        }
+        void DeleteChild(const std::shared_ptr<GameObject>& child);
+        //デストラクタに任せるとポインタが無効になって死ぬので先に呼べ
+        //すべての子オブジェクトを破壊する
+        void DestroyAll();
 
-        bool GetActive() const noexcept
-        {
-            return active;
-        }
+        GameObject();
+        explicit GameObject(const Transform& trans);
 
-    public:
-        //プロパティ
-        Transform& transform()
-        {
-            return _transform;
-        }
+        ~GameObject() = default;
 
-    private:
-        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
-        //メモリリークのリスクの方が大きい気もする。
-        std::list<std::shared_ptr<IComponent>> components;
+        // IScene API
+        void components_start();
 
-        //親子オブジェクト
-        std::weak_ptr<GameObject> parent;
-        std::list<std::shared_ptr<GameObject>> children;
+        void components_update();
 
-    public:
-        [[nodiscard]] std::weak_ptr<GameObject>& GetParent()
-        {
-            return parent;
-        }
+        void components_lateUpdate();
 
-        [[nodiscard]] std::list<std::shared_ptr<GameObject>>& GetChildren()
-        {
-            return children;
-        }
+        void components_draw() const;
 
-    private:
-        // Start更新済みかどうか
-        bool initializedAll = false;
-
-    public:
-        bool IsInitializedAll()
-        {
-            return initializedAll;
-        }
-
-    public:
-        GameObject()
-            : GameObject(Transform())
-        {
-        }
-
-        //実際に動くコンストラクタ
-        explicit GameObject(const Transform& trans)
-        {
-            active = true;
-            _transform = trans;
-            objecttag = UserDef::Tag::Default;
-        }
+        // IScene event API
+        void components_call_collisionstay(std::shared_ptr<GameObject>& object);
 
         // make_shared書くの面倒なのでね
         static std::shared_ptr<GameObject> Create()
@@ -171,8 +115,9 @@ namespace ComponentEngine
 
             for (auto c = components.begin(); c != end; ++c)
             {
-                if (std::dynamic_pointer_cast<Component>(c))
+                if (std::dynamic_pointer_cast<Component>(*c))
                 {
+                    (*c)->OnDestroy();
                     components.erase(c);
                     return true;
                 }
@@ -239,167 +184,42 @@ namespace ComponentEngine
             return _components;
         }
 
-        void AddChild(const std::shared_ptr<GameObject>& child)
-        {
-            child->SetParent(weak_from_this());
-        }
-
-        [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetChild()
-        {
-            auto object = std::make_shared<GameObject>();
-            object->scene = this->scene;
-            this->AddChild(object);
-            return object;
-        }
-
-        void SetParent(const std::weak_ptr<GameObject>& newParent)
-        {
-            //現在の関係をデバッグ出力
-            // std::cout << "this is:" << GetName() << std::endl;
-
-            if (!newParent.lock())
-            {
-                return;
-            }
-            //自分を新しい親の子オブジェクトに設定
-            newParent.lock()->children.push_back(shared_from_this());
-
-            if (parent.lock())
-            {
-                // DEBUG
-                // std::cout << "parent is:" << parent.lock()->GetName() << std::endl;
-                //今の親と関係を解消
-                parent.lock()->RemoveChild(shared_from_this());
-            }
-
-            //親を新しいオブジェクトに設定
-            parent = newParent;
-        }
-
     private:
-        auto FindChildItr(const std::shared_ptr<GameObject>& child) const -> decltype(std::find(children.begin(), children.end(), child))
-        {
-            return std::find(children.begin(), children.end(), child);
-        }
+        // weak_ptrを使えるようにするためにshared_ptrにしたが、正直生ポインタでいいところではある。
+        //メモリリークのリスクの方が大きい気もする。
+        std::list<std::shared_ptr<IComponent>> components;
 
-        auto FindChildItr(const std::string& name) const -> decltype(std::find(children.begin(), children.end(), children.front()))
-        {
-            return std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
-        }
+        //親子オブジェクト
+        std::weak_ptr<GameObject> parent;
+        std::list<std::shared_ptr<GameObject>> children;
 
-    public:
-        std::shared_ptr<GameObject> FindChild(const std::shared_ptr<GameObject>& child) const
-        {
-            auto itr = FindChildItr(child);
+        // Start更新済みかどうか
+        bool initializedAll = false;
 
-            if (itr == children.end())
-            {
-                return std::shared_ptr<GameObject>();
-            }
+        // GameObjectは必ずtransformを持つ
+        Transform _transform;
+        // 上位オブジェクトへの参照
+        std::weak_ptr<IScene> scene;
 
-            return *itr;
-        }
+        std::string name = "gameobject";
+        UserDef::Tag objecttag;
 
-        std::shared_ptr<GameObject> FindChild(const std::string& name) const
-        {
-            auto itr = std::find_if(children.begin(), children.end(), [&](const std::shared_ptr<GameObject>& obj) { return obj->GetName() == name; });
+        bool active;
 
-            if (itr == children.end())
-            {
-                return std::shared_ptr<GameObject>();
-            }
+        static s3d::Mat3x2 identity_matrix;
+        s3d::Mat3x2& parent_matrix() const;
 
-            return *itr;
-        }
+        //子オブジェクトに変換行列を適用する
+        void update_children_matrix();
+        auto FindChildItr(const std::shared_ptr<GameObject>& child) const -> decltype(std::find(children.begin(), children.end(), child));
 
-        void DeleteChild(const std::shared_ptr<GameObject>& child)
-        {
-            auto itr = FindChildItr(child);
-            if (itr == children.end())
-            {
-                return;
-            }
+        auto FindChildItr(const std::string& name) const -> decltype(std::find(children.begin(), children.end(), children.front()));
 
-            child->DestroyAllChildrenComponents();
-
-            children.erase(itr);
-        }
-
-    private:
         //子オブジェクトを削除せずに外します
-        bool RemoveChild(const std::shared_ptr<GameObject>& child)
-        {
-            auto itr = FindChildItr(child);
+        bool RemoveChild(const std::shared_ptr<GameObject>& child);
 
-            if (itr == children.end())
-            {
-                return false;
-            }
+        void DestroyAllChildren();
 
-            children.erase(itr);
-            return true;
-        }
-
-    public:
-        //デストラクタに任せると伝播方向の関係でポインタが無効になって死ぬので先に呼べ
-        //すべての子オブジェクトを破壊する
-        void DestroyAll()
-        {
-            if (GetName() == "MasterObject")
-            {
-                auto itr = FindChildItr("CommonParent");
-                if (itr != children.end())
-                {
-                    children.erase(itr);
-                }
-            }
-
-            //まずはすべてのコンポーネントのOnDestoryを呼び出す
-            DestroyAllChildrenComponents();
-            //次にすべての子オブジェクトを削除
-            DestroyAllChildren();
-        }
-
-    private:
-        void DestroyAllChildren()
-        {
-            for (const auto& child : children)
-            {
-                child->DestroyAllChildrenComponents();
-            }
-
-            children.clear();
-        }
-
-        void DestroyAllChildrenComponents()
-        {
-            for (const auto& component : components)
-            {
-                component->OnDestroy();
-            }
-            for (const auto& child : children)
-            {
-                child->DestroyAllChildrenComponents();
-            }
-        }
-
-    public:
-        ~GameObject()
-        {
-            //            DestoryAllObjects();
-            // DEBUG
-            // std::cout << "Destory:" << GetName() << std::endl;
-        }
-
-    public:
-        void components_start(const s3d::Mat3x2&);
-
-        void components_update(const s3d::Mat3x2&);
-
-        void components_lateUpdate(const s3d::Mat3x2&);
-
-        void components_draw(const s3d::Mat3x2&) const;
-
-        void components_call_collisionstay(std::shared_ptr<GameObject>& object);
+        void DestroyAllChildrenComponents();
     };  // namespace ComponentEngine
 }  // namespace ComponentEngine

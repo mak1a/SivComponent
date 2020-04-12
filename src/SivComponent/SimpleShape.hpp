@@ -1,10 +1,10 @@
-
+﻿
 #pragma once
 
 #define NO_S3D_USING
 #include <Siv3D.hpp>
+#include "../ComponentEngine/ComponentEngine.hpp"
 #include "Collision/ShapeTransform.hpp"
-#include "ComponentEngine.hpp"
 
 namespace ComponentEngine::Siv
 {
@@ -180,14 +180,84 @@ namespace ComponentEngine::Siv
 
         Rect()
             : color(s3d::Palette::White)
-            , shape(0, 0, 100, 100)
+            , shape(-50, -50, 100, 100)
         {
         }
 
     protected:
         void Draw() const override
         {
-            Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix()).draw(color);
+            auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
+            s.draw(color);
+        }
+    };
+
+    class RectFrame : public ComponentEngine::AttachableComponent
+    {
+        using Shape = s3d::RectF;
+        using ThisType = RectFrame;
+
+    private:
+        Shape shape;
+        s3d::ColorF color;
+        double innerThickness = 3, outerThickness;
+
+    public:
+        ThisType& SetShape(const Shape& _shape)
+        {
+            shape = _shape;
+            return *this;
+        }
+
+        Shape GetShape() const noexcept
+        {
+            return shape;
+        }
+
+        ThisType& SetColor(const s3d::ColorF& _color)
+        {
+            color = _color;
+            return *this;
+        }
+
+        s3d::ColorF GetColor() const noexcept
+        {
+            return color;
+        }
+
+        RectFrame& SetInnerThickness(double _innerThickness)
+        {
+            innerThickness = _innerThickness;
+            return *this;
+        }
+
+        double GetInnerThickness() const noexcept
+        {
+            return innerThickness;
+        }
+
+        RectFrame& SetOuterThickness(double _outerThickness)
+        {
+            outerThickness = _outerThickness;
+            return *this;
+        }
+
+        double GetOuterThickness() const noexcept
+        {
+            return outerThickness;
+        }
+
+        RectFrame()
+            : color(s3d::Palette::White)
+            , shape(-50, -50, 100, 100)
+        {
+        }
+
+    protected:
+        void Draw() const override
+        {
+            auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
+            s.drawFrame(innerThickness, outerThickness, color);
         }
     };
 }  // namespace ComponentEngine::Siv

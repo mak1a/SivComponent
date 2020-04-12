@@ -1,4 +1,4 @@
-
+﻿
 #include "AttachableComponentPhotonCallbacks.hpp"
 #include "NetworkSystem.hpp"
 
@@ -14,8 +14,6 @@ namespace ComponentEngine::Photon
 
     void AttachableComponentPhotonCallbacks::OnDestroy()
     {
-        std::cout << "callback exit" << std::endl;
-
         //コールバック対象から外れる
         auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject(NetworkObjectName());
         object->GetComponent<NetworkSystem>()->Dispose(this);

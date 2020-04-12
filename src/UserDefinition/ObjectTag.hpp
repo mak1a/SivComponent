@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace ComponentEngine::UserDef
 {
@@ -9,6 +9,6 @@ namespace ComponentEngine::UserDef
         Enemy,
         PlayerBullet,
         EnemyBullet,
-        Field,
+        Wall,
     };
 }

@@ -1,10 +1,10 @@
-
+﻿
 #pragma once
 
 #define NO_USING_S3D
 #include <Siv3D.hpp>
-#include "AttachableComponent.hpp"
-#include "GameObject.hpp"
+#include "./../ComponentEngine/AttachableComponent.hpp"
+#include "./../ComponentEngine/GameObject.hpp"
 
 namespace ComponentEngine::Siv
 {
@@ -134,15 +134,15 @@ namespace ComponentEngine::Siv
 
         void Draw() const override
         {
-            const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
+            const auto t = s3d::Transformer2D(GetGameObject().lock()->transform().GetMatrix(), true);
 
             if (drawAt)
             {
-                pushed = s3d::SimpleGUI::ButtonAt(text, pos, width, isActive);
+                pushed = s3d::SimpleGUI::ButtonAt(text, s3d::Vec2{0, 0}, width, isActive);
             }
             else
             {
-                pushed = s3d::SimpleGUI::Button(text, pos, width, isActive);
+                pushed = s3d::SimpleGUI::Button(text, s3d::Vec2{0, 0}, width, isActive);
             }
         }
 
@@ -210,6 +210,62 @@ namespace ComponentEngine::Siv
         bool GetDrawAt() const noexcept
         {
             return drawAt;
+        }
+    };
+
+    class RadioButton : public ComponentEngine::AttachableComponent
+    {
+        s3d::Array<s3d::String> elements = {U"radiobutton"};
+        mutable size_t index = 0;
+
+        bool drawAt = false;
+        mutable bool changed = false;
+
+        void Draw() const override;
+
+    public:
+        RadioButton() {}
+        RadioButton(const s3d::Array<s3d::String>& _elements)
+            : elements(_elements)
+        {
+        }
+
+        RadioButton& SetElements(const s3d::Array<s3d::String>& _elements)
+        {
+            elements = _elements;
+            return *this;
+        }
+
+        [[nodiscard]] s3d::Array<s3d::String> GetElements() const
+        {
+            return elements;
+        }
+
+        RadioButton& SetDrawAt(bool _drawAt)
+        {
+            drawAt = _drawAt;
+            return *this;
+        }
+
+        [[nodiscard]] bool GetDrawAt() const noexcept
+        {
+            return drawAt;
+        }
+
+        [[nodiscard]] size_t GetIndex() const
+        {
+            return index;
+        }
+
+        RadioButton& SetIndex(size_t _index)
+        {
+            index = std::min(elements.size(), _index);
+            return *this;
+        }
+
+        [[nodiscard]] bool Changed() const
+        {
+            return changed;
         }
     };
 }  // namespace ComponentEngine::Siv

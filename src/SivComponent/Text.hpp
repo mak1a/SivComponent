@@ -1,9 +1,9 @@
-
+﻿
 #pragma once
 
 #define NO_USING_S3D
 #include <Siv3D.hpp>
-#include "ComponentEngine.hpp"
+#include "../ComponentEngine/ComponentEngine.hpp"
 
 namespace ComponentEngine::Siv
 {
@@ -17,12 +17,19 @@ namespace ComponentEngine::Siv
         s3d::Font font;
         bool drawAt;
 
+        struct
+        {
+            bool enable = false;
+            s3d::Color color = s3d::Palette::Gray;
+            s3d::Vec2 offset = {10, 10};
+        } shadow;
+
     public:
         Text()
             : color(s3d::Palette::White)
             , text(U"text")
-            , font(30)
-            , drawAt(false)
+            , font(25)
+            , drawAt(true)
         {
         }
 
@@ -70,19 +77,40 @@ namespace ComponentEngine::Siv
             return drawAt;
         }
 
-    private:
-        void Draw() const override
+        Text& SetShadowEnable(bool enable)
         {
-            const auto pos = GetGameObject().lock()->transform().GetWorldPosition();
-
-            if (drawAt)
-            {
-                font(text).drawAt(pos, color);
-            }
-            else
-            {
-                font(text).draw(pos, color);
-            }
+            shadow.enable = enable;
+            return *this;
         }
+
+        bool GetShadowEnable() const
+        {
+            return shadow.enable;
+        }
+
+        Text& SetShadowColor(s3d::Color color)
+        {
+            shadow.color = color;
+            return *this;
+        }
+
+        s3d::Color GetShadowColor() const
+        {
+            return shadow.color;
+        }
+
+        Text& SetShadowOffset(s3d::Vec2 offset)
+        {
+            shadow.offset = offset;
+            return *this;
+        }
+
+        s3d::Vec2 GetShadowOffset() const
+        {
+            return shadow.offset;
+        }
+
+    private:
+        void Draw() const override;
     };
 }  // namespace ComponentEngine::Siv

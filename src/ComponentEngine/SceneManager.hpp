@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IScene.hpp"
 #include "SceneCommon.hpp"
@@ -53,8 +53,6 @@ namespace ComponentEngine
             }
 #endif
 
-            // auto _this = this;
-
             FuncType func = [&]() -> ScenePtr {
                 ScenePtr scene = std::make_shared<SceneName>();
                 //ポインタの注入
@@ -72,7 +70,7 @@ namespace ComponentEngine
             }
 
             //シーンによるエンジンへのデータ登録
-//            nextScene
+            //            nextScene
         }
 
         void ChangeScene(const KeyType& key)
@@ -85,7 +83,7 @@ namespace ComponentEngine
             }
 #endif
             nextScene = sceneMaker[key]();
-            nextScene->manager = this;
+            nextScene->_set_manager(this);
         }
 
         void UpdateCurrentScene()
@@ -97,13 +95,13 @@ namespace ComponentEngine
                 if (currentScene)
                 {
                     currentScene->DestoryAllObjects();
+                    currentScene.reset();
                 }
                 currentScene.swap(nextScene);
-                nextScene.reset();
-                currentScene->manager = this;
+                currentScene->_set_manager(this);
 
                 //共通オブジェクトの設定
-                currentScene->masterObject->AddChild(common.commonParent);
+                currentScene->GetMasterObject()->AddChild(common.commonParent);
             }
 
             //シーンの更新

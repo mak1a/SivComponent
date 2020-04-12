@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //#include"ComponentEngine.hpp"
 #include "../ComponentEngine/AttachableComponent.hpp"
@@ -39,13 +39,11 @@ namespace ComponentEngine::Photon
         virtual void customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent) {}
 
         // callbacks for operations on the server
-        virtual void connectReturn(int errorCode,
-                                   const ExitGames::Common::JString& errorString,
-                                   const ExitGames::Common::JString& region,
-                                   const ExitGames::Common::JString& cluster)
+        virtual void connectReturn(int errorCode, const ExitGames::Common::JString& errorString, const ExitGames::Common::JString& region, const ExitGames::Common::JString& cluster)
         {
         }
         virtual void disconnectReturn(void) {}
+
         virtual void createRoomReturn(int localPlayerNr,
                                       const ExitGames::Common::Hashtable& roomProperties,
                                       const ExitGames::Common::Hashtable& playerProperties,

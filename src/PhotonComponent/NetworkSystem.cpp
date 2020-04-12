@@ -1,25 +1,32 @@
-#define NO_S3D_USING
+﻿#define NO_S3D_USING
 #include "NetworkSystem.hpp"
 
 namespace ComponentEngine::Photon
 {
+    NetworkSystem* NetworkSystem::instance = nullptr;
+
     std::string NetworkObjectName()
     {
         return "PhotonSystem";
     }
 
     NetworkSystem::NetworkSystem()
-        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::TCP)
+        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::UDP)
     {
         SetPlayerName(L"null player");
 
         mLogger.setDebugOutputLevel(ExitGames::Common::DebugLevel::ALL);
         mLogger.setListener(*this);
+
+        //しっかりとしたシングルトンにしたい
+        instance = this;
     }
 
     NetworkSystem::~NetworkSystem()
     {
         Disconnect();
+
+        instance = nullptr;
     }
 
     void NetworkSystem::Connect(void)

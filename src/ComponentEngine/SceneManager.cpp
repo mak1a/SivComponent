@@ -1,4 +1,4 @@
-#include "SceneManager.hpp"
+﻿#include "SceneManager.hpp"
 
 namespace ComponentEngine
 {

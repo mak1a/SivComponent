@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #define NO_USING_S3D
 #include <Siv3D.hpp>
-#include "ComponentEngine.hpp"
+#include "../ComponentEngine/ComponentEngine.hpp"
 
 namespace ComponentEngine::Siv
 {

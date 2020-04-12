@@ -1,11 +1,7 @@
-
+﻿
 #pragma once
 
 #include <list>
-
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 #include <boost/noncopyable.hpp>
 
@@ -18,6 +14,7 @@ namespace ComponentEngine
 {
     class SceneManager;
 
+    //なぜかファイル分割できん
     class IScene : public std::enable_shared_from_this<IScene>, boost::noncopyable
     {
     public:
@@ -30,7 +27,41 @@ namespace ComponentEngine
 
         std::list<std::weak_ptr<GameObject>> destroyList;
 
+        bool isInitialized;
+
+        SceneManager* manager = nullptr;
+
     public:
+        bool IsInitialized() const noexcept
+        {
+            return isInitialized;
+        }
+
+        std::shared_ptr<GameObject> GetMasterObject()
+        {
+            return masterObject;
+        }
+
+        void _set_manager(SceneManager* m)
+        {
+            if (manager != nullptr)
+            {
+                return;
+            }
+
+            manager = m;
+        }
+
+        std::shared_ptr<GameObject> FindObject(const std::string& name) const
+        {
+            return masterObject->FindChildByName(name);
+        }
+
+        SceneManager* GetSceneManager()
+        {
+            return manager;
+        }
+
         ComponentEngine::Collision::CollisionSystem& GetCollisionSystem()
         {
             return colsys;
@@ -42,29 +73,6 @@ namespace ComponentEngine
             destroyList.push_back(object);
         }
 
-    private:
-        bool isInitialized;
-
-    public:
-        bool IsInitialized() const noexcept
-        {
-            return isInitialized;
-        }
-
-    private:
-        SceneManager* manager;
-        friend SceneManager;
-
-    public:
-        SceneManager* GetSceneManager()
-        {
-            return manager;
-        }
-
-    protected:
-        // void ChangeScene(const KeyType& sceneName) {}
-
-    public:
         virtual void Setup() = 0;
         // virtual void EngineInit(ComponentEngine::SceneCommon&){};
 
@@ -73,9 +81,6 @@ namespace ComponentEngine
             //無効なポインタならエラー
             if (!object)
             {
-#ifdef DEBUG
-                std::cout << "Object Pointer is Null." << std::endl;
-#endif
                 return;
             }
             masterObject->AddChild(object);
@@ -98,17 +103,7 @@ namespace ComponentEngine
             return object;
         }
 
-    public:
-        IScene()
-            : isInitialized(false)
-        {
-            masterObject = std::make_shared<GameObject>();
-            masterObject->SetName("MasterObject");
-            masterObject->scene = weak_from_this();
-        }
-
-    public:
-        virtual void Update() final
+        void Update()
         {
             if (!isInitialized)
             {
@@ -117,16 +112,16 @@ namespace ComponentEngine
             }
 
             // Start呼び出し
-            masterObject->components_start(s3d::Mat3x2::Identity());
+            masterObject->components_start();
 
-            masterObject->components_update(s3d::Mat3x2::Identity());
+            masterObject->components_update();
 
-            masterObject->components_lateUpdate(s3d::Mat3x2::Identity());
+            masterObject->components_lateUpdate();
 
             //衝突判定コール
             colsys.CollisionCall();
 
-            masterObject->components_draw(s3d::Mat3x2::Identity());
+            masterObject->components_draw();
 
             //消去処理
             for (auto& obj : destroyList)
@@ -141,20 +136,45 @@ namespace ComponentEngine
             }
         }
 
+        IScene()
+            : isInitialized(false)
+        {
+            masterObject = std::make_shared<GameObject>();
+            masterObject->SetName("MasterObject");
+            masterObject->scene = weak_from_this();
+        }
+
         void DestoryAllObjects()
         {
             masterObject->DestroyAll();
         }
 
-        virtual ~IScene()
-        {
-            std::cout << "scene destory" << std::endl;
-            std::cout << "master:" << masterObject.use_count() << std::endl;
-            for (auto& c : masterObject->children)
-            {
-                std::cout << c->GetName() << ":" << c.use_count() << std::endl;
-            }
-        }
+        virtual ~IScene() = default;
     };
 
 }  // namespace ComponentEngine
+
+//  bool IsInitialized() const noexcept;
+
+//         SceneManager* GetSceneManager();
+
+//         ComponentEngine::Collision::CollisionSystem& GetCollisionSystem();
+
+//         //オブジェクト消去を予約
+//         void Destroy(std::weak_ptr<GameObject> object);
+
+//         virtual void Setup() = 0;
+
+//         void AddObject(const std::shared_ptr<GameObject>& object);
+
+//         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject();
+
+//         [[nodiscard]] std::shared_ptr<GameObject> CreateAndGetObject(const Transform& transform);
+
+//         void Update();
+
+//         void DestoryAllObjects();
+
+//         IScene();
+
+//         virtual ~IScene() = default;

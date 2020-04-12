@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <list>
 
@@ -9,21 +9,22 @@
 
 namespace ComponentEngine::Collision
 {
-    using Layer = unsigned char;
+    using LayerType = unsigned char;
+    using Layer = UserDef::CollisionLayer;
 
     //衝突判定を取りたい物体に一つだけつける
     //各ColliderのStart呼び出し前につけないと機能しない
     class CollisionObject : public AttachableComponent
     {
     private:
-        const Layer layer;
+        const LayerType layer;
         //判定の変更はほとんどないはずなのでvectorで管理する
         // shared_from_thisを噛ませないといけなくなるので生ポインタ管理　リソース適切に管理すれば問題なし
         std::vector<ICollider*> colliders;
 
     public:
         CollisionObject(UserDef::CollisionLayer _layer, size_t collidernum = 1)
-            : layer(static_cast<Layer>(_layer))
+            : layer(static_cast<LayerType>(_layer))
 
         {
             colliders.reserve(collidernum);
@@ -70,7 +71,7 @@ namespace ComponentEngine::Collision
             return false;
         }
 
-        Layer GetLayer() const noexcept
+        LayerType GetLayer() const noexcept
         {
             return layer;
         }
