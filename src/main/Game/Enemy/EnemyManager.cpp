@@ -58,6 +58,8 @@ void EnemyManager::Update()
         //次の生成まで1~5秒開ける
         generator.interval = s3d::Random(1.0, 7.0);
     }
+    //フレーム中の発射音の回数管理
+    bulletAudio = true;
 }
 
 int EnemyManager::CreateStandardEnemy(ExitGames::Common::Dictionary<nByte, int>* dic)
@@ -129,6 +131,12 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
     obj->SetPosition(enemy.GetGameObject().lock()->GetPosition());
 
     bu->SetMove(target, spd);
+
+    if (bulletAudio)
+    {
+        s3d::AudioAsset(U"EnemyShot").playOneShot(0.3);
+        bulletAudio = false;
+    }
 }
 
 unsigned long EnemyManager::DestroyAllBullets()

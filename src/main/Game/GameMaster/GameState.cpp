@@ -38,7 +38,7 @@ void GameState::SetState(GameState::States _state)
 void GameState::ToSetup() {}
 void GameState::ToPlaying()
 {
-    // refs.enemymanager->SetActive(true);
+    refs.enemymanager->SetActive(true);
 }
 void GameState::ToWin()
 {

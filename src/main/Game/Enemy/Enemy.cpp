@@ -143,8 +143,6 @@ void Enemy::Fire()
         enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(40)), fire.speed, fire.life, fire.attack);
         enemyManager->CreateBullet(*this, target.rotated(Utilities::DegToRad(-40)), fire.speed, fire.life, fire.attack);
     }
-
-    s3d::AudioAsset(U"EnemyShot").playOneShot(0.3);
 }
 
 void Enemy::Start2() {}

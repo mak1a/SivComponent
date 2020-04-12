@@ -32,6 +32,8 @@ class EnemyManager : public Photon::AttachableComponentPhotonCallbacks
 
     void EnemyGenerate();
 
+    bool bulletAudio = true;
+
 public:
     std::shared_ptr<GameObject> playercore;
     std::shared_ptr<Timer> timer;
