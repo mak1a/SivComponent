@@ -1,8 +1,5 @@
-﻿
+﻿#include "../../../PhotonComponent/NetworkSystem.hpp"
 #include "GameSync.hpp"
-#include "../../../PhotonComponent/NetworkSystem.hpp"
-
-// using namespace DataName::GameSync;
 
 void SendDefeatSignal()
 {
@@ -12,9 +9,9 @@ void SendDefeatSignal()
 
     dic.put(DataName::GameSync::Result, static_cast<int>(DataName::GameSync::ResultType::Defeat));
 
-    // PlayerManagerが受け取る
     network->GetClient().opRaiseEvent(true, dic, CustomEvent::GameResult);
 }
+
 void SendVictorySignal()
 {
     auto network = ComponentEngine::Photon::NetworkSystem::GetInstance();
@@ -23,6 +20,5 @@ void SendVictorySignal()
 
     dic.put(DataName::GameSync::Result, static_cast<int>(DataName::GameSync::ResultType::Victory));
 
-    // PlayerManagerが受け取る
     network->GetClient().opRaiseEvent(true, dic, CustomEvent::GameResult);
 }

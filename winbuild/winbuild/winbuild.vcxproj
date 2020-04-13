@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{988345bb-98c6-4792-9810-d2d7ede65356}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>winbuild</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SIV3D_0_4_2)\include;$(SIV3D_0_4_2)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_4_2)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug\Intermediate\</IntDir>
+    <TargetName>$(ProjectName)(debug)</TargetName>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SIV3D_0_4_2)\include;$(SIV3D_0_4_2)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_4_2)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Release\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Release\Intermediate\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\inc;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\inc;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\;C:\Users\para\Documents\boost\include\boost-1_64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib\Common-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib\Common-cpp_vc16_release_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib\Photon-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib\Photon-cpp_vc16_release_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_release_windows_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /I /D /Y "$(OutDir)$(TargetFileName)" "$(ProjectDir)App"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\inc;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\inc;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\;C:\Users\para\Documents\boost\include\boost-1_64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib\Common-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib\Common-cpp_vc16_release_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib\Photon-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib\Photon-cpp_vc16_release_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_release_windows_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\LoadBalancing-cpp\lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Photon-cpp\lib;C:\Users\para\Documents\photon-windows-sdk_v4-1-16-0\Photon-Windows-Sdk_v4-1-16-0\Common-cpp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /I /D /Y "$(OutDir)$(TargetFileName)" "$(ProjectDir)App"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Image Include="App\engine\texture\box-shadow\128.png" />
+    <Image Include="App\engine\texture\box-shadow\16.png" />
+    <Image Include="App\engine\texture\box-shadow\256.png" />
+    <Image Include="App\engine\texture\box-shadow\32.png" />
+    <Image Include="App\engine\texture\box-shadow\64.png" />
+    <Image Include="App\engine\texture\box-shadow\8.png" />
+    <Image Include="App\example\bay.jpg" />
+    <Image Include="App\example\particle.png" />
+    <Image Include="App\example\siv3d-kun.png" />
+    <Image Include="App\example\windmill.png" />
+    <Image Include="App\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="App\Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App\engine\emoji\noto7_dictionary.dat" />
+    <None Include="App\engine\font\fontawesome\fontawesome-brands.otf.zstdcmp" />
+    <None Include="App\engine\font\fontawesome\fontawesome-solid.otf.zstdcmp" />
+    <None Include="App\engine\font\mplus\LICENSE_E" />
+    <None Include="App\engine\font\mplus\mplus-1p-black.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-bold.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-heavy.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-light.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-medium.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-regular.ttf.zstdcmp" />
+    <None Include="App\engine\font\mplus\mplus-1p-thin.ttf.zstdcmp" />
+    <None Include="App\engine\font\noto\NotoColorEmoji.ttf.zstdcmp" />
+    <None Include="App\engine\font\noto\NotoEmoji-Regular.ttf.zstdcmp" />
+    <None Include="App\engine\objdetect\haarcascade\eye.xml.zstdcmp" />
+    <None Include="App\engine\objdetect\haarcascade\eye_eyeglasses.xml.zstdcmp" />
+    <None Include="App\engine\objdetect\haarcascade\face_anime.xml.zstdcmp" />
+    <None Include="App\engine\objdetect\haarcascade\frontal_catface.xml.zstdcmp" />
+    <None Include="App\engine\objdetect\haarcascade\frontal_face_alt2.xml.zstdcmp" />
+    <None Include="App\engine\shader\copy.ps" />
+    <None Include="App\engine\shader\fullscreen_triangle_draw.ps" />
+    <None Include="App\engine\shader\fullscreen_triangle_draw.vs" />
+    <None Include="App\engine\shader\fullscreen_triangle_resolve.ps" />
+    <None Include="App\engine\shader\fullscreen_triangle_resolve.vs" />
+    <None Include="App\engine\shader\gaussian_blur_9.ps" />
+    <None Include="App\engine\shader\round_dot.ps" />
+    <None Include="App\engine\shader\sdf.ps" />
+    <None Include="App\engine\shader\shape.ps" />
+    <None Include="App\engine\shader\sprite.vs" />
+    <None Include="App\engine\shader\square_dot.ps" />
+    <None Include="App\engine\shader\texture.ps" />
+    <None Include="App\engine\soundfont\GMGSx.sf2.zstdcmp" />
+    <None Include="App\example\config\config.csv" />
+    <None Include="App\example\config\config.ini" />
+    <None Include="App\example\config\config.json" />
+    <None Include="App\example\config\config.toml" />
+    <None Include="App\example\font\LogoTypeGothic\LICENSE_E" />
+    <None Include="App\example\font\NotoSansCJKjp\README" />
+    <None Include="App\example\font\Pecita\LICENSE" />
+    <None Include="App\example\gui\gui.toml" />
+    <None Include="App\example\svm\a1a_testing" />
+    <None Include="App\example\svm\a1a_training" />
+    <None Include="App\example\test.toml" />
+    <None Include="App\nlp\japanese\jumanpp\LICENSE" />
+    <None Include="App\nlp\japanese\jumanpp\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
+    <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
+    <Text Include="App\example\font\AnnyantRoman\readme.txt" />
+    <Text Include="App\example\font\LogoTypeGothic\ReadMe_windows.txt" />
+    <Text Include="App\example\font\NotoSansCJKjp\LICENSE_OFL.txt" />
+    <Text Include="App\example\LICENSE.txt" />
+    <Text Include="App\example\script\paint.txt" />
+    <Text Include="App\example\script\test.txt" />
+    <Text Include="App\example\test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="App\example\font\AnnyantRoman\AnnyantRoman.ttf" />
+    <Font Include="App\example\font\LogoTypeGothic\LogoTypeGothic.otf" />
+    <Font Include="App\example\font\NotoSansCJKjp\NotoSansCJKjp-Regular.otf" />
+    <Font Include="App\example\font\Pecita\Pecita.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="App\example\shot.mp3" />
+    <Media Include="App\example\test.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="App\example\config\config.xml" />
+    <Xml Include="App\example\test.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App\example\shader\2d\default_shape.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\default_texture.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\game_of_life.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\grayscale.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\multi_texture_blend.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\multi_texture_mask.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\poisson_disk.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\posterize.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\rgb_shift.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\rgb_to_bgr.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="App\example\shader\2d\swirl.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\ComponentEngine\AttachableComponent.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\ComponentEngine.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\GameObject.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\IScene.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\SceneCommon.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\SceneManager.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\Transform.cpp" />
+    <ClCompile Include="..\..\src\Main.cpp" />
+    <ClCompile Include="..\..\src\main\AssetLoad.cpp" />
+    <ClCompile Include="..\..\src\main\Common\Buttons.cpp" />
+    <ClCompile Include="..\..\src\main\Common\CommonMemory.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Bullet.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Enemy\Enemy.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Field\MapWall.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Game.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\CoreInfoGUI.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\GameState.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\GameSync.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\PlayerCore.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\Timer.cpp" />
+    <ClCompile Include="..\..\src\main\Game\GameMaster\UIManager.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Player\Player.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Player\PlayerBulletManager.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Player\PlayerInfoGUI.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Player\PlayerManager.cpp" />
+    <ClCompile Include="..\..\src\main\Game\Player\SpecialAttack.cpp" />
+    <ClCompile Include="..\..\src\main\Game\UI\ReturnTitleBt.cpp" />
+    <ClCompile Include="..\..\src\main\InstantiateEntry.cpp" />
+    <ClCompile Include="..\..\src\main\Matching\Matching.cpp" />
+    <ClCompile Include="..\..\src\main\Matching\MatchingButtons.cpp" />
+    <ClCompile Include="..\..\src\main\PlayerCustom\PlayerCustom.cpp" />
+    <ClCompile Include="..\..\src\main\PlayerCustom\PlayerCustomGUIs.cpp" />
+    <ClCompile Include="..\..\src\PhotonComponent\AttachableComponentPhotonCallbacks.cpp" />
+    <ClCompile Include="..\..\src\PhotonComponent\NetworkSystem.cpp" />
+    <ClCompile Include="..\..\src\PhotonComponent\PhotonComponent.cpp" />
+    <ClCompile Include="..\..\src\PhotonComponent\PhotonInit.cpp" />
+    <ClCompile Include="..\..\src\PSN\PhotonSiv3D.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Assets\Assets.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Collision\CollisionObject.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Collision\ShapeTransform.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Gui.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\SimpleShape.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\SivComponent.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Text.cpp" />
+    <ClCompile Include="..\..\src\SivComponent\Utils.cpp" />
+    <ClCompile Include="..\..\src\test.cpp" />
+    <ClCompile Include="..\..\src\Title.cpp" />
+    <ClCompile Include="..\..\src\Utilities\PhotonUtilities.cpp" />
+    <ClCompile Include="..\..\src\Utilities\TextConvert.cpp" />
+    <ClCompile Include="..\..\src\Utilities\Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\ComponentEngine\AttachableComponent.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\ComponentEngine.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\GameObject.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\IComponent.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\IScene.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\SceneCommon.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\SceneManager.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\Transform.hpp" />
+    <ClInclude Include="..\..\src\main\AssetLoad.hpp" />
+    <ClInclude Include="..\..\src\main\Common\Buttons.hpp" />
+    <ClInclude Include="..\..\src\main\Common\CommonMemory.hpp" />
+    <ClInclude Include="..\..\src\main\CustomEventList.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Bullet.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Enemy\Enemy.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Enemy\EnemyManager.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Field\MapWall.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Game.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\CoreInfoGUI.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\GameState.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\GameSync.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\PlayerCore.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\Timer.hpp" />
+    <ClInclude Include="..\..\src\main\Game\GameMaster\UIManager.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Player\Player.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Player\PlayerBulletManager.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Player\PlayerInfoGUI.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Player\PlayerManager.hpp" />
+    <ClInclude Include="..\..\src\main\Game\Player\SpecialAttack.hpp" />
+    <ClInclude Include="..\..\src\main\Game\UI\ReturnTitleBt.hpp" />
+    <ClInclude Include="..\..\src\main\InstantiateEntry.hpp" />
+    <ClInclude Include="..\..\src\main\Matching\Matching.hpp" />
+    <ClInclude Include="..\..\src\main\Matching\MatchingButtons.hpp" />
+    <ClInclude Include="..\..\src\main\PlayerCustom\PlayerCustom.hpp" />
+    <ClInclude Include="..\..\src\main\PlayerCustom\PlayerCustomGUIs.hpp" />
+    <ClInclude Include="..\..\src\PhotonComponent\AttachableComponentPhotonCallbacks.hpp" />
+    <ClInclude Include="..\..\src\PhotonComponent\IObservable.hpp" />
+    <ClInclude Include="..\..\src\PhotonComponent\NetworkSystem.hpp" />
+    <ClInclude Include="..\..\src\PhotonComponent\PhotonComponent.hpp" />
+    <ClInclude Include="..\..\src\PhotonComponent\PhotonInit.hpp" />
+    <ClInclude Include="..\..\src\PSN\PhotonSiv3D.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Assets\Assets.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Collision\Colliders.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Collision\CollisionObject.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Collision\CollisionSystem.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Collision\ICollider.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Collision\ShapeTransform.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Gui.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\SimpleShape.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\SivComponent.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Text.hpp" />
+    <ClInclude Include="..\..\src\SivComponent\Utils.hpp" />
+    <ClInclude Include="..\..\src\test.hpp" />
+    <ClInclude Include="..\..\src\Title.hpp" />
+    <ClInclude Include="..\..\src\UserDefinition\CollisionLayer.hpp" />
+    <ClInclude Include="..\..\src\UserDefinition\ObjectTag.hpp" />
+    <ClInclude Include="..\..\src\Utilities\IntervalCall.hpp" />
+    <ClInclude Include="..\..\src\Utilities\PhotonUtilities.hpp" />
+    <ClInclude Include="..\..\src\Utilities\TextConvert.hpp" />
+    <ClInclude Include="..\..\src\Utilities\Utilities.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
