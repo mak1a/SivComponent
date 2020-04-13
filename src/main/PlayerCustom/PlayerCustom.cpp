@@ -31,9 +31,9 @@ void PlayerCustom::Setup()
     controlexp->SetPosition({20 + 10, 400});
     controlexp->AddComponent<Siv::Rect>()->SetColor(s3d::Palette::White).SetShape(s3d::RectF(-10, -10, 800 - 20 * 2, 100 + 20));
     controlexp->AddComponent<Siv::Text>()
-        ->SetFont(s3d::Font(23, s3d::Typeface::Medium))
+        ->SetFont(s3d::Font(21, s3d::Typeface::Medium))
         .SetColor(s3d::Palette::Black)
-        .SetText(U"操作\n移動：WASD　　攻撃：左クリック長押し　　ボム：スペースキー")
+        .SetText(U"操作\n移動：WASD　　攻撃：左クリック長押し　　スペシャル：スペースキー")
         .SetDrawAt(false);
 
     auto bt = CreateAndGetObject();

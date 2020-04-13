@@ -81,7 +81,7 @@ void TitleScene::Setup()
     auto genbt = CreateAndGetObject();
     obj->AddChild(genbt);
 
-    obj->SetPosition(s3d::Scene::Center());
+    obj->SetPosition(s3d::Scene::Center().movedBy(0, -80));
     auto gen = genbt->AddComponent<NameGenerator>();
     gen->tbox = obj->AddComponent<ComponentEngine::Siv::TextBox>();
     gen->tbox.lock()->SetIsEnabled(false);
@@ -90,11 +90,11 @@ void TitleScene::Setup()
         gen->Generate();
         s3d::AudioAsset(U"OK").playOneShot();
     });
-    genbt->SetPosition({0, 40});
+    genbt->SetPosition({0, 60});
 
     //マッチングボタン
     auto bt = CreateAndGetObject();
-    bt->SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 3});
+    bt->SetPosition({s3d::Scene::Width() / 2, s3d::Scene::Height() / 4 * 2.5});
     auto btscript = bt->AddComponent<ChangeSceneBt>();
     bt->AddComponent<Siv::Button>()->SetText(U"プレイヤー選択へ").SetDelegate([=]() {
         btscript->ChangeToMatching();
@@ -106,8 +106,15 @@ void TitleScene::Setup()
     auto title = CreateAndGetObject();
     title->SetPosition({s3d::Scene::CenterF().x, 100});
     title->AddComponent<Siv::Text>()->SetText(U"Barrage Storm").SetFont(s3d::Font(65, s3d::Typeface::Heavy)).SetColor(s3d::Palette::Black);
+    auto version = title->CreateChild();
+    version->SetPosition({s3d::Scene::CenterF().x / 1.5, 0});
+    version->AddComponent<Siv::Text>()->SetText(U"v0.2").SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black).SetDrawAt(false);
 
     CreateAndGetObject()->AddComponent<Siv::BGM>(U"BGM_Title");
+
+    auto credit = CreateAndGetObject();
+    credit->SetPosition({10, s3d::Scene::Height() - 140});
+    credit->AddComponent<Siv::Text>()->SetText(U"魔王魂\n効果音ラボ").SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black).SetDrawAt(false);
 }
 
 int NameGenerator::n = -1;
