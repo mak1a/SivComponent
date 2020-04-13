@@ -34,7 +34,7 @@ PlayerExplanation::PlayerExplanation()
         U"耐久がやや低く射程も短いため、\n"
         U"速度を活かして攻撃を避ける技量が要求される。\n\n"
         U"スペシャル：コメットドライブ\n"
-        U"一定時間無敵になり、速度が超上昇";
+        U"一定時間速度が超上昇する";
 }
 
 void PlayerTypeSave::Start()
