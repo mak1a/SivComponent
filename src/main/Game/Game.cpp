@@ -107,7 +107,9 @@ void Game::Setup()
     constexpr int coresize = 35;
     constexpr s3d::RectF corerect(-coresize, -coresize, coresize * 2, coresize * 2);
     core->AddComponent<Collision::RectCollider>()->SetShape(corerect);
-    core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(s3d::Palette::Lightgreen);
+    auto cccc = s3d::Palette::Lightgreen;
+    // cccc.a = 128;
+    core->AddComponent<Siv::Rect>()->SetShape(corerect).SetColor(cccc);
     core->AddComponent<Siv::RectFrame>()->SetShape(corerect).SetColor(s3d::Palette::Green.lerp(s3d::Palette::Blue, 0.5)).SetInnerThickness(5);
     //コアの位置を通達
     enemyManagerComp->playercore = core;

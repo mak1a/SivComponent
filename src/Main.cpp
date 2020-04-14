@@ -1,4 +1,4 @@
-﻿#define NO_S3D_USING
+#define NO_S3D_USING
 #include <Siv3D.hpp>  // OpenSiv3D v0.4.2
 
 #include "PhotonComponent/PhotonComponent.hpp"
@@ -24,7 +24,7 @@ void Main()
 
     Photon::PhotonInit(manager);
 
-    // manager.RegisterScene<TestScene>("test");
+//    manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<PlayerCustom>("Custom");
     manager.RegisterScene<Matching>("Matching");

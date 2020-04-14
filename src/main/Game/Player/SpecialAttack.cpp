@@ -159,7 +159,7 @@ void DefenceSpecial::OnSpecial()
     {
         p->OnRevive();
 
-        const auto life = p->GetLife() * 5;
+        const auto life = p->GetMaxLife() * 5;
         p->SetLife(life);
     }
 

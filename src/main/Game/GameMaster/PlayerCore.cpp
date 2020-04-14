@@ -21,12 +21,16 @@ void PlayerCore::Start2()
 
     frame = GetGameObject().lock()->GetComponent<Siv::RectFrame>();
     rect = GetGameObject().lock()->GetComponent<Siv::Rect>();
+
+    framethickness = 5;
 }
 
 void PlayerCore::Update()
 {
     framethickness = std::max(5, framethickness - 1);
     frame->SetInnerThickness(framethickness);
+
+    // s3d::Print(U"framethickness", framethickness);
 
     // HPに応じて色を変化
     // rect->SetColor();
@@ -50,25 +54,33 @@ void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
         s3d::AudioAsset(U"CoreDamage").playOneShot(0.3);
     }
 
-    // MasterClientでなければスルー
-    if (!networkSystem->IsMasterClient())
-    {
-        return;
-    }
-
     if (other->GetTag() == UserDef::Tag::EnemyBullet)
     {
         auto b = other->GetComponent<Bullet>();
-        life -= b->attack;
         framethickness = 20;
+
+        // MasterClientでなければスルー
+        if (!networkSystem->IsMasterClient())
+        {
+            return;
+        }
+
+        life -= b->attack;
     }
 
     if (other->GetTag() == UserDef::Tag::PlayerBullet)
     {
         auto b = other->GetComponent<Bullet>();
         //フレンドリーファイア補正
-        life -= (b->attack / 5);
         framethickness = 12;
+
+        // MasterClientでなければスルー
+        if (!networkSystem->IsMasterClient())
+        {
+            return;
+        }
+
+        life -= (b->attack / 5);
     }
 
     //ライフがなくなったら敗北

@@ -1,79 +1,74 @@
 ﻿#include "test.hpp"
 #include "PhotonComponent/PhotonComponent.hpp"
 
-class PrintServerTime : public Photon::AttachableComponentPhotonCallbacks
-{
-    bool printflag = true;
-    int cnt = -1;
-    int before;
+// class PrintServerTime : public Photon::AttachableComponentPhotonCallbacks
+// {
+//     bool printflag = true;
+//     int cnt = -1;
+//     int before;
 
-    void Start2() override
-    {
-        networkSystem->Connect();
-    }
+//     void Start2() override
+//     {
+//         networkSystem->Connect();
+//     }
 
-    void Update() override
-    {
-        if (s3d::KeySpace.down())
-        {
-            printflag = !printflag;
-            cnt = -1;
-        }
+//     void Update() override
+//     {
+//         if (s3d::KeySpace.down())
+//         {
+//             printflag = !printflag;
+//             cnt = -1;
+//         }
 
-        if (cnt > 0)
-        {
-            cnt--;
-        }
+//         if (cnt > 0)
+//         {
+//             cnt--;
+//         }
 
-        if (cnt == 0)
-        {
-            printflag = false;
-            return;
-        }
+//         if (cnt == 0)
+//         {
+//             printflag = false;
+//             return;
+//         }
 
-        if (!printflag)
-        {
-            return;
-        }
+//         if (!printflag)
+//         {
+//             return;
+//         }
 
-        if (networkSystem->GetServerTime() < before)
-        {
-            s3d::Print(U"------------------------stop");
-            cnt = 3;
-        }
-        before = networkSystem->GetServerTime();
+//         if (networkSystem->GetServerTime() < before)
+//         {
+//             s3d::Print(U"------------------------stop");
+//             cnt = 3;
+//         }
+//         before = networkSystem->GetServerTime();
 
-        s3d::Print(networkSystem->GetServerTime());
-    }
-};
+//         s3d::Print(networkSystem->GetServerTime());
+//     }
+// };
 
 void TestScene::Setup()
 {
-    CreateAndGetObject()->AddComponent<PrintServerTime>();
+    // CreateAndGetObject()->AddComponent<PrintServerTime>();
 
     // mode1
     // matrix check
 
-    auto x = CreateAndGetObject();
-    x->SetPosition({300, 200});
-    x->AddComponent<MoveLeft>();
-    // x->transform().SetRotateByAngle(45);
-    x->SetScale(2);
+    auto a = CreateAndGetObject();
+    const s3d::Rect shape(0, 0, 30, 60);
+    a->SetPosition({100, 100});
+    a->AddComponent<Siv::Rect>()->SetShape(shape);
 
-    const auto r = s3d::Rect(0, 0, 40, 60);
-    x->AddComponent<Siv::Rect>()->SetShape(r);
+    auto b = CreateAndGetObject();
+    b->SetPosition({500, 100});
+    b->AddComponent<Siv::Rect>()->SetShape(shape);
 
-    s3d::Array<s3d::Vec2> v = {{100, 0}, {0, 100}, {-100, 0}, {0, -100}};
+    auto c = CreateAndGetObject();
+    c->SetPosition({50, 50});
+    c->AddComponent<Siv::Rect>()->SetShape(shape).SetColor({255, 255, 0});
+    a->AddChild(c);
 
-    for (const auto& pos : v)
-    {
-        auto y = CreateAndGetObject();
-        x->AddChild(y);
-
-        y->SetPosition(pos);
-
-        y->AddComponent<Siv::Rect>()->SetShape(r);
-    }
+    b->AddChild(c);
 
     // mode2
     // collision and cursor check
