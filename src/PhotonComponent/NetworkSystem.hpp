@@ -48,7 +48,9 @@ namespace ComponentEngine::Photon
 
     public:
         const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
-        const ExitGames::Common::JString appVersion = L"1.0";
+
+        // majorupdate.subversion.bugfix
+        const ExitGames::Common::JString appVersion = L"0.2.1";
 
     public:
         NetworkSystem();
@@ -187,9 +189,7 @@ namespace ComponentEngine::Photon
         }
 
         // events, triggered by certain operations of all players in the same room
-        virtual void joinRoomEventAction(int playerNr,
-                                         const ExitGames::Common::JVector<int>& playernrs,
-                                         const ExitGames::LoadBalancing::Player& player) override
+        virtual void joinRoomEventAction(int playerNr, const ExitGames::Common::JVector<int>& playernrs, const ExitGames::LoadBalancing::Player& player) override
         {
 #ifdef PhotonDEBUG
             std::cout << "joinRoomEventAction" << std::endl;

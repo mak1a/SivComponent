@@ -51,7 +51,7 @@ void PlayerCore::OnStayCollision(std::shared_ptr<GameObject>& other)
     if (other->GetTag() == UserDef::Tag::EnemyBullet || other->GetTag() == UserDef::Tag::PlayerBullet)
     {
         //被弾音
-        s3d::AudioAsset(U"CoreDamage").playOneShot(0.3);
+        s3d::AudioAsset(U"CoreDamage").playOneShot(0.2);
     }
 
     if (other->GetTag() == UserDef::Tag::EnemyBullet)

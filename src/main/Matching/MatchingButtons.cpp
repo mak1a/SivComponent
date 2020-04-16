@@ -5,7 +5,7 @@
 #include "../CustomEventList.hpp"
 #include "Matching.hpp"
 
-const ExitGames::Common::JString appVersion = L"0.2alpha";
+// const ExitGames::Common::JString appVersion = L"0.2alpha";
 static ExitGames::Common::Hashtable CustomProperties;
 
 void PlayerListDisplay::Start2()
@@ -45,7 +45,7 @@ void MatchSystem::Start2()
 {
     auto object = GetGameObject().lock()->GetScene().lock()->GetSceneManager()->GetCommon().GetCommonObject("PhotonSystem");
 
-    CustomProperties.put(L"version", appVersion);
+    CustomProperties.put(L"version", networkSystem->appVersion);
     // CustomProperties.put(L"aaaa", L"valuevaluevalue");
 
     //サーバー接続開始
