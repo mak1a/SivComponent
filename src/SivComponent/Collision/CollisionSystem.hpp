@@ -25,7 +25,7 @@ namespace ComponentEngine::Collision
     public:
         CollisionSystem()
         {
-            // PlayerとEnemyの仮判定
+            //エンジン内に直書きはちょっと…
 
             //フィールドとの判定
             collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::Player));
@@ -78,8 +78,19 @@ namespace ComponentEngine::Collision
 
                 for (CollisionObject* a : colsa)
                 {
+                    // オブジェクトとコンポーネント両者とも動いてなければスルー
+                    if (!(a->GetActive() && a->GetGameObject().lock()->GetActive()))
+                    {
+                        continue;
+                    }
+
                     for (CollisionObject* b : colsb)
                     {
+                        if (!(b->GetActive() && b->GetGameObject().lock()->GetActive()))
+                        {
+                            continue;
+                        }
+
                         // GameObject同士の判定
                         if (b->intersects(a))
                         {
