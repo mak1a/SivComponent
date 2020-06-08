@@ -24,7 +24,7 @@ void Main()
 
     Photon::PhotonInit(manager);
 
-//    manager.RegisterScene<TestScene>("test");
+    // manager.RegisterScene<TestScene>("test");
     manager.RegisterScene<TitleScene>("Title");
     manager.RegisterScene<PlayerCustom>("Custom");
     manager.RegisterScene<Matching>("Matching");

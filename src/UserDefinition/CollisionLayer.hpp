@@ -5,6 +5,7 @@ namespace ComponentEngine::UserDef
     //数値はデフォルトのままにしておくこと
     enum class CollisionLayer
     {
+        Default,
         Player,
         Enemy,
         PlayerBullet,

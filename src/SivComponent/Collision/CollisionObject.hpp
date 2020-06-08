@@ -18,14 +18,13 @@ namespace ComponentEngine::Collision
     {
     private:
         const LayerType layer;
-        //判定の変更はほとんどないはずなのでvectorで管理する
-        // shared_from_thisを噛ませないといけなくなるので生ポインタ管理　リソース適切に管理すれば問題なし
+        //判定の変更はほとんどないはずなので効率の良いvectorで管理する
+        //ここスマポにするとshared_from_thisが必要になるので無理
         std::vector<ICollider*> colliders;
 
     public:
-        CollisionObject(UserDef::CollisionLayer _layer, size_t collidernum = 1)
+        CollisionObject(UserDef::CollisionLayer _layer = Layer::Default, size_t collidernum = 1)
             : layer(static_cast<LayerType>(_layer))
-
         {
             colliders.reserve(collidernum);
         }

@@ -27,6 +27,9 @@ namespace ComponentEngine::Collision
         {
             //エンジン内に直書きはちょっと…
 
+            //デフォルト
+            collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Default, (LayerType)UserDef::CollisionLayer::Default));
+
             //フィールドとの判定
             collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::Player));
             collisionTable.push_back(std::make_pair((LayerType)UserDef::CollisionLayer::Field, (LayerType)UserDef::CollisionLayer::Enemy));
@@ -73,6 +76,13 @@ namespace ComponentEngine::Collision
             // collisionTable = table;
             for (const auto& pair : collisionTable)
             {
+                //同レイヤーだった場合は自分同士の判定を取らないようにする必要がある
+                // if (pair.first == pair.second)
+                // {
+                //     CollitionCallSameLayer(pair.first);
+                //     continue;
+                // }
+
                 auto& colsa = colliders[pair.first];
                 auto& colsb = colliders[pair.second];
 
@@ -87,6 +97,12 @@ namespace ComponentEngine::Collision
                     for (CollisionObject* b : colsb)
                     {
                         if (!(b->GetActive() && b->GetGameObject().lock()->GetActive()))
+                        {
+                            continue;
+                        }
+
+                        //同じレイヤー同士だと同じオブジェクトが来ることがあるのでスルー
+                        if (a == b)
                         {
                             continue;
                         }
@@ -106,6 +122,41 @@ namespace ComponentEngine::Collision
                 }
             }
         }
+
+        // private:
+        // void CollitionCallSameLayer(ComponentEngine::Collision::LayerType layer)
+        // {
+        //     auto& colsa = colliders[layer];
+
+        //     for (CollisionObject* a : colsa)
+        //     {
+        //         // オブジェクトとコンポーネント両者とも動いてなければスルー
+        //         if (!(a->GetActive() && a->GetGameObject().lock()->GetActive()))
+        //         {
+        //             continue;
+        //         }
+
+        //         for (CollisionObject* b : colsb)
+        //         {
+        //             if (!(b->GetActive() && b->GetGameObject().lock()->GetActive()))
+        //             {
+        //                 continue;
+        //             }
+
+        //             // GameObject同士の判定
+        //             if (b->intersects(a))
+        //             {
+        //                 //それぞれのGameObjectのAPIコール
+        //                 auto obja = a->GetGameObject().lock();
+        //                 auto objb = b->GetGameObject().lock();
+
+        //                 obja->components_call_collisionstay(objb);
+
+        //                 objb->components_call_collisionstay(obja);
+        //             }
+        //         }
+        //     }
+        // }
     };
 
 }  // namespace ComponentEngine::Collision

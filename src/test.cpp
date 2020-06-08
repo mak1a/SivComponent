@@ -47,6 +47,29 @@
 //     }
 // };
 
+class Hit : public AttachableComponent
+{
+    std::shared_ptr<Siv::Circle> circle;
+    bool ishit;
+
+    void Start()
+    {
+        circle = GetGameObject().lock()->GetComponent<Siv::Circle>();
+    }
+
+    void Update()
+    {
+        circle->SetColor(ishit ? s3d::Palette::Orange : s3d::Palette::White);
+
+        ishit = false;
+    }
+
+    void OnStayCollision(std::shared_ptr<GameObject>& obj) override
+    {
+        ishit = true;
+    }
+};
+
 void TestScene::Setup()
 {
     // CreateAndGetObject()->AddComponent<PrintServerTime>();
@@ -54,21 +77,35 @@ void TestScene::Setup()
     // mode1
     // matrix check
 
+    const s3d::Rect rect(50, 100);
+
     auto a = CreateAndGetObject();
-    const s3d::Rect shape(0, 0, 30, 60);
-    a->SetPosition({100, 100});
-    a->AddComponent<Siv::Rect>()->SetShape(shape);
+    a->SetPosition({50, 50});
+    a->AddComponent<Collision::CollisionObject>();
+    a->AddComponent<Collision::RectCollider>()->SetShape(rect);
+    a->AddComponent<Siv::Rect>()->SetShape(rect);
 
     auto b = CreateAndGetObject();
-    b->SetPosition({500, 100});
-    b->AddComponent<Siv::Rect>()->SetShape(shape);
+    b->AddComponent<Collision::CollisionObject>()->SetActive(false);
+    b->SetPosition({250, 50});
+    b->AddComponent<Collision::RectCollider>()->SetShape(rect);
+    b->AddComponent<Siv::Rect>()->SetShape(rect);
 
     auto c = CreateAndGetObject();
-    c->SetPosition({50, 50});
-    c->AddComponent<Siv::Rect>()->SetShape(shape).SetColor({255, 255, 0});
-    a->AddChild(c);
+    c->AddComponent<Collision::CollisionObject>()->SetActive(false);
+    c->SetPosition({450, 50});
+    auto x = c->AddComponent<Collision::RectCollider>();
+    x->SetShape(rect);
+    x->SetActive(false);
+    c->AddComponent<Siv::Rect>()->SetShape(rect);
 
-    b->AddChild(c);
+    const s3d::Circle cir(0, 0, 40);
+    const auto cur = CreateAndGetObject();
+    cur->AddComponent<ComponentEngine::Siv::MouseChase>();
+    cur->AddComponent<Collision::CollisionObject>();
+    cur->AddComponent<Collision::CircleCollider>()->SetShape(cir);
+    cur->AddComponent<Siv::Circle>()->SetShape(cir);
+    cur->AddComponent<Hit>();
 
     // mode2
     // collision and cursor check
