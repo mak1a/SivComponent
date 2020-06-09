@@ -12,6 +12,16 @@ namespace ComponentEngine::Collision
         return s3d::Quad(tl, tr, br, bl);
     }
 
+    // s3d::RoundRect transformed(const s3d::RoundRect& rrect, const s3d::Mat3x2 mat)
+    // {
+    //     const auto tl = mat.transform(s3d::Vec2{rrect.x, rrect.y});
+    //     const auto tr = mat.transform(rrect.tr());
+    //     const auto br = mat.transform(rrect.br());
+    //     const auto bl = mat.transform(rrect.bl());
+
+    //     return s3d::Quad(tl, tr, br, bl);
+    // }
+
     s3d::Quad transformed(const s3d::Quad& quad, const s3d::Mat3x2 mat)
     {
         const auto tl = mat.transform(quad.p0);

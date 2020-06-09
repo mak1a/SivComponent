@@ -21,6 +21,12 @@ public:
 
 class ISpecialAttack;
 
+namespace PlayerDef
+{
+    // Standard, Attack, Defence, Speed,
+    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(255, 0, 0), s3d::Color(0, 0, 255), s3d::Color(255, 255, 0)};
+}  // namespace PlayerDef
+
 class Player : public Photon::AttachableComponentPhotonCallbacks
 {
 public:

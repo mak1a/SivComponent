@@ -192,6 +192,52 @@ namespace ComponentEngine::Siv
         }
     };
 
+    // class RoundRect : public ComponentEngine::AttachableComponent
+    // {
+    //     using Shape = s3d::RoundRect;
+    //     using ThisType = RoundRect;
+
+    // private:
+    //     Shape shape;
+    //     s3d::ColorF color;
+
+    // public:
+    //     ThisType& SetShape(const Shape& _shape)
+    //     {
+    //         shape = _shape;
+    //         return *this;
+    //     }
+
+    //     Shape GetShape() const noexcept
+    //     {
+    //         return shape;
+    //     }
+
+    //     ThisType& SetColor(const s3d::ColorF& _color)
+    //     {
+    //         color = _color;
+    //         return *this;
+    //     }
+
+    //     s3d::ColorF GetColor() const noexcept
+    //     {
+    //         return color;
+    //     }
+
+    //     RoundRect()
+    //         : color(s3d::Palette::White)
+    //         , shape(-50, -50, 100, 100, 10)
+    //     {
+    //     }
+
+    // protected:
+    //     void Draw() const override
+    //     {
+    //         auto s = Collision::transformed(shape, GetGameObject().lock()->transform().GetMatrix());
+    //         s.draw(color);
+    //     }
+    // };
+
     class RectFrame : public ComponentEngine::AttachableComponent
     {
         using Shape = s3d::RectF;

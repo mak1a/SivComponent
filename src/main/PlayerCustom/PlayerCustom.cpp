@@ -42,7 +42,7 @@ void PlayerCustom::Setup()
     bt->AddComponent<Siv::Button>()
         ->SetDelegate([=]() {
             csb->OnClick();
-            s3d::AudioAsset(U"NG").playOneShot(0.3);
+            s3d::AudioAsset(U"NG").play();
         })
         .SetText(U"タイトルへ");
 
@@ -52,7 +52,7 @@ void PlayerCustom::Setup()
     toMatchBt->AddComponent<Siv::Button>()
         ->SetDelegate([=]() {
             csb2->OnClick();
-            s3d::AudioAsset(U"OK").playOneShot(0.3);
+            s3d::AudioAsset(U"OK").play();
         })
         .SetText(U"オンラインマッチングへ");
 

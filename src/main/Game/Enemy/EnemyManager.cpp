@@ -134,7 +134,7 @@ void EnemyManager::CreateBullet(Enemy& enemy, const s3d::Vec2& target, double sp
 
     if (bulletAudio)
     {
-        s3d::AudioAsset(U"EnemyShot").playOneShot(0.3);
+        s3d::AudioAsset(U"EnemyShot").playOneShot(0.2);
         bulletAudio = false;
     }
 }

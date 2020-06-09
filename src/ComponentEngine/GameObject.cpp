@@ -199,6 +199,7 @@ namespace ComponentEngine
         objecttag = UserDef::Tag::Default;
     }
 
+    //<return>child
     const std::shared_ptr<GameObject>& GameObject::AddChild(const std::shared_ptr<GameObject>& child, bool pushfront)
     {
         child->SetParent(weak_from_this(), pushfront);

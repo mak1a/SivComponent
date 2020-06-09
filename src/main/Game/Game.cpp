@@ -1,4 +1,4 @@
-﻿
+
 #include "Game.hpp"
 #include "Enemy/Enemy.hpp"
 #include "Enemy/EnemyManager.hpp"
@@ -9,6 +9,7 @@
 #include "GameMaster/UIManager.hpp"
 #include "Player/Player.hpp"
 #include "Player/PlayerBulletManager.hpp"
+#include "Player/PlayerInfoGUI.hpp"
 #include "Player/PlayerManager.hpp"
 #include "UI/ReturnTitleBt.hpp"
 
@@ -39,25 +40,13 @@ void Game::Setup()
     auto Playermanager = Altercamera->CreateChild();
     Playermanager->SetName("PlayerManager");
 
+    //自分を作る
+    auto playerManagerComp = Playermanager->AddComponent<PlayerManager>();
+    auto player = playerManagerComp->CreateMyPlayer()->GetComponent<Player>();
+
     //敵管理システム
     auto enemyManagerComp = Enemymanager->AddComponent<EnemyManager>();
     Enemymanager->SetActive(false);
-
-    //自分を作る
-    // auto mainplayerobj = GetSceneManager()->GetCommon().Instantiate("Player");
-    // mainplayerobj->SetName("MyPlayer");
-    // auto system = GetSceneManager()->GetCommon().GetCommonObject(Photon::NetworkObjectName())->GetComponent<Photon::NetworkSystem>();
-
-    // mainplayerobj->SetPosition(Player::playerInitpos[Photon::NetworkSystem::GetInstance()->GetPlayerNumberInRoom()]);
-
-    auto playerManagerComp = Playermanager->AddComponent<PlayerManager>();
-    auto player = playerManagerComp->CreateMyPlayer()->GetComponent<Player>();
-    // player->SetMine(true);
-    // player->playerNr = Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber();
-
-    // playerManagerComp->players.push_back(player);
-
-    // Playermanager->AddChild(mainplayerobj);
 
     Bulletmanager->AddComponent<PlayerBulletManager>()->player = player;
 
@@ -189,6 +178,19 @@ void Game::Setup()
     returnTitleBt->AddComponent<ReturnTitleBt>();
     returnTitleBt->AddComponent<Siv::Button>()->SetText(U"タイトルへ戻る");
     returnTitleBt->SetPosition({s3d::Scene::CenterF().x, s3d::Scene::Height() - 60});
+
+    //数値表示
+    auto PlayerDisplay = UI->CreateChild();
+    const auto displayMake = GetSceneManager()->GetCommon().GetInstantiate("PlayerUIDisplay");
+
+    for (int i = 0; i < 4; ++i)
+    {
+        auto x = PlayerDisplay->AddChild(displayMake());
+        x->SetActive(false);
+        x->SetName("Player" + std::to_string(i + 1)).SetPosition({s3d::Scene::Width() - 125, 150 + i * 90});
+        auto view = x->GetComponent<PlayerListView>();
+        playerManagerComp->views.push_back(view);
+    }
 
     //依存関係
     timerComp->uimanager = uimanager;

@@ -36,7 +36,7 @@ class PlayerExplanation : public AttachableComponent
     {
         if (radio->Changed())
         {
-            s3d::AudioAsset(U"Menu").playOneShot(0.3);
+            s3d::AudioAsset(U"Menu").playOneShot(0.2);
             text->SetText(exp[radio->GetIndex()]);
         }
     }

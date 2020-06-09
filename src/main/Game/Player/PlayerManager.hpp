@@ -1,11 +1,12 @@
 ﻿
 #pragma once
 
-#include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../../../ComponentEngine/ComponentEngine.hpp"
+#include "../../../PhotonComponent/PhotonComponent.hpp"
 #include "../../../Utilities/IntervalCall.hpp"
 
 class Player;
+class PlayerListView;
 
 class PlayerManager : public ComponentEngine::Photon::AttachableComponentPhotonCallbacks
 {
@@ -22,4 +23,5 @@ public:
 
     PlayerManager();
     std::vector<std::shared_ptr<Player>> players;
+    std::vector<std::shared_ptr<PlayerListView>> views;
 };

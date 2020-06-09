@@ -4,7 +4,7 @@
 
 void LoadAssets()
 {
-    constexpr double masterVolume = 0.3;
+    constexpr double masterVolume = 0.06;
 
     AudioAsset::Register(U"BGM_Title", U"Assets/Audio/BGM/Title.mp3");
     AudioAsset::Register(U"BGM_Custom", U"Assets/Audio/BGM/PlayerCustomBGM.mp3");
@@ -42,7 +42,7 @@ void LoadAssets()
     AudioAsset::Register(U"PlayerRevive", U"Assets/Audio/SE/playerRevive.mp3");
     AudioAsset::Register(U"PlayerSpecial", U"Assets/Audio/SE/playerSpecial.mp3");
 
-    AudioAsset(U"OK").setVolume(masterVolume * 0.001);
+    AudioAsset(U"OK").setVolume(masterVolume);
 
     AudioAsset(U"NG").setVolume(masterVolume);
     AudioAsset(U"Menu").setVolume(masterVolume);

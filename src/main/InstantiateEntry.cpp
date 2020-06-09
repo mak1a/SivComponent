@@ -94,6 +94,48 @@ void InstantiateEntry_Game(ComponentEngine::SceneCommon& common)
         return obj;
     });
 
+    //プレイヤーUI
+    common.AddObjectCreator("PlayerUIDisplay", []() {
+        std::shared_ptr<GameObject> obj = GameObject::Create();
+        auto listview = obj->AddComponent<PlayerListView>();
+
+        const s3d::Rect shape(0, 0, 120, 80), barshape(0, 0, 100, 8);
+
+        auto back = obj->AddComponent<ComponentEngine::Siv::Rect>();
+        back->SetShape(shape).SetColor(s3d::Color(40, 40, 40, 200));
+
+        auto name = obj->CreateChild()->SetPosition({5, 2}).SetName("PlayerName").AddComponent<ComponentEngine::Siv::Text>();
+        name->SetFont(s3d::Font(15, s3d::Typeface::Bold)).SetText(U"プレイヤー999").SetColor(s3d::Color(255, 255, 255)).SetDrawAt(false);
+
+        obj->CreateChild()
+            ->SetPosition({70, 25})
+            .SetName("SPText")
+            .AddComponent<ComponentEngine::Siv::Text>()
+            ->SetFont(s3d::Font(13, s3d::Typeface::Black))
+            .SetText(U"SP:")
+            .SetColor(s3d::Color(220, 220, 220))
+            .SetDrawAt(false);
+
+        auto spicon = obj->CreateChild()->SetPosition({100, 25}).SetName("SPIcon").SetRotateByAngle(45).AddComponent<Siv::Rect>();
+        spicon->SetColor(s3d::Palette::Orange).SetShape({0, 0, 10, 10});
+
+        constexpr s3d::Vec2 barpos(10, 52);
+
+        obj->CreateChild()->SetPosition(barpos).SetName("WhiteBar").AddComponent<ComponentEngine::Siv::Rect>()->SetShape(barshape.stretched(3, 3)).SetColor(s3d::Palette::White);
+
+        obj->CreateChild()->SetPosition(barpos).SetName("RedBar").AddComponent<ComponentEngine::Siv::Rect>()->SetShape(barshape).SetColor(s3d::Palette::Red);
+
+        auto green = obj->CreateChild()->SetPosition(barpos).SetName("GreenBar").AddComponent<ComponentEngine::Siv::Rect>();
+        green->SetShape(barshape).SetColor(s3d::Palette::Green);
+
+        listview->background = back;
+        listview->greenbar = green;
+        listview->playername = name;
+        listview->spicon = spicon;
+
+        return obj;
+    });
+
     // //敵
     // common.AddObjectCreator("EnemyStandard", []() {
     //     std::shared_ptr<GameObject> obj = GameObject::Create();

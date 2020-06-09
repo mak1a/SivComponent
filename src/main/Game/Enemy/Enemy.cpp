@@ -283,7 +283,7 @@ void Enemy::Damage(int damage)
         // TODO: 消滅エフェクト
         GetGameObject().lock()->GetScene().lock()->Destroy(this->GetGameObject().lock());
 
-        s3d::AudioAsset(U"EnemyDeath").playOneShot(0.3);
+        s3d::AudioAsset(U"EnemyDeath").playOneShot(0.2);
     }
 }
 void Enemy::DamageAndSend(int damage)
@@ -302,7 +302,7 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
         //自分のプレイヤーが発射した弾でなければ何もしない
         if (!bullet->isMine)
         {
-            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.12);
+            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.09);
             return;
         }
 
@@ -310,7 +310,7 @@ void Enemy::OnStayCollision(std::shared_ptr<GameObject>& obj)
 
         if (life > 0)
         {
-            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.3);
+            s3d::AudioAsset(U"EnemyDamage").playOneShot(0.2);
         }
     }
 }

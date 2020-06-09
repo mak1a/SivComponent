@@ -4,6 +4,7 @@
 #include "../../CustomEventList.hpp"
 #include "../../Matching/Matching.hpp"
 #include "Player.hpp"
+#include "PlayerInfoGUI.hpp"
 
 //プレイヤーを生成
 void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitGames::Common::Object& eventContent)
@@ -38,11 +39,13 @@ void PlayerManager::customEventAction(int playerNr, nByte eventCode, const ExitG
     //数値を流し込む
     auto player = otherplayer->GetComponent<Player>();
 
-    player->SetPlayerNr (playerNr);
+    player->SetPlayerNr(playerNr);
     player->SetType(static_cast<PlayerType>(type));
 
     //配列管理に追加
     players.push_back(player);
+    views[players.size() - 1]->player = player;
+    views[players.size() - 1]->GetGameObject().lock()->SetActive(true);
 }
 
 std::shared_ptr<GameObject> PlayerManager::CreateMyPlayer()
@@ -55,9 +58,10 @@ std::shared_ptr<GameObject> PlayerManager::CreateMyPlayer()
 
     auto player = mainplayerobj->GetComponent<Player>();
     player->SetMine(true);
-    player->SetPlayerNr( Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber());
+    player->SetPlayerNr(Photon::NetworkSystem::GetInstance()->GetClient().getLocalPlayer().getNumber());
     player->SetType(static_cast<PlayerType>(CommonMemory::GetPlayerType()));
 
+    //配列管理に追加
     this->players.push_back(player);
 
     GetGameObject().lock()->AddChild(mainplayerobj);
@@ -73,7 +77,8 @@ void PlayerManager::leaveRoomEventAction(int playerNr, bool isInactive)
     {
         if ((*player)->GetPlayerNr() == playerNr)
         {
-            GetGameObject().lock()->GetScene().lock()->Destroy((*player)->GetGameObject().lock());
+            // GetGameObject().lock()->GetScene().lock()->Destroy((*player)->GetGameObject().lock());
+            (*player)->GetGameObject().lock()->SetActive(false);
 
             players.erase(player);
 
@@ -85,6 +90,7 @@ void PlayerManager::leaveRoomEventAction(int playerNr, bool isInactive)
 PlayerManager::PlayerManager()
 {
     players.reserve(4);
+    views.reserve(4);
 }
 
 void PlayerManager::Start2()
@@ -99,6 +105,9 @@ void PlayerManager::Start2()
 
     // 送り続ける 1秒に4回
     initsync = Utilities::IntervalCall(1000 / 4, [&]() { players[0]->SendInstantiateMessage(); });
+
+    views[0]->player = players[0];
+    views[0]->GetGameObject().lock()->SetActive(true);
 }
 
 void PlayerManager::Update()

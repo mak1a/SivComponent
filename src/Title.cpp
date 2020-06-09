@@ -88,7 +88,7 @@ void TitleScene::Setup()
 
     genbt->AddComponent<ComponentEngine::Siv::Button>()->SetText(U"名前生成").SetDelegate([=]() {
         gen->Generate();
-        s3d::AudioAsset(U"OK").playOneShot();
+        s3d::AudioAsset(U"OK").play();
     });
     genbt->SetPosition({0, 60});
 
@@ -98,7 +98,7 @@ void TitleScene::Setup()
     auto btscript = bt->AddComponent<ChangeSceneBt>();
     bt->AddComponent<Siv::Button>()->SetText(U"プレイヤー選択へ").SetDelegate([=]() {
         btscript->ChangeToMatching();
-        s3d::AudioAsset(U"OK").playOneShot(0.3);
+        s3d::AudioAsset(U"OK").play();
     });
     btscript->generator = gen;
 

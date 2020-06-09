@@ -24,7 +24,7 @@ void ISpecialAttack::Special()
 
     hassp = false;
     playerAnime->OnBomb();
-    s3d::AudioAsset(U"PlayerSpecial").playOneShot(0.5);
+    s3d::AudioAsset(U"PlayerSpecial").playOneShot(0.32);
     OnSpecial();
 }
 
@@ -45,7 +45,7 @@ void ISpecialAttack::customEventAction(int playerNr, nByte eventCode, const Exit
 
     hassp = false;
     playerAnime->OnBomb();
-    s3d::AudioAsset(U"PlayerSpecial").playOneShot(0.5);
+    s3d::AudioAsset(U"PlayerSpecial").playOneShot(0.32);
     OnRemoteSpecial(table);
 }
 

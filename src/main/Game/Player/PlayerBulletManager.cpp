@@ -97,7 +97,7 @@ void PlayerBulletManager::customEventAction(int playerNr, nByte eventCode, const
     b->lifetime = life - lagtime;
 
     //他人の発射音
-    s3d::AudioAsset(U"PlayerShot").playOneShot(0.12);
+    s3d::AudioAsset(U"PlayerShot").playOneShot(0.09);
 }
 
 void PlayerBulletManager::Update()
@@ -117,7 +117,7 @@ void PlayerBulletManager::Update()
         fireInterval = FireRate;
 
         //自分の発射音
-        s3d::AudioAsset(U"PlayerShot").playOneShot(0.3);
+        s3d::AudioAsset(U"PlayerShot").playOneShot(0.2);
     }
 
     if (s3d::KeySpace.down())

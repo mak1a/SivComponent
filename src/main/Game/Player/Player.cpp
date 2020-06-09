@@ -119,10 +119,7 @@ void Player::Start2()
         }
     }
 
-    // Standard, Attack, Defence, Speed,
-    constexpr std::array<s3d::Color, 4> colors = {s3d::Color(0, 255, 0), s3d::Color(255, 0, 0), s3d::Color(0, 0, 255), s3d::Color(255, 255, 0)};
-
-    centerCircle->SetColor(colors[static_cast<int>(GetType())]);
+    centerCircle->SetColor(PlayerDef::colors[static_cast<int>(GetType())]);
 
     //ボムをくっつける
     switch (GetType())
@@ -165,7 +162,7 @@ void Player::Move()
     obj->SetPosition(pos);
 
     //カメラ中央との距離を取る
-    auto diff = obj->GetWorldPosition() - s3d::Scene::CenterF();
+    auto diff = obj->GetWorldPosition() - s3d::Scene::CenterF().movedBy(-60, 0);
 
     constexpr double frame = 50.0;
     diff.x = diff.x - s3d::Clamp(diff.x, -frame, frame);
@@ -370,12 +367,12 @@ void Player::OnEnemyBullet(std::shared_ptr<GameObject>& other)
         SetState(PlayerStates::reviving);
         revivetimer = reviveCost;
 
-        s3d::AudioAsset(U"PlayerDeath").playOneShot((IsMine() ? 0.3 : 0.15));
+        s3d::AudioAsset(U"PlayerDeath").playOneShot((IsMine() ? 0.2 : 0.1));
 
         return;
     }
 
-    s3d::AudioAsset(U"PlayerDamage").playOneShot((IsMine() ? 0.3 : 0.15));
+    s3d::AudioAsset(U"PlayerDamage").playOneShot((IsMine() ? 0.2 : 0.1));
 }
 
 void Player::OnStayCollision(std::shared_ptr<GameObject>& other)
@@ -401,13 +398,13 @@ void Player::SetState(PlayerStates _state)
     //しんだとき
     if (m_state != PlayerStates::reviving && _state == PlayerStates::reviving)
     {
-        s3d::AudioAsset(U"PlayerDeath").playOneShot(0.3);
+        s3d::AudioAsset(U"PlayerDeath").playOneShot(0.2);
     }
 
     //復活した時
     if (m_state == PlayerStates::reviving && _state != PlayerStates::reviving)
     {
-        s3d::AudioAsset(U"PlayerRevive").playOneShot(0.3);
+        s3d::AudioAsset(U"PlayerRevive").playOneShot(0.2);
     }
 
     m_state = _state;

@@ -23,6 +23,10 @@ protected:
 
 public:
     void Special();
+    bool HasSP() const
+    {
+        return hassp;
+    }
 };
 
 class EnemyManager;

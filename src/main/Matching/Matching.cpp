@@ -49,7 +49,7 @@ void Matching::Setup()
 
         Matching::SyncRoomInfo();
 
-        s3d::AudioAsset(U"Menu").playOneShot(0.3);
+        s3d::AudioAsset(U"Menu").play();
     });
     plus->AddComponent<ShowButtonOnlyMaster>();
 
@@ -60,7 +60,7 @@ void Matching::Setup()
 
         Matching::SyncRoomInfo();
 
-        s3d::AudioAsset(U"Menu").playOneShot(0.3);
+        s3d::AudioAsset(U"Menu").play();
     });
     minus->AddComponent<ShowButtonOnlyMaster>();
 
