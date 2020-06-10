@@ -50,7 +50,7 @@ namespace ComponentEngine::Photon
         const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
 
         // majorupdate.subversion.bugfix
-        const ExitGames::Common::JString appVersion = L"0.2.1";
+        const ExitGames::Common::JString appVersion = L"0.4.0";
 
     public:
         NetworkSystem();

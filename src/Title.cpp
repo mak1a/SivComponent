@@ -108,7 +108,7 @@ void TitleScene::Setup()
     title->AddComponent<Siv::Text>()->SetText(U"Barrage Storm").SetFont(s3d::Font(65, s3d::Typeface::Heavy)).SetColor(s3d::Palette::Black);
     auto version = title->CreateChild();
     version->SetPosition({s3d::Scene::CenterF().x / 1.5, 0});
-    version->AddComponent<Siv::Text>()->SetText(U"v0.2.1").SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black).SetDrawAt(false);
+    version->AddComponent<Siv::Text>()->SetText(U"v0.4.0").SetFont(s3d::Font(30)).SetColor(s3d::Palette::Black).SetDrawAt(false);
 
     CreateAndGetObject()->AddComponent<Siv::BGM>(U"BGM_Title");
 

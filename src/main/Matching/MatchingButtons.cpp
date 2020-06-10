@@ -50,7 +50,7 @@ void MatchSystem::Start2()
 
     //サーバー接続開始
     networkSystem->Connect();
-    s3d::Print(U"connecting...");
+    s3d::Print(U"サーバー接続中...");
 
     networkSystem->GetClient().fetchServerTimestamp();
 }
@@ -59,16 +59,16 @@ void MatchSystem::connectReturn(int errorCode, const ExitGames::Common::JString&
 {
     if (errorCode)
     {
-        s3d::Print(U"connect error.");
+        s3d::Print(U"接続に失敗しました");
 
         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         return;
     }
-    s3d::Print(U"connected!");
+    s3d::Print(U"サーバー接続完了!");
 
     networkSystem->GetClient().opJoinRandomRoom(CustomProperties, 4);
 
-    s3d::Print(U"Search Room...");
+    s3d::Print(U"部屋を検索します...");
 };
 
 void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
@@ -80,39 +80,40 @@ void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
 {
     if (errorCode)
     {
-        s3d::Print(U"Room not found.");
+        s3d::Print(U"部屋が見つかりませんでした");
 
         networkSystem->GetClient().opCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(4).setCustomRoomProperties(CustomProperties));
 
-        s3d::Print(U"Create Room...");
-    }
-
-    // UIを表示
-    difficultyUI->SetActive(true);
-
-    s3d::Print(U"Connected Room!");
-}
-
-void MatchSystem::joinRoomReturn(int localPlayerNr,
-                                 const ExitGames::Common::Hashtable& roomProperties,
-                                 const ExitGames::Common::Hashtable& playerProperties,
-                                 int errorCode,
-                                 const ExitGames::Common::JString& errorString)
-{
-    if (errorCode)
-    {
-        s3d::Print(U"CreateRoom error!");
-        s3d::Print(U"Please back to Title.");
-
-        GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+        s3d::Print(U"部屋を作成します");
         return;
     }
 
     // UIを表示
     difficultyUI->SetActive(true);
 
-    s3d::Print(U"Join Room!");
+    s3d::Print(U"部屋に参加しました!");
 }
+
+// void MatchSystem::joinRoomReturn(int localPlayerNr,
+//                                  const ExitGames::Common::Hashtable& roomProperties,
+//                                  const ExitGames::Common::Hashtable& playerProperties,
+//                                  int errorCode,
+//                                  const ExitGames::Common::JString& errorString)
+// {
+//     if (errorCode)
+//     {
+//         s3d::Print(U"CreateRoom error!");
+//         s3d::Print(U"Please back to Title.");
+
+//         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
+//         return;
+//     }
+
+//     // UIを表示
+//     difficultyUI->SetActive(true);
+
+//     s3d::Print(U"部屋に参加しました!");
+// }
 
 // void disconnectReturn()
 // {

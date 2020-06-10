@@ -5,7 +5,7 @@
 #include "../GameMaster/GameState.hpp"
 #include "Enemy.hpp"
 
-constexpr double HPperSec[] = {4.0, 7.5, 15, 20, 24};
+constexpr double HPperSec[] = {4.0, 7.5, 18, 23, 31};
 
 void EnemyManager::Start2()
 {
@@ -38,7 +38,8 @@ void EnemyManager::Update()
     // t += s3d::Random(-0.3, 0.3);
     // t = s3d::Clamp(t, 0.7, 10.0);
     generator.interval -= s3d::Scene::DeltaTime();
-    generator.generatableHP += s3d::Scene::DeltaTime() * generator.persecond;
+    double generatableUp = 0;
+    generatableUp += s3d::Scene::DeltaTime() * generator.persecond;
 
     //残り時間が短くなってきたら難易度をあげる
     if (timer->GetTime() < 40)
@@ -49,8 +50,10 @@ void EnemyManager::Update()
         //生成可能数も増やす
         constexpr double d[] = {3.5, 4, 4, 7, 8};
 
-        generator.generatableHP += s3d::Scene::DeltaTime() * d[difficulty];
+        generatableUp += s3d::Scene::DeltaTime() * d[difficulty];
     }
+
+    generator.generatableHP += networkSystem->IsMasterClient() ? generatableUp : generatableUp * 0.7;
 
     if (generator.interval < 0)
     {
