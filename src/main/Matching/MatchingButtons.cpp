@@ -59,12 +59,12 @@ void MatchSystem::connectReturn(int errorCode, const ExitGames::Common::JString&
 {
     if (errorCode)
     {
-        s3d::Print(U"接続に失敗しました");
+        s3d::Print(U"サーバーエラー");
 
         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         return;
     }
-    s3d::Print(U"サーバー接続完了!");
+    s3d::Print(U"サーバーに接続しました!");
 
     networkSystem->GetClient().opJoinRandomRoom(CustomProperties, 4);
 
@@ -84,7 +84,29 @@ void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
 
         networkSystem->GetClient().opCreateRoom(L"", ExitGames::LoadBalancing::RoomOptions().setMaxPlayers(4).setCustomRoomProperties(CustomProperties));
 
-        s3d::Print(U"部屋を作成します");
+        s3d::Print(U"部屋を作成します...");
+        difficultyUI->SetActive(true);
+        return;
+    }
+
+    // UIを表示
+    difficultyUI->SetActive(true);
+
+    s3d::Print(U"部屋に接続しました!");
+}
+
+void MatchSystem::joinRoomReturn(int localPlayerNr,
+                                 const ExitGames::Common::Hashtable& roomProperties,
+                                 const ExitGames::Common::Hashtable& playerProperties,
+                                 int errorCode,
+                                 const ExitGames::Common::JString& errorString)
+{
+    if (errorCode)
+    {
+        s3d::Print(U"CreateRoom error!");
+        s3d::Print(U"Please back to Title.");
+
+        GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
         return;
     }
 
@@ -93,27 +115,6 @@ void MatchSystem::joinRandomRoomReturn(int localPlayerNr,
 
     s3d::Print(U"部屋に参加しました!");
 }
-
-// void MatchSystem::joinRoomReturn(int localPlayerNr,
-//                                  const ExitGames::Common::Hashtable& roomProperties,
-//                                  const ExitGames::Common::Hashtable& playerProperties,
-//                                  int errorCode,
-//                                  const ExitGames::Common::JString& errorString)
-// {
-//     if (errorCode)
-//     {
-//         s3d::Print(U"CreateRoom error!");
-//         s3d::Print(U"Please back to Title.");
-
-//         GetGameObject().lock()->GetScene().lock()->GetSceneManager()->ChangeScene("Title");
-//         return;
-//     }
-
-//     // UIを表示
-//     difficultyUI->SetActive(true);
-
-//     s3d::Print(U"部屋に参加しました!");
-// }
 
 // void disconnectReturn()
 // {

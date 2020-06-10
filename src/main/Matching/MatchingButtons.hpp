@@ -37,11 +37,11 @@ class MatchSystem : public ComponentEngine::Photon::AttachableComponentPhotonCal
                               int errorCode,
                               const ExitGames::Common::JString& errorString) override;
 
-    // void joinRoomReturn(int localPlayerNr,
-    //                     const ExitGames::Common::Hashtable& roomProperties,
-    //                     const ExitGames::Common::Hashtable& playerProperties,
-    //                     int errorCode,
-    //                     const ExitGames::Common::JString& errorString) override;
+    void joinRoomReturn(int localPlayerNr,
+                        const ExitGames::Common::Hashtable& roomProperties,
+                        const ExitGames::Common::Hashtable& playerProperties,
+                        int errorCode,
+                        const ExitGames::Common::JString& errorString) override;
 
     // void disconnectReturn() override
     // {
