@@ -18,6 +18,16 @@ namespace ComponentEngine::Photon
 {
     std::string NetworkObjectName();
 
+    // ExitGames::Common::JStringからs3d::Stringに変換する
+    [[nodiscard]] s3d::String ConvertJStringToString(const ExitGames::Common::JString& str);
+
+    // s3d::StringからExitGames::Common::JStringに変換する
+    [[nodiscard]] ExitGames::Common::JString ConvertStringToJString(const s3d::String& str);
+
+    // appIDを正常な文字列に直す
+    /// ここには実装部分は書かないし、gitにも履歴は残さない
+    [[nodiscard]] ExitGames::Common::JString ChangeAppIDString();
+
     class NetworkSystem : public ComponentEngine::AttachableComponent, public IPhotonObservable, public ExitGames::LoadBalancing::Listener
     {
         static NetworkSystem* instance;
@@ -47,10 +57,8 @@ namespace ComponentEngine::Photon
         }
 
     public:
-        const ExitGames::Common::JString appID = L"b0f7b045-6e8c-4dd7-a671-e5aaeae5c2f4";  // set your app id here
-
         // majorupdate.subversion.bugfix
-        const ExitGames::Common::JString appVersion = L"0.4.0";
+        const ExitGames::Common::JString appVersion = L"0.4.3";
 
     public:
         NetworkSystem();

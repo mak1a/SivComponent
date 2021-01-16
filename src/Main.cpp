@@ -1,5 +1,5 @@
-#define NO_S3D_USING
-#include <Siv3D.hpp>  // OpenSiv3D v0.4.2
+﻿#define NO_S3D_USING
+#include <Siv3D.hpp>  // OpenSiv3D v0.4.3
 
 #include "PhotonComponent/PhotonComponent.hpp"
 

@@ -10,8 +10,16 @@ namespace ComponentEngine::Photon
         return "PhotonSystem";
     }
 
+    [[nodiscard]] s3d::String ConvertJStringToString(const ExitGames::Common::JString& str) {
+        return s3d::Unicode::FromWString(std::wstring(str));
+    }
+
+    [[nodiscard]] ExitGames::Common::JString ConvertStringToJString(const s3d::String& str) {
+        return ExitGames::Common::JString(str.toWstr().c_str());
+    }
+
     NetworkSystem::NetworkSystem()
-        : mLoadBalancingClient(*this, appID, appVersion, ExitGames::Photon::ConnectionProtocol::UDP)
+        : mLoadBalancingClient(*this, ChangeAppIDString(), appVersion, ExitGames::Photon::ConnectionProtocol::UDP)
     {
         SetPlayerName(L"null player");
 

@@ -2,6 +2,8 @@ App/empty.app
 App/engine
 App/example
 App/nlp
+src/PhotonComponent/AppIDChange.cpp
+
 .vscode
 
 *.exe

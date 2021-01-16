@@ -57,8 +57,6 @@ Resource(engine/soundfont/GMGSx.sf2.zstdcmp)
 //
 //////////////////////////////////////////////////////
 
-
-
 /* 
 	//
 	// Define your resource path inside `Resource()` macro.
