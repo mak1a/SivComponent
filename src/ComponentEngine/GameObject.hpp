@@ -190,9 +190,6 @@ namespace ComponentEngine
         //メモリリークのリスクの方が大きい気もする。
         std::list<std::shared_ptr<IComponent>> components;
 
-        // 現在のフレームID
-        int32_t currentFrameID;
-
         // 前フレームで衝突したGameObject
         std::vector<std::tuple<int32_t, std::shared_ptr<GameObject>>> previousGameObjects;
 

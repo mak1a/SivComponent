@@ -242,6 +242,7 @@
     <ClCompile Include="..\..\src\ComponentEngine\AttachableComponent.cpp" />
     <ClCompile Include="..\..\src\ComponentEngine\ComponentEngine.cpp" />
     <ClCompile Include="..\..\src\ComponentEngine\GameObject.cpp" />
+    <ClCompile Include="..\..\src\ComponentEngine\Global\Global.cpp" />
     <ClCompile Include="..\..\src\ComponentEngine\IScene.cpp" />
     <ClCompile Include="..\..\src\ComponentEngine\SceneCommon.cpp" />
     <ClCompile Include="..\..\src\ComponentEngine\SceneManager.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="..\..\src\ComponentEngine\AttachableComponent.hpp" />
     <ClInclude Include="..\..\src\ComponentEngine\ComponentEngine.hpp" />
     <ClInclude Include="..\..\src\ComponentEngine\GameObject.hpp" />
+    <ClInclude Include="..\..\src\ComponentEngine\Global\Global.hpp" />
     <ClInclude Include="..\..\src\ComponentEngine\IComponent.hpp" />
     <ClInclude Include="..\..\src\ComponentEngine\IScene.hpp" />
     <ClInclude Include="..\..\src\ComponentEngine\SceneCommon.hpp" />

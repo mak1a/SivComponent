@@ -94,6 +94,9 @@ namespace ComponentEngine::Collision
                         continue;
                     }
 
+                    //GameObjectのAPIコール
+                    auto obja = a->GetGameObject().lock();
+
                     for (CollisionObject* b : colsb)
                     {
                         if (!(b->GetActive() && b->GetGameObject().lock()->GetActive()))
@@ -107,8 +110,7 @@ namespace ComponentEngine::Collision
                             continue;
                         }
 
-                        //それぞれのGameObjectのAPIコール
-                        auto obja = a->GetGameObject().lock();
+                        // GameObjectのAPIコール
                         auto objb = b->GetGameObject().lock();
                         // GameObject同士の判定
                         if (b->intersects(a))
@@ -120,21 +122,8 @@ namespace ComponentEngine::Collision
                             }
                         }
                     }
-                }
-            }
 
-            for (const auto& col : colliders)
-            {
-                for (auto obj : col)
-                {
-                    if (!(obj->GetActive() && obj->GetGameObject().lock()->GetActive()))
-                    {
-                        continue;
-                    }
-
-                    auto gameObject = obj->GetGameObject().lock();
-
-                    gameObject->components_call_collisioncheck();
+                    obja->components_call_collisioncheck();
                 }
             }
         }

@@ -4,6 +4,7 @@
 
 #include <Siv3D.hpp>
 #include "AttachableComponent.hpp"
+#include "Global/Global.hpp"
 
 namespace ComponentEngine
 {
@@ -197,7 +198,6 @@ namespace ComponentEngine
         active = true;
         _transform = trans;
         objecttag = UserDef::Tag::Default;
-        currentFrameID = 0;
     }
 
     //<return>child
@@ -381,22 +381,16 @@ namespace ComponentEngine
 
     bool GameObject::CheckCollisionEnter(std::shared_ptr<GameObject>& object)
     {
-        bool isAlreadyHit{false};
         for (auto& [id, c] : previousGameObjects)
         {
             if (c == object)
             {
-                id = currentFrameID;
-                isAlreadyHit = true;
+                id = Global::FrameCount();
+                return false;
             }
         }
 
-        if (isAlreadyHit)
-        {
-            return false;
-        }
-
-        previousGameObjects.emplace_back(currentFrameID, object);
+        previousGameObjects.emplace_back(Global::FrameCount(), object);
         return true;
     }
 
@@ -504,7 +498,7 @@ namespace ComponentEngine
         for (auto itr = previousGameObjects.begin(); itr != previousGameObjects.end();)
         {
             auto& [id, c] = *itr;
-            if (id == currentFrameID)
+            if (id == Global::FrameCount())
             {
                 ++itr;
                 continue;
@@ -513,8 +507,6 @@ namespace ComponentEngine
             components_call_collisionexit(c);
             itr = previousGameObjects.erase(itr);
         }
-
-        ++currentFrameID;
     }
 
     void GameObject::components_call_collisionexit(std::shared_ptr<GameObject>& object) {

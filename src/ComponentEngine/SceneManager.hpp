@@ -2,6 +2,7 @@
 
 #include "IScene.hpp"
 #include "SceneCommon.hpp"
+#include "Global/Global.hpp"
 
 namespace ComponentEngine
 {
@@ -103,6 +104,9 @@ namespace ComponentEngine
                 //共通オブジェクトの設定
                 currentScene->GetMasterObject()->AddChild(common.commonParent);
             }
+
+            // フレームカウントの更新
+            Global::Update();
 
             //シーンの更新
             currentScene->Update();

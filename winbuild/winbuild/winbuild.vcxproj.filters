@@ -530,6 +530,9 @@
     <ClCompile Include="..\..\src\Utilities\Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ComponentEngine\Global\Global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\ComponentEngine\AttachableComponent.hpp">
@@ -707,6 +710,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Utilities\Utilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ComponentEngine\Global\Global.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

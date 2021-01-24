@@ -32,8 +32,8 @@ void Bullet::OnStayCollision(std::shared_ptr<GameObject>& other)
 {
     s3d::Print << U"Stay";
     //何かに当たったら消える
-    auto obj = GetGameObject().lock();
-    obj->GetScene().lock()->Destroy(obj);
+    /*auto obj = GetGameObject().lock();
+    obj->GetScene().lock()->Destroy(obj);*/
 }
 
 void Bullet::OnExitCollision(std::shared_ptr<GameObject>& other) {
