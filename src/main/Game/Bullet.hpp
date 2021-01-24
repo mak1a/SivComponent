@@ -20,5 +20,7 @@ public:
 
 private:
     void Update() override;
+    void OnEnterCollision(std::shared_ptr<GameObject>& other) override;
     void OnStayCollision(std::shared_ptr<GameObject>& other) override;
+    void OnExitCollision(std::shared_ptr<GameObject>& other) override;
 };

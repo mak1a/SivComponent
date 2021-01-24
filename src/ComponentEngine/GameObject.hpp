@@ -86,7 +86,8 @@ namespace ComponentEngine
         void components_draw() const;
 
         // IScene event API
-        void components_call_collisionstay(std::shared_ptr<GameObject>& object);
+        void components_call_collisioncheck();
+        void components_call_collision(std::shared_ptr<GameObject>& object);
 
         // make_shared書くの面倒なのでね
         static std::shared_ptr<GameObject> Create()
@@ -189,6 +190,12 @@ namespace ComponentEngine
         //メモリリークのリスクの方が大きい気もする。
         std::list<std::shared_ptr<IComponent>> components;
 
+        // 現在のフレームID
+        int32_t currentFrameID;
+
+        // 前フレームで衝突したGameObject
+        std::vector<std::tuple<int32_t, std::shared_ptr<GameObject>>> previousGameObjects;
+
         //親子オブジェクト
         std::weak_ptr<GameObject> parent;
         std::list<std::shared_ptr<GameObject>> children;
@@ -221,5 +228,8 @@ namespace ComponentEngine
         void DestroyAllChildren();
 
         void DestroyAllChildrenComponents();
+
+        bool CheckCollisionEnter(std::shared_ptr<GameObject>& object);
+        void components_call_collisionexit(std::shared_ptr<GameObject>& object);
     };  // namespace ComponentEngine
 }  // namespace ComponentEngine

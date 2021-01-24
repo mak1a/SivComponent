@@ -197,6 +197,7 @@ namespace ComponentEngine
         active = true;
         _transform = trans;
         objecttag = UserDef::Tag::Default;
+        currentFrameID = 0;
     }
 
     //<return>child
@@ -378,6 +379,27 @@ namespace ComponentEngine
         }
     }
 
+    bool GameObject::CheckCollisionEnter(std::shared_ptr<GameObject>& object)
+    {
+        bool isAlreadyHit{false};
+        for (auto& [id, c] : previousGameObjects)
+        {
+            if (c == object)
+            {
+                id = currentFrameID;
+                isAlreadyHit = true;
+            }
+        }
+
+        if (isAlreadyHit)
+        {
+            return false;
+        }
+
+        previousGameObjects.emplace_back(currentFrameID, object);
+        return true;
+    }
+
     void GameObject::components_start()
     {
         if (!initializedAll)
@@ -477,10 +499,40 @@ namespace ComponentEngine
         }
     }
 
-    void GameObject::components_call_collisionstay(std::shared_ptr<GameObject>& object)
+    void GameObject::components_call_collisioncheck()
     {
+        for (auto itr = previousGameObjects.begin(); itr != previousGameObjects.end();)
+        {
+            auto& [id, c] = *itr;
+            if (id == currentFrameID)
+            {
+                ++itr;
+                continue;
+            }
+
+            components_call_collisionexit(c);
+            itr = previousGameObjects.erase(itr);
+        }
+
+        ++currentFrameID;
+    }
+
+    void GameObject::components_call_collisionexit(std::shared_ptr<GameObject>& object) {
         for (auto& c : components)
         {
+            c->OnExitCollision(object);
+        }
+    }
+
+    void GameObject::components_call_collision(std::shared_ptr<GameObject>& object)
+    {
+        const bool onEnter = CheckCollisionEnter(object);
+        for (auto& c : components)
+        {
+            if (onEnter)
+            {
+                c->OnEnterCollision(object);
+            }
             c->OnStayCollision(object);
         }
     }

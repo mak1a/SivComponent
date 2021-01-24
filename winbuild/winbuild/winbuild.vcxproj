@@ -79,7 +79,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\yssmh\Documents\Photon\Common-cpp;C:\Users\yssmh\Documents\Photon\Photon-cpp;C:\Users\yssmh\Documents\Photon\LoadBalancing-cpp;C:\Users\yssmh\Documents\Photon\Common-cpp\lib;C:\Users\yssmh\Documents\Photon\Photon-cpp\lib;C:\Users\yssmh\Documents\Photon\LoadBalancing-cpp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\Users\yssmh\Documents\Photon\Common-cpp\lib\Common-cpp_vc16_release_windows_mt_x64.lib;C:\Users\yssmh\Documents\Photon\Photon-cpp\lib\Photon-cpp_vc16_release_windows_mt_x64.lib;C:\Users\yssmh\Documents\Photon\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_release_windows_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\yssmh\Documents\Photon\Common-cpp\lib\Common-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\yssmh\Documents\Photon\Photon-cpp\lib\Photon-cpp_vc16_debug_windows_mt_x64.lib;C:\Users\yssmh\Documents\Photon\LoadBalancing-cpp\lib\LoadBalancing-cpp_vc16_debug_windows_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /I /D /Y "$(OutDir)$(TargetFileName)" "$(ProjectDir)App"</Command>
