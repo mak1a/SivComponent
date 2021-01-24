@@ -107,18 +107,34 @@ namespace ComponentEngine::Collision
                             continue;
                         }
 
+                        //それぞれのGameObjectのAPIコール
+                        auto obja = a->GetGameObject().lock();
+                        auto objb = b->GetGameObject().lock();
                         // GameObject同士の判定
                         if (b->intersects(a))
                         {
-                            //それぞれのGameObjectのAPIコール
-                            auto obja = a->GetGameObject().lock();
-                            auto objb = b->GetGameObject().lock();
-
-                            obja->components_call_collisionstay(objb);
-
-                            objb->components_call_collisionstay(obja);
+                            // OnEnterCollision, OnStayCollisionの呼び出し
+                            {
+                                obja->components_call_collision(objb);
+                                objb->components_call_collision(obja);
+                            }
                         }
                     }
+                }
+            }
+
+            for (const auto& col : colliders)
+            {
+                for (auto obj : col)
+                {
+                    if (!(obj->GetActive() && obj->GetGameObject().lock()->GetActive()))
+                    {
+                        continue;
+                    }
+
+                    auto gameObject = obj->GetGameObject().lock();
+
+                    gameObject->components_call_collisioncheck();
                 }
             }
         }
@@ -150,9 +166,9 @@ namespace ComponentEngine::Collision
         //                 auto obja = a->GetGameObject().lock();
         //                 auto objb = b->GetGameObject().lock();
 
-        //                 obja->components_call_collisionstay(objb);
+        //                 obja->components_call_collision(objb);
 
-        //                 objb->components_call_collisionstay(obja);
+        //                 objb->components_call_collision(obja);
         //             }
         //         }
         //     }

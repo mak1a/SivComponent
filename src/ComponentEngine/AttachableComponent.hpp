@@ -37,7 +37,9 @@ namespace ComponentEngine
         virtual void LateUpdate() override {}
         virtual void Draw() const override {}
         virtual void OnDestroy() override {}
+        virtual void OnEnterCollision(std::shared_ptr<GameObject>&) override {}
         virtual void OnStayCollision(std::shared_ptr<GameObject>&) override {}
+        virtual void OnExitCollision(std::shared_ptr<GameObject>&) override {}
 
         //これ自体の生成は禁止する
         AttachableComponent();

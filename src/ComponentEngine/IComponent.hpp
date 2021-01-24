@@ -21,7 +21,9 @@ namespace ComponentEngine
         virtual void Draw() const = 0;
         virtual void OnDestroy() = 0;
 
+        virtual void OnEnterCollision(std::shared_ptr<GameObject>&) = 0;
         virtual void OnStayCollision(std::shared_ptr<GameObject>&) = 0;
+        virtual void OnExitCollision(std::shared_ptr<GameObject>&) = 0;
 
         // virtual void OnAddComponent(std::weak_ptr<IComponent>) = 0;
         // virtual void OnRemoveComponent() = 0;
